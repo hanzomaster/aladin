@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
+  const hello = trpc.useQuery(["example.hello", { text: "from Aladin" }]);
 
   return (
     <>
@@ -53,6 +54,7 @@ const Home: NextPage = () => {
         <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
+        <Authentication />
       </main>
     </>
   );
@@ -66,11 +68,26 @@ type TechnologyCardProps = {
   documentation: string;
 };
 
-const TechnologyCard = ({
-  name,
-  description,
-  documentation,
-}: TechnologyCardProps) => {
+const Authentication = () => {
+  const session = useSession();
+  return (
+    <div className="flex w-full flex-col items-center justify-center">
+      <p className="text-2xl text-gray-700">
+        {session.status === "authenticated" ? (
+          <button type="button" onClick={() => signOut()}>
+            Sign out
+          </button>
+        ) : (
+          <button type="button" onClick={() => signIn()}>
+            Sign in
+          </button>
+        )}
+      </p>
+    </div>
+  );
+};
+
+const TechnologyCard = ({ name, description, documentation }: TechnologyCardProps) => {
   return (
     <section className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl duration-500 motion-safe:hover:scale-105">
       <h2 className="text-lg text-gray-700">{name}</h2>
@@ -79,8 +96,7 @@ const TechnologyCard = ({
         className="mt-3 text-sm text-violet-500 underline decoration-dotted underline-offset-2"
         href={documentation}
         target="_blank"
-        rel="noreferrer"
-      >
+        rel="noreferrer">
         Documentation
       </a>
     </section>
