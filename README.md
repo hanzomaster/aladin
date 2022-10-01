@@ -2,6 +2,15 @@
 
 This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
 
+## Ai làm file nào
+
+- Frontend
+  - Chỉ cần tạo 1 file mới trong folder [pages](./src/pages/) là có một page mới (tham khảo [docs](https://nextjs.org/docs/basic-features/pages))
+  - Ngoài ra còn folder [styles](./src/styles/) để tương tác global style
+  - Folder [public](./public/) dùng để chứa ảnh và các static assets khác
+- Backend
+  - Đống còn lại
+
 ## Why are there `.js` files in here?
 
 As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
