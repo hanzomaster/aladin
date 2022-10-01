@@ -1,9 +1,7 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import NextAuth, { type NextAuthOptions } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
 import GoogleProvider from "next-auth/providers/google"
-
-// Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { env } from "../../../env/server.mjs"
 import { prisma } from "../../../server/db/client"
 
@@ -31,6 +29,9 @@ export const authOptions: NextAuthOptions = {
   ],
   theme: {
     colorScheme: 'light'
+  },
+  session: {
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   }
 };
 
