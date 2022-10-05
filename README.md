@@ -11,6 +11,17 @@ This is an app bootstrapped according to the [init.tips](https://init.tips) stac
 - Backend
   - Đống còn lại
 
+## Làm thế nào để chạy project
+
+Project cần có file `.env` để chạy biến môi trường nên hãy làm theo các bước sau
+
+- Clone project này về và chạy lệnh
+
+> `npx --yes dotenv-vault@1.13.10 pull --yes`
+
+- Đăng nhập hoặc tạo tài khoản mới và thế là xong
+- Chạy project bằng lệnh `npm run dev`
+
 ## Why are there `.js` files in here?
 
 As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
