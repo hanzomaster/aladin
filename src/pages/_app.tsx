@@ -1,13 +1,13 @@
 // src/pages/_app.tsx
-import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
-import { loggerLink } from "@trpc/client/links/loggerLink";
-import { withTRPC } from "@trpc/next";
-import { SessionProvider } from "next-auth/react";
-import superjson from "superjson";
-import type { AppType } from "next/app";
-import type { AppRouter } from "../server/router";
-import type { Session } from "next-auth";
-import "../styles/globals.css";
+import { httpBatchLink } from "@trpc/client/links/httpBatchLink"
+import { loggerLink } from "@trpc/client/links/loggerLink"
+import { withTRPC } from "@trpc/next"
+import type { Session } from "next-auth"
+import { SessionProvider } from "next-auth/react"
+import type { AppType } from "next/app"
+import superjson from "superjson"
+import type { AppRouter } from "../server/router"
+import "../styles/globals.css"
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -37,11 +37,11 @@ export default withTRPC<AppRouter>({
     return {
       links: [
         loggerLink({
-          enabled: (opts) =>
+          enabled: opts =>
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchLink({ url }),
+        httpBatchLink({ url, maxBatchSize: 10 }),
       ],
       url,
       transformer: superjson,
