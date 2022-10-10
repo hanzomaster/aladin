@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["referentialIntegrity"]
@@ -8,33 +5,121 @@ generator client {
 
 datasource db {
     provider             = "mysql"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url                  = env("DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
-model Example {
-    id String @id @default(cuid())
+model Phone {
+    id           String   @id @default(cuid())
+    customerId   String   @unique
+    countryCode  Int
+    areaCode     Int
+    phoneNumber  Int
+    extension    Int?
+    phoneType    String   @db.VarChar(8)
+    primaryPhone Boolean
+    customer     Customer @relation(fields: [customerId], references: [id])
+}
+
+model Payment {
+    id          String       @id @default(cuid())
+    customerId  String
+    ccNumber    String       @db.VarChar(16)
+    ccType      String       @db.VarChar(8)
+    ccExpDate   String       @db.VarChar(8)
+    ccName      String       @db.VarChar(32)
+    ccAddress   String       @db.VarChar(32)
+    ccCity      String       @db.VarChar(32)
+    ccState     String       @db.VarChar(32)
+    ccZip       String       @db.VarChar(32)
+    ccCountry   String       @db.VarChar(32)
+    customer    Customer     @relation(fields: [customerId], references: [id])
+    OrderDetail OrderDetail?
+}
+
+model Address {
+    id         String   @id @default(cuid())
+    customerId String
+    address1   String   @db.VarChar(32)
+    address2   String   @db.VarChar(32)
+    city       String   @db.VarChar(32)
+    state      String   @db.VarChar(32)
+    zip        String   @db.VarChar(32)
+    country    String   @db.VarChar(32)
+    customer   Customer @relation(fields: [customerId], references: [id])
+}
+
+model ProductCatalog {
+    id            String @id @default(cuid())
+    name          String @db.VarChar(50)
+    vendorId      Int
+    manufactuerId String @db.VarChar(10)
+    colorId       Int?
+    sizeId        Int?
+    unitId        Int?
+    pricePerUnit  Int?
+    weightPerUnit Int?
+    Cart          Cart[]
+}
+
+model Cart {
+    id          String          @id @default(cuid())
+    orderId     String
+    prodcutId   String?
+    quantity    Int
+    discount    Int?
+    OrderDetail OrderDetail[]
+    product     ProductCatalog? @relation(fields: [prodcutId], references: [id])
+}
+
+model OrderDetail {
+    id               String    @id @default(cuid())
+    customerId       String
+    cartId           String?
+    paymentId        String?   @unique
+    paymentDate      DateTime?
+    orderDate        DateTime
+    shipDate         DateTime?
+    shipMethod       String    @db.VarChar(32)
+    fullfillmentDate DateTime?
+    cancelledDate    DateTime?
+    returnDate       DateTime?
+    customer         Customer  @relation(fields: [customerId], references: [id])
+    cart             Cart?     @relation(fields: [cartId], references: [id])
+    payment          Payment?  @relation(fields: [paymentId], references: [id])
+}
+
+model Customer {
+    id            String        @id @default(cuid())
+    name          String?
+    email         String?       @unique
+    emailVerified DateTime?
+    image         String?
+    dob           DateTime
+    gender        String
+    phone         Phone?
+    payment       Payment[]
+    accounts      Account[]
+    sessions      Session[]
+    Address       Address[]
+    OrderDetail   OrderDetail[]
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
+    id                String   @id @default(cuid())
     userId            String
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
+    refresh_token     String?  @db.Text
+    access_token      String?  @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? @db.Text
+    id_token          String?  @db.Text
     session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user              Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -44,17 +129,7 @@ model Session {
     sessionToken String   @unique
     userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    user         Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
