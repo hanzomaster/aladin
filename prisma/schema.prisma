@@ -10,20 +10,20 @@ datasource db {
 }
 
 model Phone {
-    id           String   @id @default(cuid())
-    customerId   String   @unique
+    id           String  @id @default(cuid())
+    userId       String  @unique
     countryCode  Int
     areaCode     Int
     phoneNumber  Int
     extension    Int?
-    phoneType    String   @db.VarChar(8)
+    phoneType    String  @db.VarChar(8)
     primaryPhone Boolean
-    customer     Customer @relation(fields: [customerId], references: [id])
+    user         User    @relation(fields: [userId], references: [id])
 }
 
 model Payment {
     id          String       @id @default(cuid())
-    customerId  String
+    userId      String
     ccNumber    String       @db.VarChar(16)
     ccType      String       @db.VarChar(8)
     ccExpDate   String       @db.VarChar(8)
@@ -33,20 +33,20 @@ model Payment {
     ccState     String       @db.VarChar(32)
     ccZip       String       @db.VarChar(32)
     ccCountry   String       @db.VarChar(32)
-    customer    Customer     @relation(fields: [customerId], references: [id])
+    user        User         @relation(fields: [userId], references: [id])
     OrderDetail OrderDetail?
 }
 
 model Address {
-    id         String   @id @default(cuid())
-    customerId String
-    address1   String   @db.VarChar(32)
-    address2   String   @db.VarChar(32)
-    city       String   @db.VarChar(32)
-    state      String   @db.VarChar(32)
-    zip        String   @db.VarChar(32)
-    country    String   @db.VarChar(32)
-    customer   Customer @relation(fields: [customerId], references: [id])
+    id       String @id @default(cuid())
+    userId   String
+    address1 String @db.VarChar(32)
+    address2 String @db.VarChar(32)
+    city     String @db.VarChar(32)
+    state    String @db.VarChar(32)
+    zip      String @db.VarChar(32)
+    country  String @db.VarChar(32)
+    user     User   @relation(fields: [userId], references: [id])
 }
 
 model ProductCatalog {
@@ -74,7 +74,7 @@ model Cart {
 
 model OrderDetail {
     id               String    @id @default(cuid())
-    customerId       String
+    userId           String
     cartId           String?
     paymentId        String?   @unique
     paymentDate      DateTime?
@@ -84,12 +84,12 @@ model OrderDetail {
     fullfillmentDate DateTime?
     cancelledDate    DateTime?
     returnDate       DateTime?
-    customer         Customer  @relation(fields: [customerId], references: [id])
+    user             User      @relation(fields: [userId], references: [id])
     cart             Cart?     @relation(fields: [cartId], references: [id])
     payment          Payment?  @relation(fields: [paymentId], references: [id])
 }
 
-model Customer {
+model User {
     id            String        @id @default(cuid())
     name          String?
     email         String?       @unique
@@ -107,19 +107,19 @@ model Customer {
 
 // Necessary for Next auth
 model Account {
-    id                String   @id @default(cuid())
+    id                String  @id @default(cuid())
     userId            String
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String?  @db.Text
-    access_token      String?  @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String?  @db.Text
+    id_token          String? @db.Text
     session_state     String?
-    user              Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -129,7 +129,7 @@ model Session {
     sessionToken String   @unique
     userId       String
     expires      DateTime
-    user         Customer @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
