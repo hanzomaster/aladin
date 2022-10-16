@@ -95,8 +95,8 @@ model User {
     email         String?       @unique
     emailVerified DateTime?
     image         String?
-    dob           DateTime
-    gender        String
+    dob           DateTime?
+    gender        String?
     phone         Phone?
     payment       Payment[]
     accounts      Account[]
