@@ -21,17 +21,19 @@ export const userRouter = router({
   update: publicProcedure
     .input(
       z.object({
-        whereId: z.string().length(25),
-        name: z.string().optional(),
-        email: z.string().email().optional(),
+        id: z.string().length(25),
+        dto: z.object({
+          name: z.string().optional(),
+          email: z.string().email().optional(),
+        }),
       })
     )
     .query(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.whereId,
+          id: input.id,
         },
-        data: input,
+        data: input.dto,
       });
     }),
   delete: publicProcedure.input(z.string().length(25)).query(({ ctx, input }) => {

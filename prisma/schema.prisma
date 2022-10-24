@@ -14,100 +14,94 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
-model Phone {
-    id           String  @id @default(cuid())
-    userId       String  @unique
-    countryCode  Int
-    areaCode     Int
-    phoneNumber  Int
-    extension    Int?
-    phoneType    String  @db.VarChar(8)
-    primaryPhone Boolean
-    user         User    @relation(fields: [userId], references: [id])
+model productlines {
+    productLine     String    @id @default(cuid())
+    textDescription String?   @db.Text
+    htmlDescription String?   @db.Text
+    image           Bytes?    @db.MediumBlob
+    products        product[]
 }
 
-model Payment {
-    id          String       @id @default(cuid())
+model product {
+    code            String         @id @default(cuid())
+    name            String         @db.VarChar(50)
+    scale           String         @db.VarChar(10)
+    vendor          String         @db.VarChar(50)
+    description     String?        @db.Text
+    quantityInStock Int            @db.SmallInt
+    buyPrice        Decimal        @db.Decimal(10, 2)
+    MSRP            Decimal        @db.Decimal(10, 2)
+    line            String
+    productLine     productlines   @relation(fields: [line], references: [productLine])
+    orderdetails    orderdetails[]
+}
+
+model orders {
+    orderNumber    String         @id @default(cuid())
+    orderDate      DateTime
+    requiredDate   DateTime
+    shippedDate    DateTime
+    status         String         @db.VarChar(15)
+    comments       String?        @db.Text
+    customerNumber String
+    customer       User           @relation(fields: [customerNumber], references: [id])
+    orderdetails   orderdetails[]
+}
+
+model orderdetails {
+    orderNumber      String
+    productCode      String
+    quantityInOrderd Int
+    priceEach        Decimal @db.Decimal(10, 2)
+    orderLineNumber  Int     @db.SmallInt
+    order            orders  @relation(fields: [orderNumber], references: [orderNumber])
+    product          product @relation(fields: [productCode], references: [code])
+
+    @@id([orderNumber, productCode])
+}
+
+model cart {
+    id        String  @id @default(cuid())
+    orderId   String
+    prodcutId String?
+    quantity  Int
+    discount  Int?
+}
+
+model payment {
     userId      String
-    ccNumber    String       @db.VarChar(16)
-    ccType      String       @db.VarChar(8)
-    ccExpDate   String       @db.VarChar(8)
-    ccName      String       @db.VarChar(32)
-    ccAddress   String       @db.VarChar(32)
-    ccCity      String       @db.VarChar(32)
-    ccState     String       @db.VarChar(32)
-    ccZip       String       @db.VarChar(32)
-    ccCountry   String       @db.VarChar(32)
-    user        User         @relation(fields: [userId], references: [id])
-    OrderDetail OrderDetail?
+    checkNumber String   @db.VarChar(50)
+    paymentDate DateTime
+    amount      Decimal  @db.Decimal(10, 2)
+    user        User     @relation(fields: [userId], references: [id])
+
+    @@id([userId, checkNumber])
 }
 
-model Address {
-    id       String @id @default(cuid())
-    userId   String
-    address1 String @db.VarChar(32)
-    address2 String @db.VarChar(32)
-    city     String @db.VarChar(32)
-    state    String @db.VarChar(32)
-    zip      String @db.VarChar(32)
-    country  String @db.VarChar(32)
-    user     User   @relation(fields: [userId], references: [id])
-}
-
-model ProductCatalog {
-    id            String @id @default(cuid())
-    name          String @db.VarChar(50)
-    vendorId      Int
-    manufactuerId String @db.VarChar(10)
-    colorId       Int?
-    sizeId        Int?
-    unitId        Int?
-    pricePerUnit  Int?
-    weightPerUnit Int?
-    Cart          Cart[]
-}
-
-model Cart {
-    id          String          @id @default(cuid())
-    orderId     String
-    prodcutId   String?
-    quantity    Int
-    discount    Int?
-    OrderDetail OrderDetail[]
-    product     ProductCatalog? @relation(fields: [prodcutId], references: [id])
-}
-
-model OrderDetail {
-    id               String    @id @default(cuid())
-    userId           String
-    cartId           String?
-    paymentId        String?   @unique
-    paymentDate      DateTime?
-    orderDate        DateTime
-    shipDate         DateTime?
-    shipMethod       String    @db.VarChar(32)
-    fullfillmentDate DateTime?
-    cancelledDate    DateTime?
-    returnDate       DateTime?
-    user             User      @relation(fields: [userId], references: [id])
-    cart             Cart?     @relation(fields: [cartId], references: [id])
-    payment          Payment?  @relation(fields: [paymentId], references: [id])
+model address {
+    id         String  @id @default(cuid())
+    userId     String
+    address1   String  @db.VarChar(50)
+    address2   String  @db.VarChar(50)
+    city       String  @db.VarChar(50)
+    state      String? @db.VarChar(50)
+    postalCode String? @db.VarChar(15)
+    country    String  @db.VarChar(50)
+    user       User    @relation(fields: [userId], references: [id])
 }
 
 model User {
-    id            String        @id @default(cuid())
+    id            String    @id @default(cuid())
     name          String?
-    email         String?       @unique
+    email         String?   @unique
     emailVerified DateTime?
     image         String?
-    dob           DateTime?
-    gender        String?
-    phone         Phone?
-    payment       Payment[]
+    phone         String?   @db.VarChar(50)
+    address       address[]
     accounts      Account[]
     sessions      Session[]
-    Address       Address[]
-    OrderDetail   OrderDetail[]
+    payment       payment[]
+    order         orders[]
 }
 
 // Necessary for Next auth
