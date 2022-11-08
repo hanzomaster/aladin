@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { z } from "zod"
+import { publicProcedure, router } from "../trpc"
 
 export const userRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {

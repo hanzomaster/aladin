@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import type { Context } from "./context";
 import superjson from "superjson";
+import type { Context } from "./context";
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -36,3 +36,13 @@ const isAuthed = t.middleware(({ ctx, next }) => {
  * Protected procedure
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
+
+/**
+ * Admin procedure
+ */
+export const adminProcedure = t.procedure.use(isAuthed).use(({ ctx, next }) => {
+  if (!ctx.session.user.isAdmin) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+  return next();
+});

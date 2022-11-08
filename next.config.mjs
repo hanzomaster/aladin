@@ -1,4 +1,4 @@
-
+import { withAxiom } from "next-axiom";
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -8,15 +8,24 @@
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-  return config;
+  return withAxiom(config);
 }
 
 export default defineNextConfig({
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     locales: ["vi"],
     defaultLocale: "vi",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+        pathname: "/uc",
+      },
+    ],
   },
 });

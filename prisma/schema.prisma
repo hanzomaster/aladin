@@ -3,10 +3,10 @@ generator client {
     previewFeatures = ["referentialIntegrity"]
 }
 
-generator erd {
-    provider = "prisma-erd-generator"
-    output   = "erd.pdf"
-}
+// generator erd {
+//     provider = "prisma-erd-generator"
+//     output   = "erd.pdf"
+// }
 
 datasource db {
     provider             = "mysql"
@@ -14,61 +14,70 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
-model productlines {
-    productLine     String    @id @default(cuid())
+model ProdcutLine {
+    productLine     String    @id @db.VarChar(50)
     textDescription String?   @db.Text
     htmlDescription String?   @db.Text
-    image           Bytes?    @db.MediumBlob
-    products        product[]
+    products        Product[]
+
+    @@map("productlines")
 }
 
-model product {
-    code            String         @id @default(cuid())
-    name            String         @db.VarChar(50)
-    scale           String         @db.VarChar(10)
-    vendor          String         @db.VarChar(50)
-    description     String?        @db.Text
-    quantityInStock Int            @db.SmallInt
-    buyPrice        Decimal        @db.Decimal(10, 2)
-    MSRP            Decimal        @db.Decimal(10, 2)
+model Product {
+    code            String        @id @default(cuid())
+    name            String        @db.VarChar(50)
+    scale           String        @db.VarChar(10)
+    vendor          String        @db.VarChar(50)
+    description     String?       @db.Text
+    image           String?       @db.Text
+    quantityInStock Int           @db.SmallInt
+    buyPrice        Decimal       @db.Decimal(10, 2)
+    MSRP            Decimal       @db.Decimal(10, 2)
     line            String
-    productLine     productlines   @relation(fields: [line], references: [productLine])
-    orderdetails    orderdetails[]
+    productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
+    orderdetail     OrderDetail[]
+
+    @@map("products")
 }
 
-model orders {
-    orderNumber    String         @id @default(cuid())
+model Order {
+    orderNumber    String        @id @default(cuid())
     orderDate      DateTime
     requiredDate   DateTime
     shippedDate    DateTime
-    status         String         @db.VarChar(15)
-    comments       String?        @db.Text
+    status         String        @db.VarChar(15)
+    comments       String?       @db.Text
     customerNumber String
-    customer       User           @relation(fields: [customerNumber], references: [id])
-    orderdetails   orderdetails[]
+    customer       User          @relation(fields: [customerNumber], references: [id])
+    orderdetail    OrderDetail[]
+
+    @@map("orders")
 }
 
-model orderdetails {
+model OrderDetail {
     orderNumber      String
     productCode      String
     quantityInOrderd Int
     priceEach        Decimal @db.Decimal(10, 2)
     orderLineNumber  Int     @db.SmallInt
-    order            orders  @relation(fields: [orderNumber], references: [orderNumber])
-    product          product @relation(fields: [productCode], references: [code])
+    order            Order   @relation(fields: [orderNumber], references: [orderNumber])
+    product          Product @relation(fields: [productCode], references: [code])
 
     @@id([orderNumber, productCode])
+    @@map("orderdetails")
 }
 
-model cart {
+model Cart {
     id        String  @id @default(cuid())
     orderId   String
     prodcutId String?
     quantity  Int
     discount  Int?
+
+    @@map("cart")
 }
 
-model payment {
+model Payment {
     userId      String
     checkNumber String   @db.VarChar(50)
     paymentDate DateTime
@@ -76,9 +85,10 @@ model payment {
     user        User     @relation(fields: [userId], references: [id])
 
     @@id([userId, checkNumber])
+    @@map("payments")
 }
 
-model address {
+model Address {
     id         String  @id @default(cuid())
     userId     String
     address1   String  @db.VarChar(50)
@@ -88,6 +98,8 @@ model address {
     postalCode String? @db.VarChar(15)
     country    String  @db.VarChar(50)
     user       User    @relation(fields: [userId], references: [id])
+
+    @@map("addresses")
 }
 
 model User {
@@ -97,11 +109,12 @@ model User {
     emailVerified DateTime?
     image         String?
     phone         String?   @db.VarChar(50)
-    address       address[]
+    isAdmin       Boolean   @default(false)
+    address       Address[]
     accounts      Account[]
     sessions      Session[]
-    payment       payment[]
-    order         orders[]
+    payment       Payment[]
+    order         Order[]
 }
 
 // Necessary for Next auth
