@@ -1,23 +1,120 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["referentialIntegrity"]
 }
 
+// generator erd {
+//     provider = "prisma-erd-generator"
+//     output   = "erd.pdf"
+// }
+
 datasource db {
     provider             = "mysql"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url                  = env("DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
-model Example {
-    id String @id @default(cuid())
+model ProdcutLine {
+    productLine     String    @id @db.VarChar(50)
+    textDescription String?   @db.Text
+    htmlDescription String?   @db.Text
+    products        Product[]
+
+    @@map("productlines")
+}
+
+model Product {
+    code            String        @id @default(cuid())
+    name            String        @db.VarChar(50)
+    scale           String        @db.VarChar(10)
+    vendor          String        @db.VarChar(50)
+    description     String?       @db.Text
+    image           String?       @db.Text
+    quantityInStock Int           @db.SmallInt
+    buyPrice        Decimal       @db.Decimal(10, 2)
+    MSRP            Decimal       @db.Decimal(10, 2)
+    line            String
+    productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
+    orderdetail     OrderDetail[]
+
+    @@map("products")
+}
+
+model Order {
+    orderNumber    String        @id @default(cuid())
+    orderDate      DateTime
+    requiredDate   DateTime
+    shippedDate    DateTime
+    status         String        @db.VarChar(15)
+    comments       String?       @db.Text
+    customerNumber String
+    customer       User          @relation(fields: [customerNumber], references: [id])
+    orderdetail    OrderDetail[]
+
+    @@map("orders")
+}
+
+model OrderDetail {
+    orderNumber      String
+    productCode      String
+    quantityInOrderd Int
+    priceEach        Decimal @db.Decimal(10, 2)
+    orderLineNumber  Int     @db.SmallInt
+    order            Order   @relation(fields: [orderNumber], references: [orderNumber])
+    product          Product @relation(fields: [productCode], references: [code])
+
+    @@id([orderNumber, productCode])
+    @@map("orderdetails")
+}
+
+model Cart {
+    id        String  @id @default(cuid())
+    orderId   String
+    prodcutId String?
+    quantity  Int
+    discount  Int?
+
+    @@map("cart")
+}
+
+model Payment {
+    userId      String
+    checkNumber String   @db.VarChar(50)
+    paymentDate DateTime
+    amount      Decimal  @db.Decimal(10, 2)
+    user        User     @relation(fields: [userId], references: [id])
+
+    @@id([userId, checkNumber])
+    @@map("payments")
+}
+
+model Address {
+    id         String  @id @default(cuid())
+    userId     String
+    address1   String  @db.VarChar(50)
+    address2   String  @db.VarChar(50)
+    city       String  @db.VarChar(50)
+    state      String? @db.VarChar(50)
+    postalCode String? @db.VarChar(15)
+    country    String  @db.VarChar(50)
+    user       User    @relation(fields: [userId], references: [id])
+
+    @@map("addresses")
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?   @db.VarChar(50)
+    isAdmin       Boolean   @default(false)
+    address       Address[]
+    accounts      Account[]
+    sessions      Session[]
+    payment       Payment[]
+    order         Order[]
 }
 
 // Necessary for Next auth
@@ -45,16 +142,6 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
 }
 
 model VerificationToken {

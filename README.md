@@ -17,9 +17,12 @@ Project cần có file `.env` để chạy biến môi trường nên hãy làm 
 
 - Clone project này về và chạy lệnh
 
+> `npx --yes dotenv-vault@1.13.10 login --yes`
+
+- Đăng nhập hoặc tạo tài khoản mới
+
 > `npx --yes dotenv-vault@1.13.10 pull --yes`
 
-- Đăng nhập hoặc tạo tài khoản mới và thế là xong
 - Chạy project bằng lệnh `npm run dev`
 
 ## Why are there `.js` files in here?

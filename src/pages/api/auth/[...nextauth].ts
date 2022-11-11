@@ -1,9 +1,9 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import NextAuth, { type NextAuthOptions } from "next-auth"
-import EmailProvider from "next-auth/providers/email"
-import GoogleProvider from "next-auth/providers/google"
-import { env } from "../../../env/server.mjs"
-import { prisma } from "../../../server/db/client"
+import { prisma } from "@db/client";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import NextAuth, { type NextAuthOptions } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
+import { env } from "../../../env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -28,11 +28,11 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   theme: {
-    colorScheme: 'light'
+    colorScheme: "light",
   },
   session: {
     maxAge: 7 * 24 * 60 * 60, // 7 days
-  }
+  },
 };
 
 export default NextAuth(authOptions);

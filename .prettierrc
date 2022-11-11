@@ -1,5 +1,5 @@
 {
-  "arrowParens": "avoid",
+  "arrowParens": "always",
   "embeddedLanguageFormatting": "auto",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
