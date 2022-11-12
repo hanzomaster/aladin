@@ -39,10 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# vscode settings
-.vscode/settings.json
-
 .flaskenv*
 !.env.project
 !.env.vault
 .env.me
+
+.idea/
