@@ -23,10 +23,23 @@ model ProdcutLine {
     @@map("productlines")
 }
 
+enum Gender {
+    M
+    F
+}
+
+enum Size {
+    S
+    M
+    L
+    XL
+}
+
 model Product {
     code            String        @id @default(cuid())
     name            String        @db.VarChar(50)
-    color           Color
+    gender          Gender
+    color           String
     description     String?       @db.Text
     size            Size
     image           String?       @db.Text
@@ -35,8 +48,16 @@ model Product {
     line            String
     productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
     orderdetail     OrderDetail[]
+    Cart            Cart?         @relation(fields: [cartId], references: [id])
+    cartId          String?
 
     @@map("products")
+}
+
+enum Status {
+    InProcess
+    Shipped
+    Cancelled
 }
 
 model Order {
@@ -44,7 +65,7 @@ model Order {
     orderDate      DateTime
     requiredDate   DateTime
     shippedDate    DateTime
-    status         Status        @db.VarChar(15)
+    status         Status
     comments       String?       @db.Text
     customerNumber String
     customer       User          @relation(fields: [customerNumber], references: [id])
@@ -109,7 +130,6 @@ model User {
     address       Address[]
     accounts      Account[]
     sessions      Session[]
-    payment       Payment[]
     order         Order[]
 }
 
