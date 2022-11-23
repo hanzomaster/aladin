@@ -3,7 +3,16 @@ import { v4 as uuidv4 } from 'uuid'
 const data = [
   {
     id: uuidv4(),
-    image: './images/products/product-1.jpeg',
+    image: 'https://canifa.com/img/486/733/resize/1/t/1ts22w010-sm053-2-thumb.webp',
+    title: 'T- Shirt',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
+    category: 'Torso',
+    type: 'Casual',
+    price: 20,
+  },
+  {
+    id: uuidv4(),
+    image: 'https://canifa.com/img/486/733/resize/1/t/1ts22w010-sm053-2-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     category: 'Torso',
@@ -12,7 +21,7 @@ const data = [
   },
   {
     id: uuidv4(),
-    image: './images/products/product-2.jpeg',
+    image: 'https://canifa.com/img/486/733/resize/2/t/2tl22w042-sr019-1-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     category: 'Torso',
@@ -21,7 +30,7 @@ const data = [
   },
   {
     id: uuidv4(),
-    image: './images/products/product-3.jpeg',
+    image: 'https://canifa.com/img/486/733/resize/2/t/2tl22w042-sr019-1-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     category: 'Torso',
@@ -30,16 +39,7 @@ const data = [
   },
   {
     id: uuidv4(),
-    image: './images/products/product-4.jpeg',
-    title: 'Shirt',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
-    category: 'Torso',
-    type: 'Casual',
-    price: 10,
-  },
-  {
-    id: uuidv4(),
-    image: './images/products/product-5.jpeg',
+    image: 'https://canifa.com/ao-phong-be-trai-dai-tay-2tl22w042',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     category: 'Torso',
