@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import { BsHeart } from 'react-icons/bs'
 import data from './/product'
+import ProductCart from './cart'
 
 
 const Products = () => {
   // eslint-disable-next-line
   const [items, setItems] = React.useState(data)
+  const [open, setOpen] = useState(0)
+  function addComponent() {
+    console.log("huhuhu")
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    if (open === 0) {
+        setOpen(open + 1);
+    } else {
+        setOpen(open - 1)
+    }
+    } 
 
   return (
     <>
+    {Array.from({length: open}).map(() => <ProductCart key={open}/>)}
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
       />
       <header className='sticky z-30'>
      <nav
-        className="fixed w-full flex items-center justify-between flex-wrap bg-gray-200 py-4  lg:px-12 shadow border-solid border-t-2 border-gray-700">
+        className="fixed w-full flex items-center justify-between flex-wrap bg-[#eff6ff] py-4  lg:px-12 shadow border-solid border-t-2 border-gray-700">
         <div className=" relative flex justify-between lg:w-auto w-full lg:border-b-0 pl-6 pr-2 border-solid border-b-2 border-gray-300 pb-5 lg:pb-0">
             <div className="flex items-center flex-shrink-0 text-gray-800 mr-16">
                 <span className="font-semibold text-xl tracking-tight">My Navbar</span>
@@ -23,12 +35,13 @@ const Products = () => {
             <div className="block lg:hidden ">
                 <button
                     id="nav"
+                    
                     className="flex items-center px-3 py-2 border-2 rounded text-white-700 border-white-700 hover:text-gray-700 hover:border-gray-700">
                     <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title>
                         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
                     </svg>
                 </button>
-            </div>
+            </div>  
         </div>
     
         <div className="menu w-full lg:block flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8">
@@ -62,7 +75,7 @@ const Products = () => {
               </svg>
                 </button>
             </div>
-            <div className="flex ">
+            <div className="flex " onClick={addComponent}>
                 <a href="#"
                    className="block text-md px-4 py-2 rounded text-gray-700 ml-2 font-bold hover:text-white mt-4 hover:bg-gray-700 lg:mt-0">Sign
                     in</a>
@@ -81,7 +94,7 @@ const Products = () => {
                   "
            href="#"
            >
-          <i className="fas fa-shopping-cart"></i>
+          <i className="fas fa-shopping-cart" onClick={addComponent}></i>
 
           <span
                 className="
@@ -138,7 +151,7 @@ const Products = () => {
       //         </div>
       //         <p className="text-2xl px-5 pb-6">$ {price}</p>
       //       </div>
-      <div key={id} className=" h-fit group border-black-50 bg-pink-50 items-center">
+      <div key={id} className=" h-fit group border-black-50 bg-pink-50 items-center drop-shadow-md">
             <div className=" relative overflow-hidden">
             <img className="h-96 w-full object-cover" src={image} alt=""/>
             <div className="absolute h-full w-full bg-black/20 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">

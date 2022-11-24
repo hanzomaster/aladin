@@ -1,7 +1,7 @@
 
 const data = [
   {
-    id: uuidv4(),
+    id: 1,
     image: 'https://canifa.com/img/486/733/resize/1/t/1ts22w010-sm053-2-thumb.webp',
     title: 'T- Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -10,7 +10,7 @@ const data = [
     price: 20,
   },
   {
-    id: uuidv4(),
+    id: 2,
     image: 'https://canifa.com/img/486/733/resize/1/t/1ts22w010-sm053-2-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -19,7 +19,7 @@ const data = [
     price: 10,
   },
   {
-    id: uuidv4(),
+    id: 3,
     image: 'https://canifa.com/img/486/733/resize/2/t/2tl22w042-sr019-1-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -28,7 +28,7 @@ const data = [
     price: 10,
   },
   {
-    id: uuidv4(),
+    id: 4,
     image: 'https://canifa.com/img/486/733/resize/2/t/2tl22w042-sr019-1-thumb.webp',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -37,7 +37,7 @@ const data = [
     price: 10,
   },
   {
-    id: uuidv4(),
+    id: 5,
     image: 'https://canifa.com/ao-phong-be-trai-dai-tay-2tl22w042',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -46,7 +46,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 6,
     image: './images/products/product-6.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -55,7 +55,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 7,
     image: './images/products/product-7.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -64,7 +64,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 8,
     image: './images/products/product-8.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -73,7 +73,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 9,
     image: './images/products/product-9.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -82,7 +82,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 10,
     image: './images/products/product-10.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -91,7 +91,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 11,
     image: './images/products/product-11.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -100,7 +100,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 12,
     image: './images/products/product-12.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -109,7 +109,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 13,
     image: './images/products/product-13.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -118,7 +118,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 14,
     image: './images/products/product-14.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -127,7 +127,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 15,
     image: './images/products/product-15.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -136,7 +136,7 @@ const data = [
     price: 10,
   },
   {
-    id: 1,
+    id: 16,
     image: './images/products/product-16.jpeg',
     title: 'Shirt',
     desc: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -147,3 +147,7 @@ const data = [
 ]
 
 export default data
+function uuidv4() {
+  throw new Error("Function not implemented.")
+}
+
