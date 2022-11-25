@@ -3,15 +3,76 @@ generator client {
     previewFeatures = ["referentialIntegrity"]
 }
 
-// generator erd {
-//     provider = "prisma-erd-generator"
-//     output   = "erd.pdf"
-// }
+generator erd {
+    provider = "prisma-erd-generator"
+    output   = "erd.pdf"
+}
 
 datasource db {
     provider             = "mysql"
     url                  = env("DATABASE_URL")
     referentialIntegrity = "prisma"
+}
+
+enum Gender {
+    M
+    F
+}
+
+enum ClothSize {
+    S
+    M
+    L
+    XL
+}
+
+model Color {
+    name          String    @id @db.Char(6)
+    class         String    @db.VarChar(20)
+    selectedClass String    @db.VarChar(20)
+    product       Product[]
+    Image         Image?
+
+    @@map("color")
+}
+
+model Image {
+    id        String  @id @default(cuid())
+    colorId   String  @unique
+    image     String  @db.Text
+    color     Color   @relation(fields: [colorId], references: [name])
+    productId String
+    product   Product @relation(fields: [productId], references: [code])
+
+    @@map("image")
+}
+
+model Size {
+    name    ClothSize @id
+    inStock Int
+    product Product[]
+}
+
+model Product {
+    code            String        @id @default(cuid())
+    name            String        @db.VarChar(50)
+    gender          Gender
+    color           Color[]
+    description     String?       @db.Text
+    rating          Float?
+    reviewCount     Int?
+    size            Size[]
+    image           Image[]
+    quantityInStock Int           @db.SmallInt
+    buyPrice        Decimal       @db.Decimal(10, 2)
+    line            String
+    productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
+    orderdetail     OrderDetail[]
+    Cart            Cart?         @relation(fields: [cartId], references: [id])
+    cartId          String?
+    imageId         String
+
+    @@map("products")
 }
 
 model ProdcutLine {
@@ -21,37 +82,6 @@ model ProdcutLine {
     products        Product[]
 
     @@map("productlines")
-}
-
-enum Gender {
-    M
-    F
-}
-
-enum Size {
-    S
-    M
-    L
-    XL
-}
-
-model Product {
-    code            String        @id @default(cuid())
-    name            String        @db.VarChar(50)
-    gender          Gender
-    color           String
-    description     String?       @db.Text
-    size            Size
-    image           String?       @db.Text
-    quantityInStock Int           @db.SmallInt
-    buyPrice        Decimal       @db.Decimal(10, 2)
-    line            String
-    productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
-    orderdetail     OrderDetail[]
-    Cart            Cart?         @relation(fields: [cartId], references: [id])
-    cartId          String?
-
-    @@map("products")
 }
 
 enum Status {
