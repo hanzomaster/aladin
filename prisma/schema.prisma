@@ -24,59 +24,85 @@ enum ClothSize {
     M
     L
     XL
+    XXl
+}
+
+enum ColorLine {
+    White
+    Black
+    Gray
+    Red
+    Orange
+    Yellow
+    Green
+    Sky
+    Blue
+    Indigo
+    Violet
+    Purple
+    Pink
+    Rose
+}
+
+enum OrderStatus {
+    InProcess
+    Shipped
+    Cancelled
 }
 
 model Color {
-    name          String    @id @db.Char(6)
-    class         String    @db.VarChar(20)
-    selectedClass String    @db.VarChar(20)
-    product       Product[]
-    Image         Image?
+    code           String          @id @db.Char(6)
+    colorLine      ColorLine
+    colorName      String          @db.VarChar(20)
+    productDetails ProductDetail[]
 
     @@map("color")
 }
 
-model Image {
-    id        String  @id @default(cuid())
-    colorId   String  @unique
-    image     String  @db.Text
-    color     Color   @relation(fields: [colorId], references: [name])
-    productId String
-    product   Product @relation(fields: [productId], references: [code])
+model ProductInStock {
+    quantity Int
 
-    @@map("image")
-}
+    productDetail ProductDetail @relation(fields: [productDetailId], references: [id])
 
-model Size {
-    name    ClothSize @id
-    inStock Int
-    product Product[]
+    size            ClothSize
+    productDetailId String
+
+    @@id([productDetailId, size])
+    @@map("product_in_stock")
 }
 
 model Product {
-    code            String        @id @default(cuid())
-    name            String        @db.VarChar(50)
-    gender          Gender
-    color           Color[]
-    description     String?       @db.Text
-    rating          Float?
-    reviewCount     Int?
-    size            Size[]
-    image           Image[]
-    quantityInStock Int           @db.SmallInt
-    buyPrice        Decimal       @db.Decimal(10, 2)
-    line            String
-    productLine     ProdcutLine   @relation(fields: [line], references: [productLine])
-    orderdetail     OrderDetail[]
-    Cart            Cart?         @relation(fields: [cartId], references: [id])
-    cartId          String?
-    imageId         String
+    code        String  @id @default(cuid())
+    name        String  @db.VarChar(50)
+    description String? @db.Text
+    buyPrice    Decimal @db.Decimal(10, 2)
+    productLine String
+
+    productDetail ProductDetail[]
+    line          ProductLine     @relation(fields: [productLine], references: [id])
 
     @@map("products")
 }
 
-model ProdcutLine {
-    productLine     String    @id @db.VarChar(50)
+model ProductDetail {
+    id          String @id @default(cuid())
+    image       String @db.Text
+    productCode String
+    colorCode   String @db.Char(6)
+
+    cartItems      CartItem[]
+    color          Color            @relation(fields: [colorCode], references: [code])
+    product        Product          @relation(fields: [productCode], references: [code])
+    OrderDetail    OrderDetail[]
+    ProductInStock ProductInStock[]
+
+    @@map("product_details")
+}
+
+model ProductLine {
+    id              String    @id @default(cuid())
+    type            String    @db.VarChar(50)
+    gender          Gender
     textDescription String?   @db.Text
     htmlDescription String?   @db.Text
     products        Product[]
@@ -84,56 +110,70 @@ model ProdcutLine {
     @@map("productlines")
 }
 
-enum Status {
-    InProcess
-    Shipped
-    Cancelled
-}
-
 model Order {
-    orderNumber    String        @id @default(cuid())
+    orderNumber    String      @id @default(cuid())
     orderDate      DateTime
     requiredDate   DateTime
     shippedDate    DateTime
-    status         Status
-    comments       String?       @db.Text
+    status         OrderStatus
+    comments       String?     @db.Text
     customerNumber String
-    customer       User          @relation(fields: [customerNumber], references: [id])
-    orderdetail    OrderDetail[]
+
+    orderdetail OrderDetail[]
+    customer    User          @relation(fields: [customerNumber], references: [id])
 
     @@map("orders")
 }
 
 model OrderDetail {
     orderNumber      String
-    productCode      String
+    productDetailId  String
     quantityInOrderd Int
-    priceEach        Decimal @db.Decimal(10, 2)
-    orderLineNumber  Int     @db.SmallInt
-    order            Order   @relation(fields: [orderNumber], references: [orderNumber])
-    product          Product @relation(fields: [productCode], references: [code])
+    priceEach        Decimal       @db.Decimal(10, 2)
+    orderLineNumber  Int?          @db.SmallInt
+    order            Order         @relation(fields: [orderNumber], references: [orderNumber])
+    productDetail    ProductDetail @relation(fields: [productDetailId], references: [id])
 
-    @@id([orderNumber, productCode])
+    @@id([orderNumber, productDetailId])
     @@map("orderdetails")
 }
 
 model Cart {
-    id      String    @id @default(cuid())
-    prodcut Product[]
+    id       String     @id @default(cuid())
+    cartItem CartItem[]
+    userId   String     @unique
+    user     User       @relation(fields: [userId], references: [id])
 
     @@map("cart")
 }
 
-// model Payment {
-//     userId      String
-//     checkNumber String   @db.VarChar(50)
-//     paymentDate DateTime
-//     amount      Decimal  @db.Decimal(10, 2)
-//     user        User     @relation(fields: [userId], references: [id])
+model CartItem {
+    productDetailId String
+    cartId          String
+    numberOfItems   Int
 
-//     @@id([userId, checkNumber])
-//     @@map("payments")
-// }
+    productDetail ProductDetail @relation(fields: [productDetailId], references: [id])
+    cart          Cart          @relation(fields: [cartId], references: [id])
+
+    @@id([productDetailId, cartId])
+    @@map("cart_item")
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?   @db.VarChar(50)
+    isAdmin       Boolean   @default(false)
+    status        Boolean   @default(true)
+    address       Address[]
+    accounts      Account[]
+    sessions      Session[]
+    order         Order[]
+    cart          Cart?
+}
 
 model Address {
     id         String  @id @default(cuid())
@@ -147,20 +187,6 @@ model Address {
     user       User    @relation(fields: [userId], references: [id])
 
     @@map("addresses")
-}
-
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    phone         String?   @db.VarChar(50)
-    isAdmin       Boolean   @default(false)
-    address       Address[]
-    accounts      Account[]
-    sessions      Session[]
-    order         Order[]
 }
 
 // Necessary for Next auth
