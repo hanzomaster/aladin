@@ -69,7 +69,6 @@ const Home: NextPage = () => {
     </>
   );
 };
-
 export default Home;
 
 const AuthShowcase: React.FC = () => {

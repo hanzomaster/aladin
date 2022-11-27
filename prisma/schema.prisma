@@ -11,6 +11,7 @@ generator erd {
 datasource db {
     provider             = "mysql"
     url                  = env("DATABASE_URL")
+    shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
@@ -28,20 +29,20 @@ enum ClothSize {
 }
 
 enum ColorLine {
-    White
-    Black
-    Gray
-    Red
-    Orange
-    Yellow
-    Green
-    Sky
-    Blue
-    Indigo
-    Violet
-    Purple
-    Pink
-    Rose
+    WHITE
+    BLACK
+    GRAY
+    RED
+    ORANGE
+    YELLOW
+    GREEN
+    SKY
+    BLUE
+    INDIGO
+    VIOLET
+    PURPLE
+    PINK
+    ROSE
 }
 
 enum OrderStatus {
@@ -72,14 +73,14 @@ model ProductInStock {
 }
 
 model Product {
-    code        String  @id @default(cuid())
-    name        String  @db.VarChar(50)
-    description String? @db.Text
-    buyPrice    Decimal @db.Decimal(10, 2)
-    productLine String
-
+    code          String          @id @default(cuid())
+    name          String          @db.VarChar(50)
+    description   String?         @db.Text
+    buyPrice      Decimal         @db.Decimal(10, 2)
+    productLine   String
     productDetail ProductDetail[]
-    line          ProductLine     @relation(fields: [productLine], references: [id])
+
+    line ProductLine @relation(fields: [productLine], references: [type])
 
     @@map("products")
 }
@@ -101,7 +102,7 @@ model ProductDetail {
 
 model ProductLine {
     id              String    @id @default(cuid())
-    type            String    @db.VarChar(50)
+    type            String    @unique @db.VarChar(50)
     gender          Gender
     textDescription String?   @db.Text
     htmlDescription String?   @db.Text
