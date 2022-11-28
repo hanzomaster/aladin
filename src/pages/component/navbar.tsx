@@ -46,9 +46,9 @@ const NavBar = () => {
         <div className="menu w-full lg:block flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8 hidden">
             <div className="text-md font-bold text-gray-700 lg:flex-grow">
                 
-                  <DropdownComponent title="Nam" type="" />
+                  <DropdownComponent title="Nam" type="male" />
 
-                  <DropdownComponent title="Nữ" type="" />
+                  <DropdownComponent title="Nữ" type="female" />
                   
             </div>
           

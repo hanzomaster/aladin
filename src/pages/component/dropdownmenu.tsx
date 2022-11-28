@@ -1,6 +1,10 @@
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
+const maleData = ["Coat", "Hoodie", "Jeans", "Pants", "Pj", "Polo", "Shirt", "Shorts", "Sweater", "T-shirt"];
+const femaleData = ["Coat", "Hoodie", "Jeans", "Pants", "Pj", "Polo", "Shirt", "Shorts", "Sweater", "T-shirt"];
+const menuData = ["Sign in", "Sign up"]
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
@@ -18,8 +22,85 @@ function menuName(name : string) {
   return null;
 }
 
+function getMenuData(type:string)  {
+    if (type === "male") {
+      return (
+        <>
+        {maleData.map((content) => {
+              return (
+                <>
+                  <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  {content}
+                </a>
+              )}
+                  </Menu.Item>
+                </>
+              )
+            })}
+        </>
+      )
+    } else if (type === "female") {
+      return (
+        <>
+        {femaleData.map((content) => {
+              return (
+                <>
+                  <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  {content}
+                </a>
+              )}
+                  </Menu.Item>
+                </>
+              )
+            })}
+        </>
+      )
+    } else {
+      return (
+        <>
+         {menuData.map((content) => {
+              return (
+                <>
+                  <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  {content}
+                </a>
+              )}
+                  </Menu.Item>
+                </>
+              )
+            })}
+        </>
+      )
+    }
+
+}
+
 export default function DropdownComponent({title, type}) {
-  const menuData = ["Log in", "Sign up"]
+  
   return (
     <Menu as="div" className=" relative inline-block text-left">
       <div>
@@ -44,7 +125,7 @@ export default function DropdownComponent({title, type}) {
 
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {menuData.map((content) => {
+            {/* {menuData.map((content) => {
               return (
                 <>
                   <Menu.Item>
@@ -62,7 +143,8 @@ export default function DropdownComponent({title, type}) {
                   </Menu.Item>
                 </>
               )
-            })}
+            })} */}
+            {getMenuData(type)}
             
           </div>
         </Menu.Items>
