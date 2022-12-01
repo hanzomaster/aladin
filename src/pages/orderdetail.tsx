@@ -8,23 +8,64 @@ const OrderDetail = () => {
         <p className="text-base font-medium leading-6 text-gray-600">21st Mart 2021 at 10:34 PM</p>
       </div>
       <div className="jusitfy-center mt-10 flex w-full flex-col items-stretch  space-y-4 md:space-y-6 xl:flex-row xl:space-x-8 xl:space-y-0">
-        <div className="flex w-full flex-col items-start justify-start space-y-4 md:space-y-6 xl:space-y-8">
-          <div className="flex w-full flex-col items-start justify-start bg-gray-50 px-4 py-4 md:p-6 md:py-6 xl:p-8">
+        <div className="flex h-[45rem] w-full flex-col items-start justify-start space-y-4  md:space-y-6 xl:space-y-8">
+          <div className="flex w-full flex-col items-start justify-start overflow-y-scroll bg-gray-50 px-4 py-4 scrollbar-thin scrollbar-none md:p-6 md:py-6 xl:p-8">
             <p className="text-lg font-semibold leading-6 text-gray-800 md:text-xl xl:leading-5">
               Customer’s Cart
             </p>
-            <div className="mt-4 flex w-full  flex-col items-start justify-start md:mt-6 md:flex-row md:items-center md:space-x-6 xl:space-x-8 ">
+            <div className="mt-4 flex w-full flex-col items-start justify-start md:mt-6 md:flex-row md:items-center md:space-x-6 xl:space-x-8 ">
               <div className="w-full pb-4 md:w-40 md:pb-8">
                 <img
                   className="hidden w-full md:block"
                   src="https://i.ibb.co/84qQR4p/Rectangle-10.png"
                   alt="dress"
                 />
-                <img
+                {/* <img
                   className="w-full md:hidden"
                   src="https://i.ibb.co/L039qbN/Rectangle-10.png"
                   alt="dress"
+                /> */}
+              </div>
+              <div className="flex w-full flex-col items-start justify-between space-y-4 border-b border-gray-200  pb-8 md:flex-row md:space-y-0">
+                <div className="flex w-full flex-col items-start justify-start space-y-8">
+                  <h3 className="text-xl font-semibold leading-6 text-gray-800 xl:text-2xl">
+                    Premium Quaility Dress
+                  </h3>
+                  <div className="flex flex-col items-start justify-start space-y-2">
+                    <p className="text-sm leading-none text-gray-800">
+                      <span className="text-gray-300">Style: </span> Italic Minimal Design
+                    </p>
+                    <p className="text-sm leading-none text-gray-800">
+                      <span className="text-gray-300">Size: </span> Small
+                    </p>
+                    <p className="text-sm leading-none text-gray-800">
+                      <span className="text-gray-300">Color: </span> Light Blue
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-full items-start justify-between space-x-8">
+                  <p className="text-base leading-6 xl:text-lg">
+                    $36.00 <span className="text-red-300 line-through"> $45.00</span>
+                  </p>
+                  <p className="text-base leading-6 text-gray-800 xl:text-lg">01</p>
+                  <p className="text-base font-semibold leading-6 text-gray-800 xl:text-lg">
+                    $36.00
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 flex w-full flex-col items-start justify-start md:mt-6 md:flex-row md:items-center md:space-x-6 xl:space-x-8 ">
+              <div className="w-full pb-4 md:w-40 md:pb-8">
+                <img
+                  className="hidden w-full md:block"
+                  src="https://i.ibb.co/84qQR4p/Rectangle-10.png"
+                  alt="dress"
                 />
+                {/* <img
+                  className="w-full md:hidden"
+                  src="https://i.ibb.co/L039qbN/Rectangle-10.png"
+                  alt="dress"
+                /> */}
               </div>
               <div className="flex w-full flex-col items-start justify-between space-y-4 border-b border-gray-200  pb-8 md:flex-row md:space-y-0">
                 <div className="flex w-full flex-col items-start justify-start space-y-8">
@@ -145,7 +186,7 @@ const OrderDetail = () => {
                 <p className="text-lg font-semibold leading-6 text-gray-800">$8.00</p>
               </div>
               <div className="flex w-full items-center justify-center">
-                <button className="w-96 bg-gray-800 py-5 text-base font-medium leading-4 text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 md:w-full">
+                <button className="w-96 bg-gray-800 py-5 text-base font-medium leading-4 text-white focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-black md:w-full">
                   View Carrier Details
                 </button>
               </div>
@@ -209,7 +250,7 @@ const OrderDetail = () => {
                 </div>
               </div>
               <div className="flex w-full items-center justify-center md:items-start md:justify-start">
-                <button className="mt-6 w-96 border border-gray-800 py-5 text-base font-medium leading-4 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 md:mt-0 2xl:w-full">
+                <button className="mt-6 w-96 border border-gray-800 py-5 text-base font-medium leading-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-gray-200 md:mt-0 2xl:w-full">
                   Edit Details
                 </button>
               </div>

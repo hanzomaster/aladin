@@ -118,6 +118,9 @@ const CheckOut = () => {
                 </div>
 
                 <div className="mt-4 flex flex-col gap-5">
+                  <label htmlFor="Email" className="mb-3 block text-sm font-semibold text-gray-500">
+                    Địa chỉ:
+                  </label>
                   <Select
                     name="cityId"
                     key={`cityId_${selectedCity?.value}`}
@@ -199,7 +202,7 @@ const CheckOut = () => {
                   <textarea
                     name="note"
                     className="focus:ring-black-600 flex w-full items-center rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1"
-                    placeholder="Notes htmlFor delivery"></textarea>
+                    placeholder="Notes for delivery"></textarea>
                 </div>
                 <div className="mt-4">
                   <button className="text-black-200 w-full rounded-lg bg-gray-300 px-6 py-2 font-bold hover:bg-gray-900 hover:text-white">
@@ -213,7 +216,7 @@ const CheckOut = () => {
             <div className="2xl:ps-4 pt-12 md:pt-0">
               <h2 className="text-xl font-bold">Đơn hàng</h2>
               <div className="mt-8 ">
-                <div className="flex h-80 w-auto flex-col space-y-4 overflow-y-scroll scrollbar-thin scrollbar-none border-black ">
+                <div className="flex h-80 w-auto flex-col space-y-4 overflow-y-scroll border-black scrollbar-thin scrollbar-none ">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
                     {products.map((product) => (
                       <li key={product.id} className="flex py-6">
