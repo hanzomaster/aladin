@@ -1,4 +1,5 @@
 import React from "react";
+import { trpc } from "../utils/trpc";
 // import { BsHeart } from 'react-icons/bs'
 import data from ".//product";
 import Footer from "./component/footer";
@@ -7,6 +8,7 @@ import NavBar from "./component/navbar";
 const Products = () => {
   // eslint-disable-next-line
   const [items, setItems] = React.useState(data);
+  const { data: trpcData } = trpc.product.getAll.useQuery();
 
   return (
     <>
@@ -66,15 +68,21 @@ const Products = () => {
               layout = "fill"
               className="object-cover"
               ></Image> */}
-                <img className="h-96 w-full object-cover" src={image} alt="" />
+                <img
+                  className="h-96 w-full object-cover"
+                  src={trpcData[0]?.productDetail[0]?.image}
+                  alt=""
+                />
                 <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
                   <button className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white">
                     Thêm vào giỏ hàng
                   </button>
                 </div>
               </div>
-              <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">{title}</h2>
-              <del className="ml-2 text-lg text-red-700">${price}</del>
+              <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
+                {trpcData[0]?.name}
+              </h2>
+              <del className="ml-2 text-lg text-red-700">{trpcData[0]?.buyPrice}vnd</del>
               <p className="mt-2 ml-1 inline-block text-xl">$3</p>
             </div>
           );

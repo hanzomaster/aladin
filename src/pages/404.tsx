@@ -66,7 +66,7 @@ const Error: NextPage = () => {
                 clip-rule="evenodd"
                 d="M702.5 551.044H777L696 922.454H644C652.902 864.106 660.068 820.224 665.5 790.809C670.932 761.393 683.265 681.472 702.5 551.044ZM829.5 551.044H896L916.5 922.955H862.5C855.225 856.074 850.559 809.189 848.5 782.299C846.048 750.274 832.176 591.086 829.5 551.044Z"
                 stroke="#263E4B"
-                stroke-width="1.5"></path>
+                strokeWidth="1.5"></path>
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -110,9 +110,9 @@ const Error: NextPage = () => {
                 d="M869.442 380.511L861.832 308.114C865.021 300.271 873.362 295.641 886.857 294.222C900.351 292.804 909.474 295.599 914.223 302.607L921.832 375.005L869.442 380.511ZM1026.61 363.992L974.223 369.499L966.614 297.101C969.802 289.258 978.144 284.628 991.638 283.209C1005.13 281.791 1014.25 284.586 1019 291.594L1026.61 363.992Z"
                 fill="white"
                 stroke="#263E4B"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"></path>
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"

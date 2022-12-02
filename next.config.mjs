@@ -26,6 +26,11 @@ export default defineNextConfig({
         hostname: "drive.google.com",
         pathname: "/uc",
       },
+      {
+        protocol: "https",
+        hostname: "canifa.com",
+        pathname: "/img",
+      },
     ],
   },
 });
