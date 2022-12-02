@@ -1,73 +1,19 @@
-import { ColorLine, Gender, Prisma, PrismaClient } from "@prisma/client";
-import createColors from "./Color";
+import { PrismaClient } from "@prisma/client";
+import createProducts from "./Product";
+import createProductLines from "./ProductLine";
 const prisma = new PrismaClient();
 
-const productLines: Prisma.ProductLineCreateInput[] = [
-  {
-    type: "Shirt",
-    gender: Gender.M,
-    products: {
-      create: [
-        {
-          name: "T-Shirt",
-          buyPrice: 10,
-          productDetail: {
-            create: [
-              {
-                image: "https://www.google.com",
-                color: {
-                  connect: {},
-                  create: {
-                    code: "12345",
-                    colorLine: ColorLine.RED,
-                    colorName: "Red",
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          name: "Long Sleeve",
-          buyPrice: 15,
-        },
-      ],
-    },
-  },
-  {
-    type: "Jean",
-    gender: Gender.M,
-    products: {
-      create: [
-        {
-          name: "Slim Fit",
-          buyPrice: 20,
-        },
-        {
-          name: "Regular Fit",
-          buyPrice: 20,
-        },
-      ],
-    },
-  },
-];
-
-const seeds = [createColors];
+const seeds = [createProductLines, createProducts];
 
 async function main() {
   console.log(`Start seeding ...`);
-  seeds.forEach((seed) => async () => await seed(prisma));
-  for (const productLine of productLines) {
-    const createdProductLine = await prisma.productLine.create({
-      data: productLine,
-    });
-    console.log(`Created productLine with id: ${createdProductLine.id}`);
-  }
-  console.log("Finished seeding!");
+  seeds.forEach((seed) => seed(prisma));
+  // createProductLines(prisma);
 }
 main()
   .then(async () => {
     await prisma.$disconnect();
+    console.log("Finished seeding!");
   })
   .catch(async (e) => {
     console.error(e);

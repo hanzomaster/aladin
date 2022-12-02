@@ -1,18 +1,19 @@
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
+// NOTE - Commit this part will break vercel deployment
 // generator erd {
 //     provider = "prisma-erd-generator"
 //     output   = "erd.pdf"
 // }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
-    referentialIntegrity = "prisma"
+    provider          = "mysql"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+    relationMode      = "prisma"
 }
 
 enum Gender {
@@ -28,61 +29,36 @@ enum ClothSize {
     XXl
 }
 
-enum ColorLine {
-    WHITE
-    BLACK
-    GRAY
-    RED
-    ORANGE
-    YELLOW
-    GREEN
-    SKY
-    BLUE
-    INDIGO
-    VIOLET
-    PURPLE
-    PINK
-    ROSE
-}
-
 enum OrderStatus {
     InProcess
     Shipped
     Cancelled
 }
 
-model Color {
-    code           String          @id @db.Char(6)
-    colorLine      ColorLine
-    colorName      String          @db.VarChar(20)
-    productDetails ProductDetail[]
-
-    @@map("color")
-}
-
-model ProductInStock {
-    quantity Int
-
-    productDetail ProductDetail @relation(fields: [productDetailId], references: [id])
-
-    size            ClothSize
-    productDetailId String
-
-    @@id([productDetailId, size])
-    @@map("product_in_stock")
-}
-
 model Product {
     code          String          @id @default(cuid())
-    name          String          @db.VarChar(50)
+    name          String          @unique @db.VarChar(50)
     description   String?         @db.Text
     buyPrice      Decimal         @db.Decimal(10, 2)
     productLine   String
     productDetail ProductDetail[]
 
-    line ProductLine @relation(fields: [productLine], references: [type])
+    line ProductLine @relation(fields: [productLine], references: [id], onDelete: Cascade)
 
+    @@index([productLine])
     @@map("products")
+}
+
+model ProductInStock {
+    id              String    @id @default(cuid())
+    productDetailId String
+    quantity        Int
+    size            ClothSize
+
+    productDetail ProductDetail @relation(fields: [productDetailId], references: [id])
+
+    @@unique([productDetailId, size])
+    @@map("product_in_stock")
 }
 
 model ProductDetail {
@@ -92,22 +68,23 @@ model ProductDetail {
     colorCode   String @db.Char(6)
 
     cartItems      CartItem[]
-    color          Color            @relation(fields: [colorCode], references: [code])
-    product        Product          @relation(fields: [productCode], references: [code])
+    product        Product          @relation(fields: [productCode], references: [code], onDelete: Cascade)
     OrderDetail    OrderDetail[]
     ProductInStock ProductInStock[]
 
+    @@unique([productCode, colorCode])
     @@map("product_details")
 }
 
 model ProductLine {
     id              String    @id @default(cuid())
-    type            String    @unique @db.VarChar(50)
+    type            String    @db.VarChar(50)
     gender          Gender
     textDescription String?   @db.Text
     htmlDescription String?   @db.Text
     products        Product[]
 
+    @@unique([type, gender])
     @@map("productlines")
 }
 
@@ -121,8 +98,9 @@ model Order {
     customerNumber String
 
     orderdetail OrderDetail[]
-    customer    User          @relation(fields: [customerNumber], references: [id])
+    customer    User          @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
 
+    @@index([customerNumber])
     @@map("orders")
 }
 
@@ -132,10 +110,12 @@ model OrderDetail {
     quantityInOrderd Int
     priceEach        Decimal       @db.Decimal(10, 2)
     orderLineNumber  Int?          @db.SmallInt
-    order            Order         @relation(fields: [orderNumber], references: [orderNumber])
-    productDetail    ProductDetail @relation(fields: [productDetailId], references: [id])
+    order            Order         @relation(fields: [orderNumber], references: [orderNumber], onDelete: Cascade)
+    productDetail    ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
 
     @@id([orderNumber, productDetailId])
+    @@index([orderNumber])
+    @@index([productDetailId])
     @@map("orderdetails")
 }
 
@@ -143,7 +123,7 @@ model Cart {
     id       String     @id @default(cuid())
     cartItem CartItem[]
     userId   String     @unique
-    user     User       @relation(fields: [userId], references: [id])
+    user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("cart")
 }
@@ -153,10 +133,12 @@ model CartItem {
     cartId          String
     numberOfItems   Int
 
-    productDetail ProductDetail @relation(fields: [productDetailId], references: [id])
-    cart          Cart          @relation(fields: [cartId], references: [id])
+    productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
+    cart          Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
     @@id([productDetailId, cartId])
+    @@index([productDetailId])
+    @@index([cartId])
     @@map("cart_item")
 }
 
@@ -185,8 +167,9 @@ model Address {
     state      String? @db.VarChar(50)
     postalCode String? @db.VarChar(15)
     country    String  @db.VarChar(50)
-    user       User    @relation(fields: [userId], references: [id])
+    user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@index([userId])
     @@map("addresses")
 }
 
@@ -207,6 +190,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -215,6 +199,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model VerificationToken {

@@ -1,19 +1,12 @@
 -- CreateTable
-CREATE TABLE `color` (
-    `code` CHAR(6) NOT NULL,
-    `colorLine` ENUM('WHITE', 'BLACK', 'GRAY', 'RED', 'ORANGE', 'YELLOW', 'GREEN', 'SKY', 'BLUE', 'INDIGO', 'VIOLET', 'PURPLE', 'PINK', 'ROSE') NOT NULL,
-    `colorName` VARCHAR(20) NOT NULL,
-
-    PRIMARY KEY (`code`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `product_in_stock` (
+    `id` VARCHAR(191) NOT NULL,
+    `productDetailId` VARCHAR(191) NOT NULL,
     `quantity` INTEGER NOT NULL,
     `size` ENUM('S', 'M', 'L', 'XL', 'XXl') NOT NULL,
-    `productDetailId` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`productDetailId`, `size`)
+    UNIQUE INDEX `product_in_stock_productDetailId_size_key`(`productDetailId`, `size`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -24,6 +17,8 @@ CREATE TABLE `products` (
     `buyPrice` DECIMAL(10, 2) NOT NULL,
     `productLine` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `products_name_key`(`name`),
+    INDEX `products_productLine_idx`(`productLine`),
     PRIMARY KEY (`code`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -34,6 +29,7 @@ CREATE TABLE `product_details` (
     `productCode` VARCHAR(191) NOT NULL,
     `colorCode` CHAR(6) NOT NULL,
 
+    UNIQUE INDEX `product_details_productCode_colorCode_key`(`productCode`, `colorCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -45,7 +41,7 @@ CREATE TABLE `productlines` (
     `textDescription` TEXT NULL,
     `htmlDescription` TEXT NULL,
 
-    UNIQUE INDEX `productlines_type_key`(`type`),
+    UNIQUE INDEX `productlines_type_gender_key`(`type`, `gender`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -59,6 +55,7 @@ CREATE TABLE `orders` (
     `comments` TEXT NULL,
     `customerNumber` VARCHAR(191) NOT NULL,
 
+    INDEX `orders_customerNumber_idx`(`customerNumber`),
     PRIMARY KEY (`orderNumber`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -70,6 +67,8 @@ CREATE TABLE `orderdetails` (
     `priceEach` DECIMAL(10, 2) NOT NULL,
     `orderLineNumber` SMALLINT NULL,
 
+    INDEX `orderdetails_orderNumber_idx`(`orderNumber`),
+    INDEX `orderdetails_productDetailId_idx`(`productDetailId`),
     PRIMARY KEY (`orderNumber`, `productDetailId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -88,6 +87,8 @@ CREATE TABLE `cart_item` (
     `cartId` VARCHAR(191) NOT NULL,
     `numberOfItems` INTEGER NOT NULL,
 
+    INDEX `cart_item_productDetailId_idx`(`productDetailId`),
+    INDEX `cart_item_cartId_idx`(`cartId`),
     PRIMARY KEY (`productDetailId`, `cartId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -117,6 +118,7 @@ CREATE TABLE `addresses` (
     `postalCode` VARCHAR(15) NULL,
     `country` VARCHAR(50) NOT NULL,
 
+    INDEX `addresses_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -135,6 +137,7 @@ CREATE TABLE `Account` (
     `id_token` TEXT NULL,
     `session_state` VARCHAR(191) NULL,
 
+    INDEX `Account_userId_idx`(`userId`),
     UNIQUE INDEX `Account_provider_providerAccountId_key`(`provider`, `providerAccountId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -147,6 +150,7 @@ CREATE TABLE `Session` (
     `expires` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
+    INDEX `Session_userId_idx`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

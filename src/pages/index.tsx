@@ -65,6 +65,7 @@ const Home: NextPage = () => {
           height={500}
           priority
         />
+        <pre>{JSON.stringify([], null, 2)}</pre>
       </main>
     </>
   );
