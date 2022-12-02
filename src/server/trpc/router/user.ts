@@ -1,31 +1,46 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, router } from "../trpc";
 
 export const userRouter = router({
-  getAll: publicProcedure.query(({ ctx }) => {
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const userResponse = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        isAdmin: true,
+      },
+    });
+    return userResponse?.isAdmin;
+  }),
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
-  getOneWhere: publicProcedure
+  getOneWhere: protectedProcedure
     .input(
-      z.object({
-        id: z.string().length(25).optional(),
-        name: z.string().optional(),
-        email: z.string().email().optional(),
-      })
+      z
+        .object({
+          id: z.string().length(25),
+          name: z.string(),
+          email: z.string().email(),
+        })
+        .partial()
     )
     .query(({ ctx, input }) => {
       return ctx.prisma.user.findUnique({
         where: input,
       });
     }),
-  update: publicProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.string().length(25),
-        dto: z.object({
-          name: z.string().optional(),
-          email: z.string().email().optional(),
-        }),
+        dto: z
+          .object({
+            name: z.string(),
+            email: z.string().email(),
+          })
+          .partial(),
       })
     )
     .query(({ ctx, input }) => {
@@ -36,7 +51,7 @@ export const userRouter = router({
         data: input.dto,
       });
     }),
-  delete: publicProcedure.input(z.string().length(25)).query(({ ctx, input }) => {
+  delete: protectedProcedure.input(z.string().length(25)).query(({ ctx, input }) => {
     return ctx.prisma.user.delete({
       where: {
         id: input,

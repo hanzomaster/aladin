@@ -20,20 +20,30 @@ Project cần có file `.env` để chạy biến môi trường nên hãy làm 
 > `npx --yes dotenv-vault@1.13.10 login --yes`
 
 - Đăng nhập hoặc tạo tài khoản mới
+- Chạy lênh
 
 > `npx --yes dotenv-vault@1.13.10 pull --yes`
 
 - Chạy project bằng lệnh `npm run dev`
 
+## Lưu ý
+
+- Tất cả các thẻ `<img>` phải được thay thế bằng thẻ `<Image>` của NextJS để được tối ưu
+
 ## Why are there `.js` files in here?
 
-As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
+As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety
+as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the
+configuration files have to be `.js` files.
 
-We try to emphasize that these files are javascript for a reason, by explicitly declaring its type (`cjs` or `mjs`) depending on what's supported by the library it is used by. Also, all the `js` files in this project are still typechecked using a `@ts-check` comment at the top.
+We try to emphasize that these files are javascript for a reason, by explicitly declaring its type (`cjs` or `mjs`)
+depending on what's supported by the library it is used by. Also, all the `js` files in this project are still
+typechecked using a `@ts-check` comment at the top.
 
 ## What's next? How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
+We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on
+to more advanced configuration.
 
 If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 

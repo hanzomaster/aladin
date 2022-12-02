@@ -1,10 +1,14 @@
-import type { NextPage } from "next"
-import { signIn, signOut, useSession } from "next-auth/react"
-import Head from "next/head"
-import { trpc } from "../utils/trpc"
+import type { NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { log } from "next-axiom";
+import Head from "next/head";
+import Image from "next/image";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
+  // NOTE - test logging with Axiom
+  log.info("what the fuck is this");
   return (
     <>
       <Head>
@@ -53,11 +57,19 @@ const Home: NextPage = () => {
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
         <AuthShowcase />
+        {/* NOTE - Test image optimization with Google Drive link */}
+        <Image
+          src="https://drive.google.com/uc?id=1VOlbk8vSr-e0Gdt7Pd_Cs-0TN0EZXFjs"
+          alt="NextJS Logo"
+          width={500}
+          height={500}
+          priority
+        />
+        <pre>{JSON.stringify([], null, 2)}</pre>
       </main>
     </>
   );
 };
-
 export default Home;
 
 const AuthShowcase: React.FC = () => {
