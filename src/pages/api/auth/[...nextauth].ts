@@ -15,16 +15,32 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  events: {
+    createUser: async (message) => {
+      await prisma.cart.create({
+        data: {
+          userId: message.user.id,
+        },
+      });
+    },
+  },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
       server: env.EMAIL_SERVER,
       from: env.EMAIL_FROM,
+      normalizeIdentifier: (identifier) => {
+        if (identifier.split("@").length > 2) {
+          throw new Error("Only one email allowed");
+        }
+        return identifier.toLowerCase().trim();
+      },
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   theme: {

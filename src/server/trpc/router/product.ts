@@ -18,7 +18,7 @@ export const productRouter = router({
       ctx.prisma.product.findMany({
         where: {
           name: {
-            search: input.name,
+            contains: input.name,
           },
         },
       })

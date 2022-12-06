@@ -1,5 +1,6 @@
 import { number, object } from "zod";
 
+export * from "./cart.dto";
 export * from "./product.dto";
 export * from "./productDetail.dto";
 export * from "./productLine.dto";

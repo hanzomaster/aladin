@@ -46,6 +46,7 @@ model Product {
     line ProductLine @relation(fields: [productLine], references: [id], onDelete: Cascade)
 
     @@index([productLine])
+    @@fulltext([name])
     @@map("products")
 }
 
