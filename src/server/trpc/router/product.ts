@@ -18,7 +18,23 @@ export const productRouter = router({
       ctx.prisma.product.findMany({
         where: {
           name: {
-            search: input.name,
+            contains: input.name,
+          },
+        },
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            select: {
+              colorCode: true,
+              image: true,
+            },
           },
         },
       })

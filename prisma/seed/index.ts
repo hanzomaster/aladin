@@ -6,14 +6,16 @@ const prisma = new PrismaClient();
 const seeds = [createProductLines, createProducts];
 
 async function main() {
-  console.log(`Start seeding ...`);
+  console.log("Start seeding ...");
   seeds.forEach((seed) => seed(prisma));
   // createProductLines(prisma);
 }
 main()
+  .then(() => {
+    console.log("Finished seeding!");
+  })
   .then(async () => {
     await prisma.$disconnect();
-    console.log("Finished seeding!");
   })
   .catch(async (e) => {
     console.error(e);

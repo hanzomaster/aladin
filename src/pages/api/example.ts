@@ -22,13 +22,14 @@ interface DeleteNextApiRequest extends NextApiRequest {
     code: string;
   };
 }
-const example = async (req: UpdateNextApiRequest, res: NextApiResponse) => {
+const example = async (req: NextApiRequest, res: NextApiResponse) => {
   const ctx = await createContext({ req, res });
   const caller = appRouter.createCaller(ctx);
 
   try {
-    const result = await caller.product.update(req.body);
-    const data = await caller.product.getAll();
+    const data = await caller.product.search({
+      name: req.query.name as string,
+    });
     res.status(200).json(data);
   } catch (cause) {
     if (cause instanceof TRPCError) {
