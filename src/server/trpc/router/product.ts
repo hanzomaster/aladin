@@ -21,6 +21,22 @@ export const productRouter = router({
             contains: input.name,
           },
         },
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            select: {
+              colorCode: true,
+              image: true,
+            },
+          },
+        },
       })
     ),
   getAll: publicProcedure.input(getAllSchema).query(({ ctx, input }) =>

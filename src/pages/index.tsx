@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
+  const { data } = trpc.product.getAll.useQuery();
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
   return (
@@ -65,7 +66,7 @@ const Home: NextPage = () => {
           height={500}
           priority
         />
-        <pre>{JSON.stringify([], null, 2)}</pre>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
       </main>
     </>
   );
