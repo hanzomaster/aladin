@@ -48,7 +48,26 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        include: includeProductLineAndProductDetail,
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            include: {
+              productInStock: true,
+            },
+            select: {
+              id: true,
+              colorCode: true,
+              image: true,
+            },
+          },
+        },
       })
     ),
   /**
@@ -63,7 +82,26 @@ export const productRouter = router({
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      include: includeProductLineAndProductDetail,
+      include: {
+        line: {
+          select: {
+            type: true,
+            gender: true,
+            textDescription: true,
+            htmlDescription: true,
+          },
+        },
+        productDetail: {
+          include: {
+            productInStock: true,
+          },
+          select: {
+            id: true,
+            colorCode: true,
+            image: true,
+          },
+        },
+      },
     })
   ),
   /**
@@ -82,7 +120,26 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        include: includeProductLineAndProductDetail,
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            include: {
+              productInStock: true,
+            },
+            select: {
+              id: true,
+              colorCode: true,
+              image: true,
+            },
+          },
+        },
       })
     ),
   /**
