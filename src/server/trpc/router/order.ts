@@ -1,12 +1,18 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, router } from "../trpc";
 
 export const orderRouter = router({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.order.findMany();
+  getAllOfUser: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.order.findMany({
+      where: {
+        customerNumber: ctx.session.user.id,
+      },
+      include: {
+        orderdetail: true,
+      },
+    });
   }),
-
-  getOneWhere: publicProcedure
+  getOneWhere: protectedProcedure
     .input(
       z.object({
         orderNumber: z.string().length(25),
@@ -14,7 +20,10 @@ export const orderRouter = router({
     )
     .query(({ ctx, input }) => {
       return ctx.prisma.order.findUnique({
-        where: input,
+        where: {},
+        include: {
+          orderdetail: true,
+        },
       });
     }),
 });

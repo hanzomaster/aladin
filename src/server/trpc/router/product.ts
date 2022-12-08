@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
@@ -6,6 +7,25 @@ import {
   getManyProductSchema,
   updateProductSchema,
 } from "./dto";
+
+const includeProductLineAndProductDetail: Prisma.ProductSelect & Prisma.ProductDetailSelect = {
+  line: {
+    select: {
+      type: true,
+      gender: true,
+      textDescription: true,
+      htmlDescription: true,
+    },
+  },
+  productDetail: {
+    select: {
+      id: true,
+      colorCode: true,
+      image: true,
+      productInStock: true,
+    },
+  },
+};
 
 export const productRouter = router({
   search: publicProcedure
@@ -21,44 +41,14 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        include: {
-          line: {
-            select: {
-              type: true,
-              gender: true,
-              textDescription: true,
-              htmlDescription: true,
-            },
-          },
-          productDetail: {
-            select: {
-              colorCode: true,
-              image: true,
-            },
-          },
-        },
+        include: includeProductLineAndProductDetail,
       })
     ),
   getAll: publicProcedure.input(getAllSchema).query(({ ctx, input }) =>
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      include: {
-        line: {
-          select: {
-            type: true,
-            gender: true,
-            textDescription: true,
-            htmlDescription: true,
-          },
-        },
-        productDetail: {
-          select: {
-            colorCode: true,
-            image: true,
-          },
-        },
-      },
+      include: includeProductLineAndProductDetail,
     })
   ),
   getOneWhere: publicProcedure
@@ -70,22 +60,7 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        include: {
-          line: {
-            select: {
-              type: true,
-              gender: true,
-              textDescription: true,
-              htmlDescription: true,
-            },
-          },
-          productDetail: {
-            select: {
-              colorCode: true,
-              image: true,
-            },
-          },
-        },
+        include: includeProductLineAndProductDetail,
       })
     ),
   getManyWhere: publicProcedure.input(getManyProductSchema).query(({ ctx, input }) =>
@@ -100,22 +75,7 @@ export const productRouter = router({
           gender: input.gender,
         },
       },
-      include: {
-        line: {
-          select: {
-            type: true,
-            gender: true,
-            textDescription: true,
-            htmlDescription: true,
-          },
-        },
-        productDetail: {
-          select: {
-            colorCode: true,
-            image: true,
-          },
-        },
-      },
+      include: includeProductLineAndProductDetail,
     })
   ),
   create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
@@ -157,10 +117,7 @@ export const productRouter = router({
     .mutation(async ({ ctx, input }) => {
       if (!input.dto.productDetail) {
         return ctx.prisma.product.update({
-          include: {
-            line: true,
-            productDetail: true,
-          },
+          include: includeProductLineAndProductDetail,
           where: {
             code: input.code,
           },
@@ -178,10 +135,7 @@ export const productRouter = router({
         });
       } else {
         return ctx.prisma.product.update({
-          include: {
-            line: true,
-            productDetail: true,
-          },
+          include: includeProductLineAndProductDetail,
           where: {
             code: input.code,
           },

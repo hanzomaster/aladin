@@ -11,9 +11,6 @@ async function main() {
   // createProductLines(prisma);
 }
 main()
-  .then(() => {
-    console.log("Finished seeding!");
-  })
   .then(async () => {
     await prisma.$disconnect();
   })

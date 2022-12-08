@@ -17,6 +17,9 @@ export const productLineRouter = router({
   getOneWhere: protectedProcedure.input(getOneProductLineSchema).query(({ ctx, input }) =>
     ctx.prisma.productLine.findUnique({
       where: input,
+      include: {
+        products: true,
+      },
     })
   ),
   getManyWhere: protectedProcedure.input(getManyProductLineSchema).query(({ ctx, input }) =>
