@@ -8,7 +8,7 @@ import {
   updateProductSchema,
 } from "./dto";
 
-const includeProductLineAndProductDetail: Prisma.ProductSelect & Prisma.ProductDetailSelect = {
+const includeProductLineAndProductDetail: Prisma.ProductInclude = {
   line: {
     select: {
       type: true,
@@ -22,7 +22,12 @@ const includeProductLineAndProductDetail: Prisma.ProductSelect & Prisma.ProductD
       id: true,
       colorCode: true,
       image: true,
-      productInStock: true,
+      productInStock: {
+        select: {
+          size: true,
+          quantity: true,
+        },
+      },
     },
   },
 };
@@ -48,24 +53,7 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        include: {
-          line: {
-            select: {
-              gender: true,
-              type: true,
-              textDescription: true,
-              htmlDescription: true,
-            },
-          },
-          productDetail: {
-            select: {
-              id: true,
-              colorCode: true,
-              image: true,
-              productInStock: true,
-            },
-          },
-        },
+        include: includeProductLineAndProductDetail,
       })
     ),
   /**
@@ -80,24 +68,7 @@ export const productRouter = router({
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      include: {
-        line: {
-          select: {
-            gender: true,
-            type: true,
-            textDescription: true,
-            htmlDescription: true,
-          },
-        },
-        productDetail: {
-          select: {
-            id: true,
-            colorCode: true,
-            image: true,
-            productInStock: true,
-          },
-        },
-      },
+      include: includeProductLineAndProductDetail,
     })
   ),
   /**
@@ -116,24 +87,7 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        include: {
-          line: {
-            select: {
-              gender: true,
-              type: true,
-              textDescription: true,
-              htmlDescription: true,
-            },
-          },
-          productDetail: {
-            select: {
-              id: true,
-              colorCode: true,
-              image: true,
-              productInStock: true,
-            },
-          },
-        },
+        include: includeProductLineAndProductDetail,
       })
     ),
   /**

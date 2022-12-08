@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { adminProcedure, protectedProcedure, router } from "../trpc";
+import { adminProcedure, router } from "../trpc";
 
 export const userRouter = router({
   getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
-  getOneWhere: protectedProcedure
+  getOneWhere: adminProcedure
     .input(
       z
         .object({
@@ -20,7 +20,7 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: protectedProcedure
+  update: adminProcedure
     .input(
       z.object({
         id: z.string().cuid(),
@@ -40,7 +40,7 @@ export const userRouter = router({
         data: input.dto,
       });
     }),
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(
       z.object({
         id: z
@@ -65,7 +65,7 @@ export const userRouter = router({
    *
    * @param id The id of the user to make inactive
    */
-  makeInactive: protectedProcedure
+  makeInactive: adminProcedure
     .input(
       z.object({
         id: z

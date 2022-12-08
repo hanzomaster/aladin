@@ -39,7 +39,10 @@ const isAuthed = t.middleware(({ ctx, next }) => {
 export const protectedProcedure = t.procedure.use(isAuthed);
 
 const isAdmin = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || ctx.session.user?.email !== env.ADMIN_EMAIL) {
+  if (
+    !ctx.session?.user?.email ||
+    env.ADMIN_EMAILS.split(",").indexOf(ctx.session.user.email) === -1
+  ) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

@@ -1,4 +1,4 @@
-import { protectedProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
 
 export const cartRouter = router({
   /**
@@ -21,6 +21,15 @@ export const cartRouter = router({
     ctx.prisma.cartItem.deleteMany({
       where: {
         cartId: ctx.session.user.id,
+      },
+    })
+  ),
+  getAll: adminProcedure.query(({ ctx }) =>
+    ctx.prisma.cart.findMany({
+      skip: 0,
+      take: 10,
+      include: {
+        cartItem: true,
       },
     })
   ),

@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
-      if (message.user.email && message.user.email === env.ADMIN_EMAIL) {
+      if (message.user.email && env.ADMIN_EMAILS.split(",").includes(message.user.email)) {
         await prisma.user.update({
           where: {
             email: message.user.email,
