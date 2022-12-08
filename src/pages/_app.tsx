@@ -9,6 +9,7 @@ export { reportWebVitals } from "next-axiom"
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
+  
   pageProps: { session, ...pageProps },
 }) => {
   return (
