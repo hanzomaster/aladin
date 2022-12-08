@@ -69,10 +69,14 @@ const Products = () => {
                 </div>
               </div>
               <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
-                {item.name} &#40;{item.line.gender.toString()}&#41;
+                <a href={"/productDetail/" + item.code}>
+                  {item.name} &#40;{item.line.gender.toString()}&#41;
+                </a>
               </h2>
               <div className="inline-block">
-                <del className="ml-2 text-lg text-red-700">{item.buyPrice.toString()}000 VNĐ</del>
+                <del className="ml-2 text-lg text-red-700">
+                  {item.buyPrice.toString()}000 &#8363;
+                </del>
                 <small className="mr-3 ml-2  rounded-full bg-red-700 px-2 tracking-widest text-white">
                   -40&#37;
                 </small>
@@ -80,7 +84,7 @@ const Products = () => {
 
               <br />
               <span className="mt-2 ml-1 inline-block text-xl">
-                {(item.buyPrice * 0.6).toString()}000 VNĐ
+                {(item.buyPrice * 0.6).toString()}000 &#8363;
               </span>
             </div>
           );
