@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { adminProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductSchema,
   getAllSchema,
@@ -48,11 +48,11 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        include: {
+        select: {
           line: {
             select: {
-              type: true,
               gender: true,
+              type: true,
               textDescription: true,
               htmlDescription: true,
             },
@@ -60,11 +60,6 @@ export const productRouter = router({
           productDetail: {
             include: {
               productInStock: true,
-            },
-            select: {
-              id: true,
-              colorCode: true,
-              image: true,
             },
           },
         },
@@ -82,11 +77,11 @@ export const productRouter = router({
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      include: {
+      select: {
         line: {
           select: {
-            type: true,
             gender: true,
+            type: true,
             textDescription: true,
             htmlDescription: true,
           },
@@ -94,11 +89,6 @@ export const productRouter = router({
         productDetail: {
           include: {
             productInStock: true,
-          },
-          select: {
-            id: true,
-            colorCode: true,
-            image: true,
           },
         },
       },
@@ -120,11 +110,11 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        include: {
+        select: {
           line: {
             select: {
-              type: true,
               gender: true,
+              type: true,
               textDescription: true,
               htmlDescription: true,
             },
@@ -132,11 +122,6 @@ export const productRouter = router({
           productDetail: {
             include: {
               productInStock: true,
-            },
-            select: {
-              id: true,
-              colorCode: true,
-              image: true,
             },
           },
         },
@@ -163,7 +148,7 @@ export const productRouter = router({
   /**
    * Create a new product
    */
-  create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
+  create: adminProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
         name: input.name,
@@ -200,7 +185,7 @@ export const productRouter = router({
    *
    * @returns The updated product
    */
-  update: protectedProcedure
+  update: adminProcedure
     .input(
       z.object({
         code: z.string().cuid(),
@@ -263,7 +248,7 @@ export const productRouter = router({
    *
    * @returns The deleted product
    */
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(
       z.object({
         code: z.string().cuid(),
