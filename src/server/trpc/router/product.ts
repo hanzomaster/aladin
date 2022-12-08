@@ -48,7 +48,7 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        select: {
+        include: {
           line: {
             select: {
               gender: true,
@@ -58,7 +58,10 @@ export const productRouter = router({
             },
           },
           productDetail: {
-            include: {
+            select: {
+              id: true,
+              colorCode: true,
+              image: true,
               productInStock: true,
             },
           },
@@ -77,7 +80,7 @@ export const productRouter = router({
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      select: {
+      include: {
         line: {
           select: {
             gender: true,
@@ -87,7 +90,10 @@ export const productRouter = router({
           },
         },
         productDetail: {
-          include: {
+          select: {
+            id: true,
+            colorCode: true,
+            image: true,
             productInStock: true,
           },
         },
@@ -110,7 +116,7 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        select: {
+        include: {
           line: {
             select: {
               gender: true,
@@ -120,7 +126,10 @@ export const productRouter = router({
             },
           },
           productDetail: {
-            include: {
+            select: {
+              id: true,
+              colorCode: true,
+              image: true,
               productInStock: true,
             },
           },
