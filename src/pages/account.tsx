@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import SidebarAccount from "../components/SidebarAccount";
 
 const Account: NextPage = () => {
@@ -20,12 +20,12 @@ const Account: NextPage = () => {
 
       {/* Content */}
       <div>
-        <div className=" mt-32 flex h-[40em] border-4 px-4 md:px-10">
+        <div className="mt-32 flex h-[40em] border-4 px-4 lg:px-10">
           <SidebarAccount />
           {/* main */}
-          <div className="">
-            <header className="border-b-2 pl-2">
-              <h1 className="text-2xl font-semibold md:text-3xl ">Hồ sơ của tôi</h1>
+          <div className="w-[60%]">
+            <header className="h-20 w-full border-b-2 pl-5 ">
+              <h1 className="text-2xl font-normal md:text-3xl ">Hồ sơ của tôi</h1>
               <p className="text-base font-normal md:text-lg">
                 Quản lí thông tin hồ sơ để bảo vệ tài khoản của bạn
               </p>
@@ -37,7 +37,7 @@ const Account: NextPage = () => {
                   Email
                 </label>
                 <input
-                  className="h-[40px] w-full rounded-md border-2"
+                  className="h-10 w-full rounded-md border-2"
                   type="email"
                   value={"20020420@vnu.edu.vn"}
                   disabled
@@ -51,7 +51,7 @@ const Account: NextPage = () => {
                   </button>
                 </label>
                 <input
-                  className="h-[40px] w-full rounded-md border-2"
+                  className="h-10 w-full rounded-md border-2"
                   type="text"
                   value={"Huyen"}
                   disabled={!enableName}
@@ -66,7 +66,7 @@ const Account: NextPage = () => {
                   </button>
                 </label>
                 <input
-                  className="h-[40px] w-full rounded-md border-2"
+                  className="h-10 w-full rounded-md border-2"
                   type="text"
                   value={"012345678"}
                   disabled={!enablePhone}
@@ -96,7 +96,7 @@ const Account: NextPage = () => {
                   Ngày sinh
                 </label>
                 <input
-                  className="h-[40px] w-full rounded-md border-2"
+                  className="h-10 w-full rounded-md border-2"
                   type="date"
                   value={"2002-04-20"}
                   disabled
@@ -104,7 +104,7 @@ const Account: NextPage = () => {
               </div>
 
               <button
-                className="my-5 h-[50px] w-full rounded-md border-2 bg-[#da291c] text-lg  font-medium uppercase text-white md:my-10 md:text-xl"
+                className="my-5 h-12 w-full rounded-md border-2 bg-[#da291c] text-lg  font-medium uppercase text-white md:my-10 md:text-xl"
                 disabled={!(enableName || enablePhone)}
                 hidden={!(enableName || enablePhone)}>
                 Lưu
