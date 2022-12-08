@@ -36,13 +36,3 @@ const isAuthed = t.middleware(({ ctx, next }) => {
  * Protected procedure
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
-
-/**
- * Admin procedure
- */
-export const adminProcedure = t.procedure.use(isAuthed).use(({ ctx, next }) => {
-  if (!ctx.session.user.isAdmin) {
-    throw new TRPCError({ code: "FORBIDDEN" });
-  }
-  return next();
-});
