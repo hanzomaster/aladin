@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
 import "../styles/globals.css";
 import { trpc } from "../utils/trpc";
+import Footer from "./component/footer";
 
 export { reportWebVitals } from "next-axiom";
 
@@ -14,6 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
+      <Footer />
     </SessionProvider>
   );
 };
