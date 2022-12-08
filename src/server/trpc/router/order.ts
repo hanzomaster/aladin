@@ -2,6 +2,13 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
 export const orderRouter = router({
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.order.findMany({
+      include: {
+        orderdetail: true,
+      },
+    });
+  }),
   getAllOfUser: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.order.findMany({
       where: {

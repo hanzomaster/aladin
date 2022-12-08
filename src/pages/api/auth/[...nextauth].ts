@@ -22,6 +22,17 @@ export const authOptions: NextAuthOptions = {
           userId: message.user.id,
         },
       });
+
+      if (message.user.email && message.user.email === env.ADMIN_EMAIL) {
+        await prisma.user.update({
+          where: {
+            email: message.user.email,
+          },
+          data: {
+            isAdmin: true,
+          },
+        });
+      }
     },
   },
   // Configure one or more authentication providers

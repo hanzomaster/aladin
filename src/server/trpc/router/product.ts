@@ -28,6 +28,13 @@ const includeProductLineAndProductDetail: Prisma.ProductSelect & Prisma.ProductD
 };
 
 export const productRouter = router({
+  /**
+   * Search for products by name
+   *
+   * @param name The name of the product to search for (max 50 characters)
+   *
+   * @returns List of products that match the search
+   */
   search: publicProcedure
     .input(
       z.object({
@@ -44,6 +51,14 @@ export const productRouter = router({
         include: includeProductLineAndProductDetail,
       })
     ),
+  /**
+   * Get all products (paginated)
+   *
+   * @param skip The number of products to skip
+   * @param take The number of products to take
+   *
+   * @returns List of products
+   */
   getAll: publicProcedure.input(getAllSchema).query(({ ctx, input }) =>
     ctx.prisma.product.findMany({
       skip: input?.skip,
@@ -51,6 +66,13 @@ export const productRouter = router({
       include: includeProductLineAndProductDetail,
     })
   ),
+  /**
+   * Get one product by code
+   *
+   * @param code The code of the product to get
+   *
+   * @returns The product
+   */
   getOneWhere: publicProcedure
     .input(
       z.object({
@@ -63,6 +85,9 @@ export const productRouter = router({
         include: includeProductLineAndProductDetail,
       })
     ),
+  /**
+   * Get many products filter by name, description, productLine, buyPrice and line
+   */
   getManyWhere: publicProcedure.input(getManyProductSchema).query(({ ctx, input }) =>
     ctx.prisma.product.findMany({
       where: {
@@ -78,6 +103,9 @@ export const productRouter = router({
       include: includeProductLineAndProductDetail,
     })
   ),
+  /**
+   * Create a new product
+   */
   create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
@@ -107,6 +135,14 @@ export const productRouter = router({
       },
     })
   ),
+  /**
+   * Update a product
+   *
+   * @param code The code of the product to update
+   * @param dto The data to update
+   *
+   * @returns The updated product
+   */
   update: protectedProcedure
     .input(
       z.object({
@@ -163,6 +199,13 @@ export const productRouter = router({
         });
       }
     }),
+  /**
+   * Delete a product
+   *
+   * @param code The code of the product to delete
+   *
+   * @returns The deleted product
+   */
   delete: protectedProcedure
     .input(
       z.object({
