@@ -20,6 +20,16 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   EMAIL_SERVER: z.string(),
   EMAIL_FROM: z.string().email(),
+  ADMIN_EMAILS: z.string().refine((str) =>
+    str.split(",").every((email) => {
+      try {
+        z.string().email().parse(email);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    })
+  ),
 });
 
 /**

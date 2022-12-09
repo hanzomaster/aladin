@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
 
 export const userRouter = router({
   me: protectedProcedure.query(async ({ ctx }) => {
@@ -16,7 +16,7 @@ export const userRouter = router({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
-  getOneWhere: protectedProcedure
+  getOneWhere: adminProcedure
     .input(
       z
         .object({
@@ -31,7 +31,7 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: protectedProcedure
+  update: adminProcedure
     .input(
       z.object({
         id: z.string().length(25),
@@ -51,11 +51,52 @@ export const userRouter = router({
         data: input.dto,
       });
     }),
-  delete: protectedProcedure.input(z.string().length(25)).query(({ ctx, input }) => {
-    return ctx.prisma.user.delete({
-      where: {
-        id: input,
-      },
-    });
-  }),
+  delete: adminProcedure
+    .input(
+      z.object({
+        id: z
+          .string({
+            required_error: "The id of the user is required",
+            invalid_type_error: "The id of the user must be a string",
+          })
+          .cuid({
+            message: "The id of the user must be a valid cuid",
+          }),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+  /**
+   * Make an user inactive
+   *
+   * @param id The id of the user to make inactive
+   */
+  makeInactive: adminProcedure
+    .input(
+      z.object({
+        id: z
+          .string({
+            required_error: "The id of the user is required",
+            invalid_type_error: "The id of the user must be a string",
+          })
+          .cuid({
+            message: "The id of the user must be a valid cuid",
+          }),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: false,
+        },
+      });
+    }),
 });

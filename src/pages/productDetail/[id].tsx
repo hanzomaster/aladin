@@ -1,5 +1,5 @@
 import { RadioGroup } from "@headlessui/react";
-import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -8,15 +8,39 @@ import { trpc } from "../../utils/trpc";
 // const product = {
 //   name: "Basic Tee 6-Pack ",
 //   price: "192.000",
-//
+//   imageSrc: {
+//     "#d2d6d7": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sa432-m-1.webp",
+//     "#ad2134": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sr014-m-1.webp",
+//     "#201f24": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sk010-m-1.webp",
+//   },
 //   imageAlt: "Two each of gray, white, and black shirts arranged on table.",
-//
-//
+//   colors: [
+//     { name: "#d2d6d7", class: "bg-[#d2d6d7]", selectedClass: "ring-gray-400" },
+//     { name: "#ad2134", class: "bg-[#ad2134]", selectedClass: "ring-gray-400" },
+//     { name: "#201f24", class: "bg-[#201f24]", selectedClass: "ring-gray-900" },
 //   ],
-//   sizeGuideSrc: "https://canifa.com/assets/Women-measurement.png",
-//   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-// };
 
+export async function getStaticPaths() {
+  const { data } = trpc.product.getAll.useQuery();
+
+  const paths = data?.map((item) => ({
+    params: { id: item.code },
+  }));
+  return {
+    paths,
+    fallback: false, // can also be true or 'blocking'
+  };
+}
+
+// `getStaticPaths` requires using `getStaticProps`
+export async function getStaticProps(context) {
+  const id = context.params.id;
+  const { data } = trpc.product.getOneWhere.useQuery({ code: id as string });
+  return {
+    // Passed to the page component as props
+    props: { product: data },
+  };
+}
 const sizes = [
   { name: "S", inStock: true },
   { name: "M", inStock: true },
@@ -24,34 +48,31 @@ const sizes = [
   { name: "XL", inStock: true },
   { name: "XXL", inStock: false },
 ];
+// const sizeGuideSrc: "https://canifa.com/assets/Women-measurement.png";
+// const description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+// };
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
-const ProductDetail: NextPage = () => {
+const ProductDetail: NextPage = ({ product }) => {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { data: product } = trpc.product.getOneWhere.useQuery({ code: id as string });
-  const [open, setOpen] = useState(false);
+  // const { data: product } = trpc.product.getOneWhere.useQuery({ code: id as string });
   const [selectedColor, setSelectedColor] = useState(product?.productDetail[0]?.colorCode);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
-  // const colors = [
-  //       {product?.productDetail[0]?.colorCode}
-
-  //       { name: "#d2d6d7", class: "bg-[#d2d6d7]", selectedClass: "ring-gray-400" },
-  //       { name: "#ad2134", class: "bg-[#ad2134]", selectedClass: "ring-gray-400" },
-  //       { name: "#201f24", class: "bg-[#201f24]", selectedClass: "ring-gray-900" },
-  //     ],
-  // const imageSrc: {
-  //           "#d2d6d7": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sa432-m-1.webp",
-  //           "#ad2134": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sr014-m-1.webp",
-  //           "#201f24": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sk010-m-1.webp",
-  //         },
 
   // change image when color is selected
-  const handleChooseColor = (index: number) => {
-    setSelectedColor(product?.productDetail[index]?.colorCode);
-    setSelectedImage(product?.productDetail[index]?.image);
+  const handleChooseColor = (color: any) => {
+    setSelectedColor(color);
+    setSelectedImage(() => {
+      for (const product1 of product?.productDetail) {
+        if (product1.colorCode === color) {
+          return product1.image;
+        }
+      }
+    });
   };
 
   return (
@@ -60,11 +81,7 @@ const ProductDetail: NextPage = () => {
         <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8  sm:px-6 sm:pt-8 md:p-6 lg:p-8">
           <div className="gap-y grid w-full grid-cols-1 items-start gap-x-6 sm:grid-cols-12 lg:gap-x-8">
             <div className="aspect-w-2 aspect-h-3 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
-              <img
-                src={product?.productDetail[0]?.image}
-                alt="Ảnh sản phẩm"
-                className="object-cover object-center"
-              />
+              <img src={selectedImage} alt="Ảnh sản phẩm" className="object-cover object-center" />
             </div>
 
             <div className="w-3/4 sm:col-span-8 lg:col-span-7">
@@ -76,7 +93,9 @@ const ProductDetail: NextPage = () => {
                 </h3>
 
                 {/* Price */}
-                <p className="text-2xl text-gray-900">{product?.buyPrice.toString()}000 &#8363;</p>
+                <div className="text-2xl text-gray-900">
+                  {product?.buyPrice.toString()},000 &#8363;
+                </div>
 
                 {/* Description */}
                 <div className="">
@@ -97,10 +116,10 @@ const ProductDetail: NextPage = () => {
                   <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
                     <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
                     <span className="flex items-center space-x-3">
-                      {product?.productDetail?.map((item, index) => (
+                      {product?.productDetail.map((item) => (
                         <RadioGroup.Option
-                          key={item.colorCode + item.image}
-                          value={`#${item.colorCode}`}
+                          key={item.id}
+                          value={item.colorCode}
                           className={({ active, checked }) =>
                             classNames(
                               "ring-gray-400",
@@ -109,20 +128,19 @@ const ProductDetail: NextPage = () => {
                               "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
                             )
                           }
-                          onClick={() => handleChooseColor(index)}>
+                          onClick={() => handleChooseColor(item.colorCode)}>
                           <RadioGroup.Label as="span" className="sr-only">
-                            {"Hahahaha"}
+                            {" "}
                             {item.colorCode}{" "}
                           </RadioGroup.Label>
 
                           <span
                             aria-hidden="true"
                             className={classNames(
-                              "bg-[#" + item.colorCode + "]",
+                              `bg-[#${item.colorCode}]`,
                               "h-8 w-8 rounded-full border border-black border-opacity-10"
                             )}
                           />
-                          <h4 className={"text-[#b3c8da]"}>{item.colorCode}</h4>
                         </RadioGroup.Option>
                       ))}
                     </span>
@@ -131,7 +149,7 @@ const ProductDetail: NextPage = () => {
                   {/* Size */}
                   <div className="mt-10">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-medium text-gray-900">Size </h4>
+                      <h4 className="text-lg font-medium text-gray-900">Size</h4>
 
                       <button
                         type="button"
@@ -139,8 +157,8 @@ const ProductDetail: NextPage = () => {
                         className="text-sm font-medium text-gray-700 underline hover:text-gray-500">
                         Size guide
                       </button>
-
-                      {/* <Transition.Root show={open} as={Fragment}>
+                      {/* 
+                      <Transition.Root show={open} as={Fragment}>
                         <Dialog as="div" className="relative z-10" onClose={setOpen}>
                           <Transition.Child
                             as={Fragment}
@@ -163,7 +181,7 @@ const ProductDetail: NextPage = () => {
                                 leave="ease-in duration-200"
                                 leaveFrom="opacity-100 translate-y-0 md:scale-100"
                                 leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95">
-                                <div className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
+                                <Dialog.Panel className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
                                   <div className=" relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                                     <img
                                       src={product.sizeGuideSrc}
@@ -179,7 +197,7 @@ const ProductDetail: NextPage = () => {
                                     </button>
                                   </div>
                                   <div className=""></div>
-                                </div>
+                                </Dialog.Panel>
                               </Transition.Child>
                             </div>
                           </div>
@@ -281,4 +299,7 @@ const ProductDetail: NextPage = () => {
     </>
   );
 };
+
+// `getStaticPaths` requires using `getStaticProps`
+
 export default ProductDetail;

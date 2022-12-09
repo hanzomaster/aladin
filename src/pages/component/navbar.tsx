@@ -32,7 +32,7 @@ const NavBar = () => {
   const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
   const menuData = ["Sign in", "Sign up"];
 
-  const [open1, setOpen1] = useState(true);
+  const [open1, setOpen1] = useState(false);
   function isLogin(isLogin: boolean) {
     if (!isLogin) {
       return (

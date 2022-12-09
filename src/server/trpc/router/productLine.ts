@@ -1,20 +1,20 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../trpc";
+import { adminProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductLineSchema,
   getAllSchema,
   getManyProductLineSchema,
-  getOneProductLineSchema,
+  getOneProductLineSchema
 } from "./dto";
 
 export const productLineRouter = router({
-  getAll: protectedProcedure.input(getAllSchema).query(({ ctx, input }) =>
+  getAll: publicProcedure.input(getAllSchema).query(({ ctx, input }) =>
     ctx.prisma.productLine.findMany({
       skip: input?.skip,
       take: input?.take,
     })
   ),
-  getOneWhere: protectedProcedure.input(getOneProductLineSchema).query(({ ctx, input }) =>
+  getOneWhere: publicProcedure.input(getOneProductLineSchema).query(({ ctx, input }) =>
     ctx.prisma.productLine.findUnique({
       where: input,
       include: {
@@ -22,17 +22,17 @@ export const productLineRouter = router({
       },
     })
   ),
-  getManyWhere: protectedProcedure.input(getManyProductLineSchema).query(({ ctx, input }) =>
+  getManyWhere: publicProcedure.input(getManyProductLineSchema).query(({ ctx, input }) =>
     ctx.prisma.productLine.findMany({
       where: input,
     })
   ),
-  create: protectedProcedure.input(createProductLineSchema).mutation(({ ctx, input }) =>
+  create: adminProcedure.input(createProductLineSchema).mutation(({ ctx, input }) =>
     ctx.prisma.productLine.create({
       data: input,
     })
   ),
-  update: protectedProcedure
+  update: adminProcedure
     .input(
       z.object({
         id: z.string().cuid(),
@@ -47,8 +47,7 @@ export const productLineRouter = router({
         data: input.dto,
       })
     ),
-
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(
       z.object({
         id: z.string().cuid(),

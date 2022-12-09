@@ -2,7 +2,6 @@ import { trpc } from "../../utils/trpc";
 // import { BsHeart } from 'react-icons/bs'
 // import data from ".//product";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import NavBar from "../component/navbar";
 // import data from "./product";
@@ -72,9 +71,9 @@ const SearchPage = () => {
                 </div>
               </div>
               <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
-                <Link href={"/productDetail/" + item.code}>
+                <a href={"/productDetail/" + item.code}>
                   {item.name} &#40;{item.line.gender}&#41;
-                </Link>
+                </a>
               </h2>
               <div className="inline-block">
                 <del className="ml-2 text-lg text-red-700">

@@ -1,5 +1,5 @@
-import { protectedProcedure, router } from "../trpc";
-import { cartParams } from "./dto";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
+import { cartParams } from "./dto/cart.dto";
 
 export const cartRouter = router({
   get: protectedProcedure
@@ -19,6 +19,15 @@ export const cartRouter = router({
     ctx.prisma.cartItem.deleteMany({
       where: {
         cartId: input.id,
+      },
+    })
+  ),
+  getAll: adminProcedure.query(({ ctx }) =>
+    ctx.prisma.cart.findMany({
+      skip: 0,
+      take: 10,
+      include: {
+        cartItem: true,
       },
     })
   ),

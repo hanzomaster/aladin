@@ -1,7 +1,14 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
 
 export const orderRouter = router({
+  getAll: adminProcedure.query(({ ctx }) => {
+    return ctx.prisma.order.findMany({
+      include: {
+        orderdetail: true,
+      },
+    });
+  }),
   getAllOfUser: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.order.findMany({
       where: {
