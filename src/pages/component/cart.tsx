@@ -28,11 +28,11 @@ const products = [
   // More products...
 ];
 
-export default function ProductCart() {
-  const [open, setOpen] = useState(true);
+export default function ProductCart({ isOpen }: { isOpen: boolean }) {
+  const [open, setOpen] = useState(isOpen);
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
@@ -56,7 +56,7 @@ export default function ProductCart() {
                 leave="transform transition ease-in-out duration-500 sm:duration-700"
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full">
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                <div className="pointer-events-auto w-screen max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
                       <div className="flex items-start justify-between">
@@ -145,7 +145,7 @@ export default function ProductCart() {
                       </div>
                     </div>
                   </div>
-                </Dialog.Panel>
+                </div>
               </Transition.Child>
             </div>
           </div>

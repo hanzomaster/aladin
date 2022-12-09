@@ -1,8 +1,8 @@
-import { Dialog, RadioGroup, Transition } from "@headlessui/react";
+import { RadioGroup } from "@headlessui/react";
 import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
 // const product = {
@@ -122,7 +122,7 @@ const ProductDetail: NextPage = () => {
                               "h-8 w-8 rounded-full border border-black border-opacity-10"
                             )}
                           />
-                          {/* <h4 className={"text-[#" + item.colorCode + "]"}>{item.colorCode}</h4> */}
+                          <h4 className={"text-[#b3c8da]"}>{item.colorCode}</h4>
                         </RadioGroup.Option>
                       ))}
                     </span>
@@ -140,7 +140,7 @@ const ProductDetail: NextPage = () => {
                         Size guide
                       </button>
 
-                      <Transition.Root show={open} as={Fragment}>
+                      {/* <Transition.Root show={open} as={Fragment}>
                         <Dialog as="div" className="relative z-10" onClose={setOpen}>
                           <Transition.Child
                             as={Fragment}
@@ -163,7 +163,7 @@ const ProductDetail: NextPage = () => {
                                 leave="ease-in duration-200"
                                 leaveFrom="opacity-100 translate-y-0 md:scale-100"
                                 leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95">
-                                {/* <Dialog.Panel className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
+                                <div className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
                                   <div className=" relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                                     <img
                                       src={product.sizeGuideSrc}
@@ -179,12 +179,12 @@ const ProductDetail: NextPage = () => {
                                     </button>
                                   </div>
                                   <div className=""></div>
-                                </Dialog.Panel> */}
+                                </div>
                               </Transition.Child>
                             </div>
                           </div>
                         </Dialog>
-                      </Transition.Root>
+                      </Transition.Root> */}
                     </div>
 
                     <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">

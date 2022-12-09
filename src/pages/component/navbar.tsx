@@ -32,7 +32,7 @@ const NavBar = () => {
   const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
   const menuData = ["Sign in", "Sign up"];
 
-  const [open, setOpen] = useState(0);
+  const [open1, setOpen1] = useState(true);
   function isLogin(isLogin: boolean) {
     if (!isLogin) {
       return (
@@ -61,13 +61,7 @@ const NavBar = () => {
     }
   }
   function addCart() {
-    console.log("huhuhu");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    if (open === 0) {
-      setOpen(open + 1);
-    } else {
-      setOpen(open - 1);
-    }
+    open1 ? setOpen1(false) : setOpen1(true);
   }
 
   const [message, setMessage] = useState("");
@@ -78,9 +72,7 @@ const NavBar = () => {
 
   return (
     <>
-      {Array.from({ length: open }).map(() => (
-        <ProductCart key={open} />
-      ))}
+      <ProductCart isOpen={open1} />
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
       <header className="sticky z-[100000]">
         <nav className="fixed mt-0 flex w-full flex-wrap items-center justify-between border-t-2  border-solid border-gray-700 bg-[#eff6ff] py-4 shadow lg:px-12">
@@ -149,9 +141,9 @@ const NavBar = () => {
                 Sign up
               </a>
             </div> */}
-            {isLogin(true)}
+            {isLogin(false)}
             <div className="flex justify-center px-4 md:block">
-              <a
+              <button
                 className="
                   relative
                   text-gray-700
@@ -159,8 +151,8 @@ const NavBar = () => {
                   dark:text-gray-200
                   dark:hover:text-gray-300
                   "
-                href="#">
-                <i className="fas fa-shopping-cart" onClick={addCart}></i>
+                onClick={addCart}>
+                <i className="fas fa-shopping-cart"></i>
 
                 <span
                   className="
@@ -172,7 +164,7 @@ const NavBar = () => {
                        text-xs
                        text-white
                        "></span>
-              </a>
+              </button>
             </div>
           </div>
         </nav>
