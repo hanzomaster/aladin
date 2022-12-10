@@ -29,10 +29,10 @@ const products = [
 ];
 
 export default function ProductCart({ isOpen }: { isOpen: boolean }) {
-  const [open, setOpen] = useState(isOpen);
+  const [open, setOpen] = useState(true);
 
   return (
-    <Transition.Root show={isOpen} as={Fragment}>
+    <Transition.Root show={isOpen && open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
@@ -68,7 +68,7 @@ export default function ProductCart({ isOpen }: { isOpen: boolean }) {
                             type="button"
                             className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                             onClick={() => {
-                              isOpen = false;
+                              setOpen(false);
                             }}>
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -140,7 +140,7 @@ export default function ProductCart({ isOpen }: { isOpen: boolean }) {
                             type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                             onClick={() => {
-                              isOpen = false;
+                              setOpen(false);
                             }}>
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
