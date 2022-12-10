@@ -4,10 +4,10 @@ generator client {
 }
 
 // NOTE - Commit this part will break vercel deployment
-// generator erd {
-//     provider = "prisma-erd-generator"
-//     output   = "erd.pdf"
-// }
+generator erd {
+    provider = "prisma-erd-generator"
+    output   = "erd.pdf"
+}
 
 datasource db {
     provider          = "mysql"
@@ -67,7 +67,7 @@ model ProductDetail {
     image          String           @db.Text
     productCode    String
     colorCode      String           @db.Char(6)
-    tailwindColor  String           @default(dbgenerated("( CONCAT('bg-[#', colorCode, ']'))"))
+    // tailwindColor  String           @default(dbgenerated("( CONCAT('bg-[#', colorCode, ']'))"))
     cartItems      CartItem[]
     orderDetail    OrderDetail[]
     productInStock ProductInStock[]
