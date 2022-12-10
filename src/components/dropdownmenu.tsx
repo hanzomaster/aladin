@@ -1,4 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
+import { signOut, useSession } from "next-auth/react";
 import { Fragment } from "react";
 
 const maleData = [
@@ -32,7 +33,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function menuName(name: string) {
+function menuName(name: string, img: string) {
   if (name === "menu") {
     return (
       <>
@@ -49,7 +50,7 @@ function menuName(name: string) {
         </div>
       </>
     );
-  } else if (name === "user") {
+  } else if (!img && name === "user") {
     return (
       <div>
         <Menu.Button className="mt-4 mr-1 ml-4 block rounded-full hover:bg-gray-700 hover:text-white lg:mt-0 lg:inline-block">
@@ -64,6 +65,26 @@ function menuName(name: string) {
                 d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                 clipRule="evenodd"></path>
             </svg>
+          </div>
+        </Menu.Button>
+      </div>
+    );
+  } else if (img && name === "user") {
+    return (
+      <div>
+        <Menu.Button className="mt-4 mr-1 ml-4 block rounded-full hover:bg-gray-700 hover:text-white lg:mt-0 lg:inline-block">
+          <div className="relative h-7 w-7 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-600">
+            <img src={img} className="text-black-400 absolute h-8 w-8"></img>
+            {/* <svg
+              className="text-black-400 absolute -left-1 h-9 w-9"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                fillRule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clipRule="evenodd"></path>
+            </svg> */}
           </div>
         </Menu.Button>
       </div>
@@ -90,10 +111,10 @@ export default function DropdownComponent({
   type: any;
   data: string[];
 }) {
-  console.log(data);
+  const { data: sessionData } = useSession();
   return (
     <Menu as="div" className=" relative inline-block text-left">
-      {menuName(title)}
+      {menuName(title, sessionData?.user?.image)}
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
@@ -104,32 +125,69 @@ export default function DropdownComponent({
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {data?.map((content) => {
-              return (
-                <>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href={"/home/" + content + "?gender=" + type}
-                        className={classNames(
-                          active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}>
-                        {content}
-                      </a>
-                      // <a
-                      //   href
-                      // className={classNames(
-                      //   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      //   "block px-4 py-2 text-sm"
-                      // )}>
-                      //   {content}
-                      // </a>
-                    )}
-                  </Menu.Item>
-                </>
-              );
-            })}
+            {type !== "user" &&
+              data?.map((content) => {
+                return (
+                  <>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <a
+                          href={"/home/" + content + "?gender=" + type}
+                          className={classNames(
+                            active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}>
+                          {content}
+                        </a>
+                        // <a
+                        //   href
+                        // className={classNames(
+                        //   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        //   "block px-4 py-2 text-sm"
+                        // )}>
+                        //   {content}
+                        // </a>
+                      )}
+                    </Menu.Item>
+                  </>
+                );
+              })}
+            {type === "user" &&
+              data?.map((content) => {
+                return (
+                  <>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // <button
+                        //   className={classNames(
+                        //     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        //     "block px-2 py-2 text-sm"
+                        //   )}
+                        //   onClick={() => (content === "Đăng xuất" ? signOut() : null)}>
+                        //   {content}
+                        // </button>
+                        <div
+                          // href={"/home/" + content + "?gender=" + type}
+                          onClick={() => (content === "Đăng xuất" ? signOut() : null)}
+                          className={classNames(
+                            active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}>
+                          {content}
+                        </div>
+                        // <a
+                        //   href
+                        // className={classNames(
+                        //   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        //   "block px-4 py-2 text-sm"
+                        // )}>
+                        //   {content}
+                        // </a>
+                      )}
+                    </Menu.Item>
+                  </>
+                );
+              })}
             {/* {getMenuData(type)} */}
           </div>
         </Menu.Items>

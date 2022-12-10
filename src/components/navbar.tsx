@@ -1,7 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Fragment, useState } from "react";
+import { trpc } from "../utils/trpc";
 import DropdownComponent from "./dropdownmenu";
 
 const NavBar = () => {
@@ -59,34 +61,35 @@ const NavBar = () => {
   const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
   const menuData = ["Sign in", "Sign up"];
 
-  const [open, setOpen] = useState(false);
-  function isLogin(isLogin: boolean) {
-    if (!isLogin) {
-      return (
-        <>
-          <div className="flex " onClick={addCart}>
-            <a
-              href="#"
-              className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
-              Sign in
-            </a>
+  const { data: sessionData } = useSession();
 
-            <a
-              href="#"
-              className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
+  const { data: cartData } = trpc.cart.getAll.useQuery();
+
+  const [open, setOpen] = useState(false);
+
+  const AuthShowcase: React.FC = () => {
+    const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery();
+
+    return (
+      <>
+        {!sessionData && (
+          <div className="flex ">
+            <button
+              className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
+              onClick={sessionData ? () => signOut() : () => signIn()}>
+              Sign in
+            </button>
+
+            <button className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
               Sign up
-            </a>
+            </button>
           </div>
-        </>
-      );
-    } else if (isLogin) {
-      return (
-        <>
-          <DropdownComponent title="user" type="user" data={userFunc} />
-        </>
-      );
-    }
-  }
+        )}
+        {sessionData && <DropdownComponent title="user" type="user" data={userFunc} />}
+      </>
+    );
+  };
+
   function addCart() {
     open ? setOpen(false) : setOpen(true);
   }
@@ -99,6 +102,7 @@ const NavBar = () => {
 
   return (
     <>
+      {/* Cart here  */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setOpen}>
           <Transition.Child
@@ -146,6 +150,7 @@ const NavBar = () => {
                         <div className="mt-8">
                           <div className="flow-root">
                             <ul role="list" className="-my-6 divide-y divide-gray-200">
+                              {/* Code here */}
                               {products.map((product) => (
                                 <li key={product.id} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -223,6 +228,8 @@ const NavBar = () => {
           </div>
         </Dialog>
       </Transition.Root>
+
+      {/* Navbar here */}
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
       <header className="sticky z-[10]">
         <nav className="fixed mt-0 flex w-full flex-wrap items-center justify-between border-t-2  border-solid border-gray-700 bg-[#eff6ff] py-4 shadow lg:px-12">
@@ -291,7 +298,7 @@ const NavBar = () => {
                 Sign up
               </a>
             </div> */}
-            {isLogin(false)}
+            <AuthShowcase />
             <div className="flex justify-center px-4 md:block">
               <button
                 className="
