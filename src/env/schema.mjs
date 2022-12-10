@@ -12,7 +12,7 @@ export const serverSchema = z.object({
   NEXTAUTH_URL: z.preprocess(
     // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
     // Since NextAuth automatically uses the VERCEL_URL if present.
-    str => process.env.VERCEL_URL ?? str,
+    (str) => process.env.VERCEL_URL ?? str,
     // VERCEL_URL doesnt include `https` so it cant be validated as a URL
     process.env.VERCEL ? z.string() : z.string().url()
   ),
@@ -20,6 +20,16 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   EMAIL_SERVER: z.string(),
   EMAIL_FROM: z.string().email(),
+  ADMIN_EMAILS: z.string().refine((str) =>
+    str.split(",").every((email) => {
+      try {
+        z.string().email().parse(email);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    })
+  ),
 });
 
 /**

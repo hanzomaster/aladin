@@ -35,11 +35,28 @@ enum OrderStatus {
     Cancelled
 }
 
+model Comment {
+    id        String   @id @default(cuid())
+    productId String
+    userId    String
+    content   String   @db.Text
+    rating    Float
+    createdAt DateTime @default(now())
+
+    product Product @relation(fields: [productId], references: [code], onDelete: Cascade)
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([productId])
+    @@index([userId])
+    @@map("comments")
+}
+
 model Product {
     code          String          @id @default(cuid())
     name          String          @unique @db.VarChar(50)
     description   String?         @db.Text
     buyPrice      Decimal         @db.Decimal(10, 2)
+    comments      Comment[]
     productLine   String
     productDetail ProductDetail[]
 
@@ -63,15 +80,16 @@ model ProductInStock {
 }
 
 model ProductDetail {
-    id          String @id @default(cuid())
-    image       String @db.Text
-    productCode String
-    colorCode   String @db.Char(6)
-
+    id             String           @id @default(cuid())
+    image          String           @db.Text
+    productCode    String
+    colorCode      String           @db.Char(6)
+    // tailwindColor  String           @default(dbgenerated("( CONCAT('bg-[#', colorCode, ']'))"))
     cartItems      CartItem[]
-    product        Product          @relation(fields: [productCode], references: [code], onDelete: Cascade)
-    OrderDetail    OrderDetail[]
-    ProductInStock ProductInStock[]
+    orderDetail    OrderDetail[]
+    productInStock ProductInStock[]
+
+    product Product @relation(fields: [productCode], references: [code], onDelete: Cascade)
 
     @@unique([productCode, colorCode])
     @@map("product_details")
@@ -90,16 +108,16 @@ model ProductLine {
 }
 
 model Order {
-    orderNumber    String      @id @default(cuid())
-    orderDate      DateTime
+    orderNumber    String        @id @default(cuid())
+    orderDate      DateTime      @default(now())
     requiredDate   DateTime
-    shippedDate    DateTime
-    status         OrderStatus
-    comments       String?     @db.Text
+    shippedDate    DateTime      @default(now())
+    status         OrderStatus   @default(InProcess)
+    comments       String?       @db.Text
     customerNumber String
+    orderdetail    OrderDetail[]
 
-    orderdetail OrderDetail[]
-    customer    User          @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
+    customer User @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
 
     @@index([customerNumber])
     @@map("orders")
@@ -109,10 +127,11 @@ model OrderDetail {
     orderNumber      String
     productDetailId  String
     quantityInOrderd Int
-    priceEach        Decimal       @db.Decimal(10, 2)
-    orderLineNumber  Int?          @db.SmallInt
-    order            Order         @relation(fields: [orderNumber], references: [orderNumber], onDelete: Cascade)
-    productDetail    ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
+    priceEach        Decimal @db.Decimal(10, 2)
+    orderLineNumber  Int?    @db.SmallInt
+
+    order         Order         @relation(fields: [orderNumber], references: [orderNumber], onDelete: Cascade)
+    productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
 
     @@id([orderNumber, productDetailId])
     @@index([orderNumber])
@@ -157,18 +176,21 @@ model User {
     sessions      Session[]
     order         Order[]
     cart          Cart?
+    Comment       Comment[]
 }
 
 model Address {
-    id         String  @id @default(cuid())
-    userId     String
-    address1   String  @db.VarChar(50)
-    address2   String  @db.VarChar(50)
-    city       String  @db.VarChar(50)
-    state      String? @db.VarChar(50)
-    postalCode String? @db.VarChar(15)
-    country    String  @db.VarChar(50)
-    user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id        String  @id @default(cuid())
+    userId    String
+    receiver  String  @db.VarChar(50)
+    phone     String  @db.VarChar(50)
+    city      String  @db.VarChar(50)
+    district  String? @db.VarChar(50)
+    ward      String? @db.VarChar(50)
+    detail    String? @db.Text
+    isDefault Boolean @default(false)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@map("addresses")

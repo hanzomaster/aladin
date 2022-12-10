@@ -7,15 +7,18 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  // const { data } = trpc.product.getAll.useQuery();
+  const { data } = trpc.product.getOneWhere.useQuery({
+    code: "clbhsr5hb002xxnkg9t2kpn3f",
+  });
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
+  const colors: string[] = [];
 
-  const { data } = trpc.product.getAll.useQuery({
-    skip: 1,
-    take: 2
-  })
-  console.log(data)
+  data?.productDetail?.forEach((color) => {
+    colors.push(`#${color.colorCode}`);
+  });
+  console.log(colors);
+  const colorred = colors[0];
   return (
     <>
       <Head>
@@ -60,7 +63,11 @@ const Home: NextPage = () => {
             documentation="https://www.prisma.io/docs/"
           />
         </div>
-        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
+        <div
+          className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500"
+          style={{
+            background: `${colorred}`,
+          }}>
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
         <AuthShowcase />

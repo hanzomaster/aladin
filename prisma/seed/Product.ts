@@ -23,7 +23,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1klRjwzBtBgzRM26qKjmjq7MIIeHvsuKn",
         colorCode: "b3c8da",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -71,7 +71,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1l5COA5yvehApXPtN18ISufYGh4qdjwZr",
         colorCode: "c0c7d7",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -119,7 +119,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1ke-hC92JK4iq5yLlY507kulX65-7IJPg",
         colorCode: "d98e3a",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -167,7 +167,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1lTgktShApBYR8T1GeU_ZhF8DrN4qB7Fc",
         colorCode: "3e3b3f",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -215,7 +215,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1_bPmwivVgPKFBUNNh21hTlcsj0MD1f8z",
         colorCode: "949899",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -263,7 +263,7 @@ const entries: Prisma.ProductCreateInput[] = [
       create: {
         image: "https://drive.google.com/uc?id=1iv7L0BzCOQISblqY4IcXEN7w3oJJdqdP",
         colorCode: "272429",
-        ProductInStock: {
+        productInStock: {
           createMany: {
             data: [
               {
@@ -309,33 +309,62 @@ const entries: Prisma.ProductCreateInput[] = [
     buyPrice: 10,
     productDetail: {
       // many color here for Sweater 1
-      create: {
-        image: "https://drive.google.com/uc?id=1u8JGEoRTdmVDO8u_glp2RP_YIlep7cOw",
-        colorCode: "c29c87",
-        ProductInStock: {
-          createMany: {
-            data: [
-              {
-                size: "S",
-                quantity: 10,
-              },
-              {
-                size: "M",
-                quantity: 10,
-              },
-              {
-                size: "L",
-                quantity: 10,
-              },
-              {
-                size: "XL",
-                quantity: 10,
-              },
-            ],
-            skipDuplicates: true,
+      create: [
+        {
+          image: "https://drive.google.com/uc?id=1u8JGEoRTdmVDO8u_glp2RP_YIlep7cOw",
+          colorCode: "c29c87",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 10,
+                },
+                {
+                  size: "M",
+                  quantity: 10,
+                },
+                {
+                  size: "L",
+                  quantity: 10,
+                },
+                {
+                  size: "XL",
+                  quantity: 10,
+                },
+              ],
+              skipDuplicates: true,
+            },
           },
         },
-      },
+        {
+          image: "https://drive.google.com/uc?id=1c4z4HipscpM0YxyOOq7KhO91_tVHL-YC",
+          colorCode: "1c1c1e",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 10,
+                },
+                {
+                  size: "M",
+                  quantity: 10,
+                },
+                {
+                  size: "L",
+                  quantity: 10,
+                },
+                {
+                  size: "XL",
+                  quantity: 10,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
     },
   },
 ];

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { adminProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductDetailSchema,
   deleteProductDetailSchema,
@@ -25,9 +25,12 @@ export const productDetailRouter = router({
         where: {
           productCode: input.productCode,
         },
+        include: {
+          productInStock: true,
+        },
       })
     ),
-  create: protectedProcedure.input(createProductDetailSchema).query(({ ctx, input }) =>
+  create: adminProcedure.input(createProductDetailSchema).query(({ ctx, input }) =>
     ctx.prisma.productDetail.create({
       data: {
         product: {
@@ -40,7 +43,7 @@ export const productDetailRouter = router({
       },
     })
   ),
-  update: protectedProcedure.input(updateProductDetailSchema).query(({ ctx, input }) =>
+  update: adminProcedure.input(updateProductDetailSchema).query(({ ctx, input }) =>
     ctx.prisma.productDetail.update({
       where: {
         productCode_colorCode: {
@@ -54,7 +57,7 @@ export const productDetailRouter = router({
       },
     })
   ),
-  delete: protectedProcedure.input(deleteProductDetailSchema).query(({ ctx, input }) => {
+  delete: adminProcedure.input(deleteProductDetailSchema).query(({ ctx, input }) => {
     if (!input.id && input.product_color) {
       return ctx.prisma.productDetail.delete({
         where: {
