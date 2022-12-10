@@ -56,4 +56,4 @@ const isAdmin = t.middleware(({ ctx, next }) => {
 /**
  * Admin procedure
  */
-export const adminProcedure = t.procedure.use(isAdmin);
+export const adminProcedure = t.procedure.use(isAuthed).use(isAdmin);

@@ -25,6 +25,9 @@ export const productDetailRouter = router({
         where: {
           productCode: input.productCode,
         },
+        include: {
+          productInStock: true,
+        },
       })
     ),
   create: adminProcedure.input(createProductDetailSchema).query(({ ctx, input }) =>
