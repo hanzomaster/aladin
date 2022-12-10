@@ -2,9 +2,9 @@
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
+import Footer from "../components/footer";
 import "../styles/globals.css";
 import { trpc } from "../utils/trpc";
-import Footer from "./component/footer";
 
 export { reportWebVitals } from "next-axiom";
 

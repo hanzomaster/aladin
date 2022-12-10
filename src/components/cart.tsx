@@ -67,7 +67,9 @@ export default function ProductCart({ isOpen }: { isOpen: boolean }) {
                           <button
                             type="button"
                             className="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={() => setOpen(false)}>
+                            onClick={() => {
+                              isOpen = false;
+                            }}>
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                           </button>
@@ -137,7 +139,9 @@ export default function ProductCart({ isOpen }: { isOpen: boolean }) {
                           <button
                             type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => setOpen(false)}>
+                            onClick={() => {
+                              isOpen = false;
+                            }}>
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
                           </button>

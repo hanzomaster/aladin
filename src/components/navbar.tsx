@@ -74,11 +74,11 @@ const NavBar = () => {
     <>
       <ProductCart isOpen={open1} />
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
-      <header className="sticky z-[100000]">
+      <header className="sticky z-[10]">
         <nav className="fixed mt-0 flex w-full flex-wrap items-center justify-between border-t-2  border-solid border-gray-700 bg-[#eff6ff] py-4 shadow lg:px-12">
           <div className=" relative flex w-full justify-between border-b-2 border-solid border-gray-300 pl-6 pr-2 pb-5 lg:w-auto lg:border-b-0 lg:pb-0">
             <Link href="/home" className="mr-16 flex flex-shrink-0 items-center text-gray-800">
-              <span className="text-xl font-semibold tracking-tight">Aladin</span>
+              <span className="cursor-pointer text-xl font-semibold tracking-tight">Aladin</span>
             </Link>
             <div className="block lg:hidden ">
               <DropdownComponent title="menu" type="menu" data={menuData} />

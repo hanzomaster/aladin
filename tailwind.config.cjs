@@ -4,6 +4,12 @@ module.exports = {
   theme: {
     extend: {},
   },
+  safelist: [
+    {
+      pattern: /bg-/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    }
+],
   plugins: [
     require('tailwind-scrollbar')
   ],
