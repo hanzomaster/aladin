@@ -7,9 +7,15 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  const { data } = trpc.product.getAll.useQuery();
+  // const { data } = trpc.product.getAll.useQuery();
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
+
+  const { data } = trpc.product.getAll.useQuery({
+    skip: 1,
+    take: 2
+  })
+  console.log(data)
   return (
     <>
       <Head>

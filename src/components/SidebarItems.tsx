@@ -36,7 +36,7 @@ const SidebarItems = [
       </svg>
     ),
     name: "Đơn mua",
-    link: "/orders",
+    link: "/purchase",
   },
   {
     icon: (
@@ -55,7 +55,7 @@ const SidebarItems = [
       </svg>
     ),
     name: "Địa chỉ",
-    link: "/address",
+    link: "/addressview",
   },
   {
     icon: (
