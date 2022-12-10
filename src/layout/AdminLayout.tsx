@@ -4,13 +4,15 @@ import React from "react";
 import AdminNavbar from "../components/admin/AdminNavbar";
 import Sidebar from "../components/admin/SlideBar";
 import HeaderStats from "../components/admin/HeaderStats";
+import Header from "../components/admin/Header";
 
 const AdminLayout = ({children}:any) => {
   return (
     <>
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100">
-        <AdminNavbar />
+        <Header/>
+        {/* <AdminNavbar /> */}
         {/* Header */}
         <HeaderStats />
         
