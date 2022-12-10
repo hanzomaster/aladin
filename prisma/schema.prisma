@@ -67,6 +67,7 @@ model ProductDetail {
     image          String           @db.Text
     productCode    String
     colorCode      String           @db.Char(6)
+    // tailwindColor  String           @default(dbgenerated("( CONCAT('bg-[#', colorCode, ']'))"))
     cartItems      CartItem[]
     orderDetail    OrderDetail[]
     productInStock ProductInStock[]
@@ -161,13 +162,17 @@ model User {
 }
 
 model Address {
-    id       String  @id @default(cuid())
-    userId   String
-    city     String  @db.VarChar(50)
-    district String? @db.VarChar(50)
-    ward     String? @db.VarChar(50)
-    detail   String? @db.Text
-    user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id        String  @id @default(cuid())
+    userId    String
+    receiver  String  @db.VarChar(50)
+    phone     String  @db.VarChar(50)
+    city      String  @db.VarChar(50)
+    district  String? @db.VarChar(50)
+    ward      String? @db.VarChar(50)
+    detail    String? @db.Text
+    isDefault Boolean @default(false)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@map("addresses")

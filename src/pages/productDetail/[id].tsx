@@ -68,6 +68,12 @@ const ProductDetail: NextPage = () => {
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
 
+  const colors: string[] = [];
+
+  product?.productDetail?.forEach((color) => {
+    colors.push(`#${color.colorCode}`);
+  });
+
   // change image when color is selected
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
@@ -152,8 +158,7 @@ const ProductDetail: NextPage = () => {
                         className="mt-4">
                         <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
                         <span className="flex items-center space-x-3">
-                          {product?.productDetail?.map((item) => {
-                            const color = colorNames("bg-[", "#c29]");
+                          {product?.productDetail?.map((item, index) => {
                             return (
                               <RadioGroup.Option
                                 key={item.id}
@@ -173,7 +178,9 @@ const ProductDetail: NextPage = () => {
                                 </RadioGroup.Label>
 
                                 <span
-                                  style={{ backgroundColor: color }}
+                                  style={{
+                                    background: `${colors[index]}`,
+                                  }}
                                   aria-hidden="true"
                                   className={classNames(
                                     "h-8 w-8 rounded-full border border-black border-opacity-10"

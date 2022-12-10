@@ -11,6 +11,12 @@ export default function ItemCard({ item }: { item: any }) {
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
 
+  const colors: string[] = [];
+
+  item.productDetail?.forEach((color) => {
+    colors.push(`#${color.colorCode}`);
+  });
+
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
     setSelectedImage(() => {
@@ -60,7 +66,7 @@ export default function ItemCard({ item }: { item: any }) {
             className="mt-3">
             <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
             <span className="flex items-center space-x-3">
-              {item.productDetail?.map((item1) => {
+              {item.productDetail?.map((item1, index) => {
                 // const color = colorNames("bg-[", "#c29]");
                 return (
                   <RadioGroup.Option
@@ -71,7 +77,7 @@ export default function ItemCard({ item }: { item: any }) {
                         "ring-gray-400",
                         active && checked ? "ring ring-offset-1" : "",
                         !active && checked ? "ring-2" : "",
-                        "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
+                        "relative -m-0.5 ml-2 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
                       )
                     }
                     onClick={() => handleChooseColor(item1.colorCode)}>
@@ -81,9 +87,12 @@ export default function ItemCard({ item }: { item: any }) {
                     </RadioGroup.Label>
 
                     <span
+                      style={{
+                        background: `${colors[index]}`,
+                      }}
                       aria-hidden="true"
                       className={classNames(
-                        "h-6 w-6 rounded-full border border-black border-opacity-10"
+                        "h-4 w-4 rounded-full border border-black border-opacity-10"
                       )}
                     />
                   </RadioGroup.Option>

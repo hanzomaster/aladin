@@ -5,7 +5,7 @@ import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema,
+  updateProductSchema
 } from "./dto";
 
 const includeProductLineAndProductDetail: Prisma.ProductInclude = {
@@ -18,17 +18,9 @@ const includeProductLineAndProductDetail: Prisma.ProductInclude = {
     },
   },
   productDetail: {
-    select: {
-      id: true,
-      colorCode: true,
-      image: true,
-      productInStock: {
-        select: {
-          size: true,
-          quantity: true,
-        },
-      },
-    },
+    include: {
+      productInStock: true
+    }
   },
 };
 
