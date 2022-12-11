@@ -63,7 +63,7 @@ const NavBar = () => {
 
   const { data: sessionData } = useSession();
 
-  const { data: cartData } = trpc.cart.getAll.useQuery();
+  // const { data: cartData } = trpc.cart.getAll.useQuery();
 
   const [open, setOpen] = useState(false);
 
@@ -94,6 +94,17 @@ const NavBar = () => {
     open ? setOpen(false) : setOpen(true);
   }
 
+  const [count, setCount] = useState(0);
+  const inc = () => {
+    setCount(count + 1);
+  };
+  const dec = () => {
+    if (count > 0) {
+      setCount(count - 1);
+    } else {
+      setCount(0);
+    }
+  };
   const [message, setMessage] = useState("");
 
   const handleChange = (event: any) => {
@@ -172,7 +183,22 @@ const NavBar = () => {
                                       <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm">
-                                      <p className="text-gray-500">Qty {product.quantity}</p>
+                                      <div className="block inline-block text-gray-500">
+                                        SL:
+                                        <div className="inline-block">
+                                          <button
+                                            className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
+                                            onClick={dec}>
+                                            -
+                                          </button>
+                                          {count + product.quantity}
+                                          <button
+                                            className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
+                                            onClick={inc}>
+                                            +
+                                          </button>
+                                        </div>
+                                      </div>
 
                                       <div className="flex">
                                         <button

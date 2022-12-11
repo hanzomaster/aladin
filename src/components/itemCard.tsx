@@ -3,6 +3,7 @@
 import { RadioGroup } from "@headlessui/react";
 import Image from "next/image";
 import { useState } from "react";
+import { trpc } from "../utils/trpc";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -10,12 +11,24 @@ function classNames(...classes: any) {
 export default function ItemCard({ item }: { item: any }) {
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
+  const mutation = trpc.cartItem.updateOrCreate.useMutation();
 
   const colors: string[] = [];
 
   item.productDetail?.forEach((color) => {
     colors.push(`#${color.colorCode}`);
   });
+
+  const onCreateTodo = (productDetailId: string) => {
+    mutation.mutate({ productDetailId });
+  };
+
+  // function handleAddProductToCart(productDetailId : string) {
+  //   const data = trpc.cartItem.updateOrCreate
+  //     .useMutation((productDetailId) => { data.mutate({productDetailId as string})});
+
+  //     // data.mutate({ productDetailId: "clbhz7fr50005xn60yzbuf3li" });
+  // }
 
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
@@ -49,13 +62,15 @@ export default function ItemCard({ item }: { item: any }) {
                   alt=""
                 /> */}
           <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
-            <button className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white">
+            <button
+              className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white"
+              onClick={() => onCreateTodo("clbhz7fr50005xn60yzbuf3li")}>
               Thêm vào giỏ hàng
             </button>
           </div>
         </div>
         <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
-          <a href={"/productdetail/" + item.code}>
+          <a href={"/productDetail/" + item.code}>
             {item.name} &#40;{item.line.gender}&#41;
           </a>
         </h2>

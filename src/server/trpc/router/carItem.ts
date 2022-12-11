@@ -27,6 +27,7 @@ export const cartItemRouter = router({
         create: {
           productDetailId: input.productDetailId,
           cartId: cart.id,
+          numberOfItems: 1
         },
         update: {
           numberOfItems: {
