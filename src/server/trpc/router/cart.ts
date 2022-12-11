@@ -10,7 +10,25 @@ export const cartRouter = router({
         userId: ctx.session.user.id,
       },
       include: {
-        cartItem: true,
+        cartItem: {
+          select: {
+            numberOfItems: true,
+            size: true,
+            productDetail: {
+              select: {
+                colorCode: true,
+                image: true,
+                product: {
+                  select: {
+                    buyPrice: true,
+                    name: true,
+                    description: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     })
   ),
@@ -26,8 +44,6 @@ export const cartRouter = router({
   ),
   getAll: adminProcedure.query(({ ctx }) =>
     ctx.prisma.cart.findMany({
-      skip: 0,
-      take: 10,
       include: {
         cartItem: true,
       },

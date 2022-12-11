@@ -40,7 +40,7 @@ model Comment {
     productId String
     userId    String
     content   String   @db.Text
-    rating    Float
+    rating    Int?
     createdAt DateTime @default(now())
 
     product Product @relation(fields: [productId], references: [code], onDelete: Cascade)
@@ -151,7 +151,8 @@ model Cart {
 model CartItem {
     productDetailId String
     cartId          String
-    numberOfItems   Int    @default(1)
+    numberOfItems   Int       @default(1)
+    size            ClothSize
 
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
     cart          Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
