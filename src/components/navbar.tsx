@@ -6,33 +6,16 @@ import { Fragment, useState } from "react";
 import { trpc } from "../utils/trpc";
 import DropdownComponent from "./dropdownmenu";
 
-const NavBar = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Throwback Hip Bag",
-      href: "#",
-      color: "Salmon",
-      price: "$90.00",
-      quantity: 1,
-      imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-      imageAlt:
-        "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-    },
-    {
-      id: 2,
-      name: "Medium Stuff Satchel",
-      href: "#",
-      color: "Blue",
-      price: "$32.00",
-      quantity: 1,
-      imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-      imageAlt:
-        "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-    },
-    // More products...
-  ];
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const { data: cartData } = trpc.cart.get.useQuery();
+//   return {
+//     props: { cartData },
+//   };
+// };
 
+const NavBar = () => {
   const maleData = [
     "Coat",
     "Hoodie",
@@ -62,10 +45,12 @@ const NavBar = () => {
   const menuData = ["Sign in", "Sign up"];
 
   const { data: sessionData } = useSession();
+  const { data: cartData, refetch } = trpc.cart.get.useQuery();
 
-  // const { data: cartData } = trpc.cart.getAll.useQuery();
+  // const { data: cartData } = trpc.cart.get.useQuery();
 
   const [open, setOpen] = useState(false);
+  // const [cartData, setCart] = useState(cart);
 
   const AuthShowcase: React.FC = () => {
     const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery();
@@ -92,6 +77,7 @@ const NavBar = () => {
 
   function addCart() {
     open ? setOpen(false) : setOpen(true);
+    refetch();
   }
 
   const [count, setCount] = useState(0);
@@ -160,57 +146,72 @@ const NavBar = () => {
 
                         <div className="mt-8">
                           <div className="flow-root">
-                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                            <ul role="list" className="-my-6 divide-y divide-gray-200 ">
                               {/* Code here */}
-                              {products.map((product) => (
-                                <li key={product.id} className="flex py-6">
-                                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img
-                                      src={product.imageSrc}
-                                      alt={product.imageAlt}
-                                      className="h-full w-full object-cover object-center"
-                                    />
-                                  </div>
-
-                                  <div className="ml-4 flex flex-1 flex-col">
-                                    <div>
-                                      <div className="flex justify-between text-base font-medium text-gray-900">
-                                        <h3>
-                                          <a href={product.href}>{product.name}</a>
-                                        </h3>
-                                        <p className="ml-4">{product.price}</p>
-                                      </div>
-                                      <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                              {open &&
+                                cartData?.cartItem?.map((product, index) => (
+                                  <li key={index} className="flex py-6">
+                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                      <img
+                                        src={product.productDetail.image}
+                                        alt={"Ảnh sản phẩm"}
+                                        className="h-full w-full object-cover object-center"
+                                      />
                                     </div>
-                                    <div className="flex flex-1 items-end justify-between text-sm">
-                                      <div className="block inline-block text-gray-500">
-                                        SL:
-                                        <div className="inline-block">
+
+                                    <div className="ml-4 flex flex-1 flex-col">
+                                      <div>
+                                        <div className="flex justify-between text-base font-medium text-gray-900">
+                                          <h3>
+                                            <p>{product.productDetail.product.name}</p>
+                                          </h3>
+                                          <p className="ml-4">
+                                            {product.productDetail.product.buyPrice.toString()},000
+                                            &#8363;
+                                          </p>
+                                        </div>
+                                        <div className="block inline-block">
+                                          <p
+                                            style={{
+                                              background: `#${product.productDetail.colorCode}`,
+                                            }}
+                                            className="mt-1 text-sm text-gray-500">
+                                            {product.productDetail.colorCode}
+                                          </p>
+                                          <p className="mt-1 ml-1 text-sm text-gray-500">
+                                            Size: {product.size}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-1 items-end justify-between text-sm">
+                                        <div className="block inline-block text-gray-500">
+                                          SL:
+                                          <div className="inline-block">
+                                            <button
+                                              className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
+                                              onClick={dec}>
+                                              -
+                                            </button>
+                                            {count + product.numberOfItems}
+                                            <button
+                                              className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
+                                              onClick={inc}>
+                                              +
+                                            </button>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex">
                                           <button
-                                            className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
-                                            onClick={dec}>
-                                            -
-                                          </button>
-                                          {count + product.quantity}
-                                          <button
-                                            className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
-                                            onClick={inc}>
-                                            +
+                                            type="button"
+                                            className="font-medium text-indigo-600 hover:text-indigo-500">
+                                            Remove
                                           </button>
                                         </div>
                                       </div>
-
-                                      <div className="flex">
-                                        <button
-                                          type="button"
-                                          className="font-medium text-indigo-600 hover:text-indigo-500">
-                                          Remove
-                                        </button>
-                                      </div>
                                     </div>
-                                  </div>
-                                </li>
-                              ))}
+                                  </li>
+                                ))}
                             </ul>
                           </div>
                         </div>
