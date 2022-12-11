@@ -6,7 +6,6 @@ export const cartItemRouter = router({
     .input(
       z.object({
         productDetailId: z.string(),
-        numberOfItems: z.number().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -18,34 +17,29 @@ export const cartItemRouter = router({
       if (!cart) {
         throw new Error("Cart not found");
       }
-      const cartItem = await ctx.prisma.cartItem.findUnique({
+      return ctx.prisma.cartItem.upsert({
         where: {
           productDetailId_cartId: {
             cartId: cart.id,
             productDetailId: input.productDetailId,
           },
         },
-      });
-      if (cartItem) {
-        await ctx.prisma.cartItem.update({
-          where: {
-            productDetailId_cartId: {
-              cartId: cart.id,
-              productDetailId: input.productDetailId,
+        create: {
+          productDetailId: input.productDetailId,
+          cartId: cart.id,
+        },
+        update: {
+          numberOfItems: {
+            increment: 1,
+          },
+        },
+        include: {
+          productDetail: {
+            select: {
+              colorCode: true,
             },
           },
-          data: {
-            numberOfItems: input.numberOfItems,
-          },
-        });
-      } else {
-        await ctx.prisma.cartItem.create({
-          data: {
-            productDetailId: input.productDetailId,
-            cartId: cart.id,
-            numberOfItems: input.numberOfItems,
-          },
-        });
-      }
+        },
+      });
     }),
 });

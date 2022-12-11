@@ -35,11 +35,28 @@ enum OrderStatus {
     Cancelled
 }
 
+model Comment {
+    id        String   @id @default(cuid())
+    productId String
+    userId    String
+    content   String   @db.Text
+    rating    Float
+    createdAt DateTime @default(now())
+
+    product Product @relation(fields: [productId], references: [code], onDelete: Cascade)
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([productId])
+    @@index([userId])
+    @@map("comments")
+}
+
 model Product {
     code          String          @id @default(cuid())
     name          String          @unique @db.VarChar(50)
     description   String?         @db.Text
     buyPrice      Decimal         @db.Decimal(10, 2)
+    comments      Comment[]
     productLine   String
     productDetail ProductDetail[]
 
@@ -94,7 +111,7 @@ model Order {
     orderNumber    String        @id @default(cuid())
     orderDate      DateTime      @default(now())
     requiredDate   DateTime
-    shippedDate    DateTime      @default(dbgenerated("(CURRENT_TIMESTAMP + INTERVAL 3 DAY)"))
+    shippedDate    DateTime      @default(now())
     status         OrderStatus   @default(InProcess)
     comments       String?       @db.Text
     customerNumber String
@@ -134,7 +151,7 @@ model Cart {
 model CartItem {
     productDetailId String
     cartId          String
-    numberOfItems   Int
+    numberOfItems   Int    @default(1)
 
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
     cart          Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
@@ -159,6 +176,7 @@ model User {
     sessions      Session[]
     order         Order[]
     cart          Cart?
+    Comment       Comment[]
 }
 
 model Address {

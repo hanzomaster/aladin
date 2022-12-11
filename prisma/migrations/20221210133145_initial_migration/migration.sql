@@ -1,4 +1,18 @@
 -- CreateTable
+CREATE TABLE `comments` (
+    `id` VARCHAR(191) NOT NULL,
+    `productId` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `content` TEXT NOT NULL,
+    `rating` DOUBLE NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `comments_productId_idx`(`productId`),
+    INDEX `comments_userId_idx`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `products` (
     `code` VARCHAR(191) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
@@ -29,7 +43,6 @@ CREATE TABLE `product_details` (
     `image` TEXT NOT NULL,
     `productCode` VARCHAR(191) NOT NULL,
     `colorCode` CHAR(6) NOT NULL,
-    `tailwindColor` VARCHAR(191) NOT NULL DEFAULT ( CONCAT('bg-[#', colorCode, ']')),
 
     UNIQUE INDEX `product_details_productCode_colorCode_key`(`productCode`, `colorCode`),
     PRIMARY KEY (`id`)
@@ -52,7 +65,7 @@ CREATE TABLE `orders` (
     `orderNumber` VARCHAR(191) NOT NULL,
     `orderDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `requiredDate` DATETIME(3) NOT NULL,
-    `shippedDate` DATETIME(3) NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL 3 DAY),
+    `shippedDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` ENUM('InProcess', 'Shipped', 'Cancelled') NOT NULL DEFAULT 'InProcess',
     `comments` TEXT NULL,
     `customerNumber` VARCHAR(191) NOT NULL,
