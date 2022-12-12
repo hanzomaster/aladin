@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 
 // layout for page
@@ -8,48 +7,44 @@ import Auth from "../components/layouts/Auth";
 export default function Login() {
   return (
     <>
-    <Auth>
-      <div className="container mx-auto px-4 h-full">
-        <div className="flex content-center items-center justify-center h-full">
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-[#E2E8F0] border-0">
-              <div className="rounded-t mb-0 px-6 py-6">
-                <div className="text-center mb-3">
-                  <h6 className="text-[#F8FAFC]0 text-sm font-bold">
-                    Sign in with
-                  </h6>
-                </div>
-                <div className="btn-wrapper text-center">
-                  <button
-                    className="bg-white active:bg-[#F8FAFC] text-[#334155] font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                    type="button"
-                  >
-                    <img alt="..." className="w-5 mr-1" src="/img/google.svg" />
-                    Google
-                  </button>
-                </div>
-                <hr className="mt-6 border-b-1 border-[#CBD5E1]" />
-              </div>
-              <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                <div className="text-[#94A3B8] text-center mb-3 font-bold">
-                  <small>Or sign in with credentials</small>
-                </div>
-                <form>
-                  <div className="relative w-full mb-3">
-                    <label
-                      className="block uppercase text-[#475569] text-xs font-bold mb-2"
-                      htmlFor="grid-password"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="border-0 px-3 py-3 placeholder-[#CBD5E1] text-[#475569] bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Email"
-                    />
+      <Auth>
+        <div className="container mx-auto h-full px-4">
+          <div className="flex h-full content-center items-center justify-center">
+            <div className="w-full px-4 lg:w-4/12">
+              <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg border-0 bg-[#E2E8F0] shadow-lg">
+                <div className="mb-0 rounded-t px-6 py-6">
+                  <div className="mb-3 text-center">
+                    <h6 className="text-[#F8FAFC]0 text-sm font-bold">Sign in with</h6>
                   </div>
+                  <div className="btn-wrapper text-center">
+                    <button
+                      className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal font-bold uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
+                      type="button">
+                      <img alt="..." className="mr-1 w-5" src="/img/google.svg" />
+                      Google
+                    </button>
+                  </div>
+                  <hr className="border-b-1 mt-6 border-[#CBD5E1]" />
+                </div>
+                <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
+                  <div className="mb-3 text-center font-bold text-[#94A3B8]">
+                    <small>Or sign in with credentials</small>
+                  </div>
+                  <form>
+                    <div className="relative mb-3 w-full">
+                      <label
+                        className="mb-2 block text-xs font-bold uppercase text-[#475569]"
+                        htmlFor="grid-password">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-[#475569] placeholder-[#CBD5E1] shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
+                        placeholder="Email"
+                      />
+                    </div>
 
-                  <div className="relative w-full mb-3">
+                    {/* <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-[#475569] text-xs font-bold mb-2"
                       htmlFor="grid-password"
@@ -73,42 +68,36 @@ export default function Login() {
                         Remember me
                       </span>
                     </label>
-                  </div>
+                  </div> */}
 
-                  <div className="text-center mt-6">
-                    <button
-                      className="bg-[#1E293B] text-white active:bg-[#475569] text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                </form>
+                    <div className="mt-6 text-center">
+                      <button
+                        className="mr-1 mb-1 w-full rounded bg-[#1E293B] px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-[#475569]"
+                        type="button">
+                        Sign In
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-wrap mt-6 relative">
-              <div className="w-1/2">
-                <a
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-[#E2E8F0]"
-                >
-                  <small>Forgot password?</small>
-                </a>
-              </div>
-              <div className="w-1/2 text-right">
-                <Link href="/register">
-                  <a href="#pablo" className="text-[#E2E8F0]">
-                    <small>Create new account</small>
+              <div className="relative mt-6 flex flex-wrap">
+                <div className="w-1/2">
+                  <a href="#" onClick={(e) => e.preventDefault()} className="text-[#E2E8F0]">
+                    <small>Forgot password?</small>
                   </a>
-                </Link>
+                </div>
+                <div className="w-1/2 text-right">
+                  <Link href="/register">
+                    <a className="text-[#E2E8F0]">
+                      <small>Create new account</small>
+                    </a>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </Auth>
     </>
   );
 }
-
