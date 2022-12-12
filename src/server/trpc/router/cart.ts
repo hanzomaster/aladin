@@ -1,5 +1,4 @@
 import { adminProcedure, protectedProcedure, router } from "../trpc";
-import { cartParams } from "./dto/cart.dto";
 
 export const cartRouter = router({
   /**
@@ -17,10 +16,12 @@ export const cartRouter = router({
             size: true,
             productDetail: {
               select: {
+                id: true,
                 colorCode: true,
                 image: true,
                 product: {
                   select: {
+                    code: true,
                     buyPrice: true,
                     name: true,
                     description: true,

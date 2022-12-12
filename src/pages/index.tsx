@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  const { data } = trpc.cart.get.useQuery({ id: "clbi18rox0000eqc8tuoyq812" });
+  const { data } = trpc.cart.get.useQuery();
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
   const colors: string[] = [];

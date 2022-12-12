@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { trpc } from "../utils/trpc";
@@ -45,11 +46,14 @@ const NavBar = () => {
   const menuData = ["Sign in", "Sign up"];
 
   const { data: sessionData } = useSession();
-  const { data: cartData, refetch } = trpc.cart.get.useQuery();
+  const { data: cartData, refetch, isRefetching, isFetched } = trpc.cart.get.useQuery();
+  const mutation = trpc.cartItem.delete.useMutation();
 
   // const { data: cartData } = trpc.cart.get.useQuery();
 
   const [open, setOpen] = useState(false);
+  const [cart, setCart] = useState(cartData?.cartItem);
+
   // const [cartData, setCart] = useState(cart);
 
   const AuthShowcase: React.FC = () => {
@@ -75,10 +79,35 @@ const NavBar = () => {
     );
   };
 
+  // useEffect(() => {
+  //   await async function myFunction() {
+  //     refetch();
+
+  //     setCart(() => {
+  //       return cartData?.cartItem;
+  //     });
+  //   }
+
+  //   myFunction();
+  // }, []);
+
   function addCart() {
-    open ? setOpen(false) : setOpen(true);
     refetch();
+
+    setCart(() => {
+      refetch();
+      return cartData?.cartItem;
+    });
+    // forceUpdate();
+    open ? setOpen(false) : setOpen(true);
   }
+
+  const removeItem = (productDetailId: string) => {
+    mutation.mutate({ productDetailId: productDetailId });
+    setCart(cart?.filter((a) => a.productDetail.id !== productDetailId));
+
+    // setCartData(cart);
+  };
 
   const [count, setCount] = useState(0);
   const inc = () => {
@@ -97,6 +126,7 @@ const NavBar = () => {
     setMessage(event.target.value);
   };
 
+  // if (isRefetching) return <p>Loading....</p>;
   return (
     <>
       {/* Cart here  */}
@@ -125,18 +155,23 @@ const NavBar = () => {
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full">
                   <div className="pointer-events-auto w-screen max-w-md">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                      <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                    <div className="flex h-full flex-col bg-white shadow-xl">
+                      <div className=" h-2/3 flex-1 py-6 px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                           <Dialog.Title className="text-lg font-medium text-gray-900">
-                            Shopping cart
+                            Giỏ hàng
                           </Dialog.Title>
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
                               className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                               onClick={() => {
-                                setOpen(false);
+                                // setOpen(false);
+                                refetch();
+                                setCart(() => {
+                                  refetch();
+                                  return cartData?.cartItem;
+                                });
                               }}>
                               <span className="sr-only">Close panel</span>
                               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -144,74 +179,88 @@ const NavBar = () => {
                           </div>
                         </div>
 
-                        <div className="mt-8">
+                        <div className="relative mt-8 h-[92%] overflow-y-scroll scrollbar scrollbar-none">
                           <div className="flow-root">
+                            <pre>{JSON.stringify(cart, null, 2)}</pre>
+                            <p>Cart Data</p>
+                            <pre>{JSON.stringify(cartData, null, 2)}</pre>
                             <ul role="list" className="-my-6 divide-y divide-gray-200 ">
                               {/* Code here */}
                               {open &&
-                                cartData?.cartItem?.map((product, index) => (
-                                  <li key={index} className="flex py-6">
-                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                      <img
+                                (!isRefetching ? cart : cartData?.cartItem)?.map(
+                                  (product, index) => (
+                                    <li key={product.productDetail.id} className="flex py-6">
+                                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                        <div className="relative h-full w-full">
+                                          <Image
+                                            src={product.productDetail.image}
+                                            layout="fill"
+                                            alt="Ảnh sản phẩm"
+                                            className=" object-cover object-center"></Image>
+                                        </div>
+
+                                        {/* <img
                                         src={product.productDetail.image}
                                         alt={"Ảnh sản phẩm"}
                                         className="h-full w-full object-cover object-center"
-                                      />
-                                    </div>
-
-                                    <div className="ml-4 flex flex-1 flex-col">
-                                      <div>
-                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                          <h3>
-                                            <p>{product.productDetail.product.name}</p>
-                                          </h3>
-                                          <p className="ml-4">
-                                            {product.productDetail.product.buyPrice.toString()},000
-                                            &#8363;
-                                          </p>
-                                        </div>
-                                        <div className="block inline-block">
-                                          <p
-                                            style={{
-                                              background: `#${product.productDetail.colorCode}`,
-                                            }}
-                                            className="mt-1 text-sm text-gray-500">
-                                            {product.productDetail.colorCode}
-                                          </p>
-                                          <p className="mt-1 ml-1 text-sm text-gray-500">
-                                            Size: {product.size}
-                                          </p>
-                                        </div>
+                                      /> */}
                                       </div>
-                                      <div className="flex flex-1 items-end justify-between text-sm">
-                                        <div className="block inline-block text-gray-500">
-                                          SL:
-                                          <div className="inline-block">
+
+                                      <div className="ml-4 flex flex-1 flex-col">
+                                        <div>
+                                          <div className="flex justify-between text-base font-medium text-gray-900">
+                                            <h3>
+                                              <p>{product.productDetail.product.name}</p>
+                                            </h3>
+                                            <p className="ml-4">
+                                              {product.productDetail.product.buyPrice.toString()}
+                                              ,000 &#8363;
+                                            </p>
+                                          </div>
+                                          <div className="block inline-block">
+                                            <p
+                                              style={{
+                                                background: `#${product.productDetail.colorCode}`,
+                                              }}
+                                              className="mt-1 text-sm text-gray-500">
+                                              {product.productDetail.colorCode}
+                                            </p>
+                                            <p className="mt-1 ml-1 text-sm text-gray-500">
+                                              Size: {product.size}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <div className="flex flex-1 items-end justify-between text-sm">
+                                          <div className="block inline-block text-gray-500">
+                                            SL:
+                                            <div className="inline-block">
+                                              <button
+                                                className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
+                                                onClick={dec}>
+                                                -
+                                              </button>
+                                              {count + product.numberOfItems}
+                                              <button
+                                                className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
+                                                onClick={inc}>
+                                                +
+                                              </button>
+                                            </div>
+                                          </div>
+
+                                          <div className="flex">
                                             <button
-                                              className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
-                                              onClick={dec}>
-                                              -
-                                            </button>
-                                            {count + product.numberOfItems}
-                                            <button
-                                              className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
-                                              onClick={inc}>
-                                              +
+                                              type="button"
+                                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                                              onClick={() => removeItem(product.productDetail.id)}>
+                                              Remove
                                             </button>
                                           </div>
                                         </div>
-
-                                        <div className="flex">
-                                          <button
-                                            type="button"
-                                            className="font-medium text-indigo-600 hover:text-indigo-500">
-                                            Remove
-                                          </button>
-                                        </div>
                                       </div>
-                                    </div>
-                                  </li>
-                                ))}
+                                    </li>
+                                  )
+                                )}
                             </ul>
                           </div>
                         </div>
@@ -261,8 +310,12 @@ const NavBar = () => {
       <header className="sticky z-[10]">
         <nav className="fixed mt-0 flex w-full flex-wrap items-center justify-between border-t-2  border-solid border-gray-700 bg-[#eff6ff] py-4 shadow lg:px-12">
           <div className=" relative flex w-full justify-between border-b-2 border-solid border-gray-300 pl-6 pr-2 pb-5 lg:w-auto lg:border-b-0 lg:pb-0">
-            <Link href="/home" className="mr-16 flex flex-shrink-0 items-center text-gray-800">
-              <span className="cursor-pointer text-xl font-semibold tracking-tight">Aladin</span>
+            <Link href="/home" className="mr-20 flex flex-shrink-0 items-center pr-6 text-gray-800">
+              <img
+                src="logo2.png"
+                alt="Logo"
+                className="relative h-10 w-28 cursor-pointer object-fill"
+              />
             </Link>
             <div className="block lg:hidden ">
               <DropdownComponent title="menu" type="menu" data={menuData} />
@@ -335,7 +388,9 @@ const NavBar = () => {
                   dark:text-gray-200
                   dark:hover:text-gray-300
                   "
-                onClick={addCart}>
+                onClick={() => {
+                  addCart;
+                }}>
                 <i className="fas fa-shopping-cart"></i>
 
                 <span
