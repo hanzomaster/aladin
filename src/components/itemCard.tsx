@@ -12,7 +12,6 @@ export default function ItemCard({ item }: { item: any }) {
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
-  const [open, setReload] = useState(false);
   const mutation = trpc.cartItem.updateOrCreate.useMutation();
 
   const colors: string[] = [];
@@ -21,17 +20,9 @@ export default function ItemCard({ item }: { item: any }) {
     colors.push(`#${color.colorCode}`);
   });
 
-  const onCreateTodo = (id: string) => {
+  const handleAddItemToCart = (id: string) => {
     mutation.mutate({ productDetailId: id, size: "S" });
-    setReload(true);
   };
-
-  // function handleAddProductToCart(productDetailId : string) {
-  //   const data = trpc.cartItem.updateOrCreate
-  //     .useMutation((productDetailId) => { data.mutate({productDetailId as string})});
-
-  //     // data.mutate({ productDetailId: "clbhz7fr50005xn60yzbuf3li" });
-  // }
 
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
@@ -66,7 +57,9 @@ export default function ItemCard({ item }: { item: any }) {
           <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
             <button
               className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white"
-              onClick={() => onCreateTodo(selectedId ? selectedId : item.productDetail[0]?.id)}>
+              onClick={() =>
+                handleAddItemToCart(selectedId ? selectedId : item.productDetail[0]?.id)
+              }>
               Thêm vào giỏ hàng
             </button>
           </div>

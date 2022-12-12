@@ -80,8 +80,8 @@ const NavBar = () => {
   };
 
   // useEffect(() => {
-  //   await async function myFunction() {
-  //     refetch();
+  //   async function myFunction() {
+  //     await refetch();
 
   //     setCart(() => {
   //       return cartData?.cartItem;
@@ -92,14 +92,16 @@ const NavBar = () => {
   // }, []);
 
   function addCart() {
-    refetch();
+    setOpen(true);
+    async function myFunction() {
+      await refetch();
 
-    setCart(() => {
-      refetch();
-      return cartData?.cartItem;
-    });
-    // forceUpdate();
-    open ? setOpen(false) : setOpen(true);
+      setCart(() => {
+        return cartData?.cartItem;
+      });
+    }
+
+    myFunction();
   }
 
   const removeItem = (productDetailId: string) => {
@@ -126,7 +128,6 @@ const NavBar = () => {
     setMessage(event.target.value);
   };
 
-  // if (isRefetching) return <p>Loading....</p>;
   return (
     <>
       {/* Cart here  */}
@@ -166,7 +167,7 @@ const NavBar = () => {
                               type="button"
                               className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                               onClick={() => {
-                                // setOpen(false);
+                                setOpen(false);
                                 refetch();
                                 setCart(() => {
                                   refetch();
@@ -198,12 +199,6 @@ const NavBar = () => {
                                             alt="Ảnh sản phẩm"
                                             className=" object-cover object-center"></Image>
                                         </div>
-
-                                        {/* <img
-                                        src={product.productDetail.image}
-                                        alt={"Ảnh sản phẩm"}
-                                        className="h-full w-full object-cover object-center"
-                                      /> */}
                                       </div>
 
                                       <div className="ml-4 flex flex-1 flex-col">
@@ -319,15 +314,6 @@ const NavBar = () => {
             </Link>
             <div className="block lg:hidden ">
               <DropdownComponent title="menu" type="menu" data={menuData} />
-
-              {/* <button
-                    id="nav"
-                    
-                    className="flex items-center px-3 py-2 border-2 rounded text-white-700 border-white-700 hover:text-gray-700 hover:border-gray-700">
-                    <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title>
-                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
-                    </svg>
-                </button> */}
             </div>
           </div>
 
@@ -365,19 +351,6 @@ const NavBar = () => {
                 </Link>
               </button>
             </div>
-            {/* <div className="flex " onClick={addCart}>
-              <a
-                href="#"
-                className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
-                Sign in
-              </a>
-
-              <a
-                href="#"
-                className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
-                Sign up
-              </a>
-            </div> */}
             <AuthShowcase />
             <div className="flex justify-center px-4 md:block">
               <button
@@ -388,9 +361,7 @@ const NavBar = () => {
                   dark:text-gray-200
                   dark:hover:text-gray-300
                   "
-                onClick={() => {
-                  addCart;
-                }}>
+                onClick={addCart}>
                 <i className="fas fa-shopping-cart"></i>
 
                 <span
