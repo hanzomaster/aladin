@@ -1,10 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
+import CartItem from "./cartItem";
 import DropdownComponent from "./dropdownmenu";
 
 // export const getServerSideProps: GetServerSideProps = async (
@@ -48,6 +50,7 @@ const NavBar = () => {
 
   const utils = trpc.useContext();
   const { data: cartData } = trpc.cart.get.useQuery();
+  const { data: sessionData } = useSession();
   const mutation = trpc.cartItem.delete.useMutation({
     onSuccess() {
       utils.cart.get.invalidate();
@@ -60,17 +63,31 @@ const NavBar = () => {
     mutation.mutate({ productDetailId: productDetailId });
   };
 
-  const [count, setCount] = useState(0);
-  const inc = () => {
-    setCount(count + 1);
+  let total = 0;
+
+  const AuthShowcase: React.FC = () => {
+    const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery();
+
+    return (
+      <>
+        {!sessionData && (
+          <div className="flex ">
+            <button
+              className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
+              onClick={sessionData ? () => signOut() : () => signIn()}>
+              Sign in
+            </button>
+
+            <button className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
+              Sign up
+            </button>
+          </div>
+        )}
+        {sessionData && <DropdownComponent title="user" type="user" data={userFunc} />}
+      </>
+    );
   };
-  const dec = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    } else {
-      setCount(0);
-    }
-  };
+
   const [message, setMessage] = useState("");
 
   const handleChange = (event: any) => {
@@ -124,79 +141,28 @@ const NavBar = () => {
 
                         <div className="relative mt-8 h-[92%] overflow-y-scroll scrollbar scrollbar-none">
                           <div className="flow-root">
-                            <pre>{JSON.stringify(cart, null, 2)}</pre>
+                            {/* <pre>{JSON.stringify(cart, null, 2)}</pre>
                             <p>Cart Data</p>
-                            <pre>{JSON.stringify(cartData, null, 2)}</pre>
+                            <pre>{JSON.stringify(cartData, null, 2)}</pre> */}
                             <ul role="list" className="-my-6 divide-y divide-gray-200 ">
                               {/* Code here */}
                               {open &&
                                 (cart.loading ? cart?.data?.cartItem : cartData?.cartItem)?.map(
-                                  (product, index) => (
-                                    <li key={product.productDetail.id} className="flex py-6">
-                                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                        <div className="relative h-full w-full">
-                                          <Image
-                                            src={product.productDetail.image}
-                                            layout="fill"
-                                            alt="Ảnh sản phẩm"
-                                            className=" object-cover object-center"></Image>
-                                        </div>
-                                      </div>
-
-                                      <div className="ml-4 flex flex-1 flex-col">
-                                        <div>
-                                          <div className="flex justify-between text-base font-medium text-gray-900">
-                                            <h3>
-                                              <p>{product.productDetail.product.name}</p>
-                                            </h3>
-                                            <p className="ml-4">
-                                              {product.productDetail.product.buyPrice.toString()}
-                                              ,000 &#8363;
-                                            </p>
-                                          </div>
-                                          <div className="block inline-block">
-                                            <p
-                                              style={{
-                                                background: `#${product.productDetail.colorCode}`,
-                                              }}
-                                              className="mt-1 text-sm text-gray-500">
-                                              {product.productDetail.colorCode}
-                                            </p>
-                                            <p className="mt-1 ml-1 text-sm text-gray-500">
-                                              Size: {product.size}
-                                            </p>
-                                          </div>
-                                        </div>
-                                        <div className="flex flex-1 items-end justify-between text-sm">
-                                          <div className="block inline-block text-gray-500">
-                                            SL:
-                                            <div className="inline-block">
-                                              <button
-                                                className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200 text-center"
-                                                onClick={dec}>
-                                                -
-                                              </button>
-                                              {count + product.numberOfItems}
-                                              <button
-                                                className="mx-1 h-5 w-5 items-center justify-center justify-items-center rounded-full border-black bg-green-200"
-                                                onClick={inc}>
-                                                +
-                                              </button>
-                                            </div>
-                                          </div>
-
-                                          <div className="flex">
-                                            <button
-                                              type="button"
-                                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                                              onClick={() => removeItem(product.productDetail.id)}>
-                                              Remove
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </li>
-                                  )
+                                  (product, index) => {
+                                    total =
+                                      total +
+                                      parseFloat(
+                                        (
+                                          product.productDetail.product.buyPrice *
+                                          product.numberOfItems
+                                        ).toString()
+                                      );
+                                    return (
+                                      <li key={product.productDetail.id} className="flex py-6">
+                                        <CartItem product={product} />
+                                      </li>
+                                    );
+                                  }
                                 )}
                             </ul>
                           </div>
@@ -205,29 +171,29 @@ const NavBar = () => {
 
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                          <p>Subtotal</p>
-                          <p>$262.00</p>
+                          <p>Tổng giá tiền</p>
+                          <p>{total},000 &#8363;</p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
-                          Shipping and taxes calculated at checkout.
+                          Miễn phí vận chuyển toàn quốc.
                         </p>
                         <div className="mt-6">
                           <a
                             href="checkout"
                             className="flex items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white">
-                            Checkout
+                            Thanh toán
                           </a>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
-                            or
+                            hoặc
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                               onClick={() => {
                                 setOpen(false);
                               }}>
-                              Continue Shopping
+                              Tiếp tục mua sắm
                               <span aria-hidden="true"> &rarr;</span>
                             </button>
                           </p>
@@ -248,11 +214,13 @@ const NavBar = () => {
         <nav className="fixed mt-0 flex w-full flex-wrap items-center justify-between border-t-2  border-solid border-gray-700 bg-[#eff6ff] py-4 shadow lg:px-12">
           <div className=" relative flex w-full justify-between border-b-2 border-solid border-gray-300 pl-6 pr-2 pb-5 lg:w-auto lg:border-b-0 lg:pb-0">
             <Link href="/home" className="mr-20 flex flex-shrink-0 items-center pr-6 text-gray-800">
-              <img
-                src="logo2.png"
-                alt="Logo"
-                className="relative h-10 w-28 cursor-pointer object-fill"
-              />
+              <div className="relative h-10 w-28 cursor-pointer object-fill">
+                <Image
+                  src="/logo2.jpg"
+                  layout="fill"
+                  alt="Logo"
+                  className="relative h-10 w-28 cursor-pointer object-fill"></Image>
+              </div>
             </Link>
             <div className="block lg:hidden ">
               <DropdownComponent title="menu" type="menu" data={menuData} />
@@ -276,7 +244,7 @@ const NavBar = () => {
                 onChange={handleChange}
               />
               <button type="submit" className="absolute right-0 top-0 mt-3 mr-2">
-                <Link href={"/home/" + message}>
+                <Link href={"/home?name=" + message}>
                   <svg
                     className="h-4 w-4 fill-current text-gray-600"
                     xmlns="http://www.w3.org/2000/svg"
@@ -293,6 +261,7 @@ const NavBar = () => {
                 </Link>
               </button>
             </div>
+            <AuthShowcase />
             <div className="flex justify-center px-4 md:block">
               <button
                 className="
@@ -305,7 +274,7 @@ const NavBar = () => {
                 onClick={() => setOpen(true)}>
                 <i className="fas fa-shopping-cart"></i>
 
-                {/* <span className=" absolute top-0 left-0 rounded-full bg-indigo-500 p-1 text-xs text-white "></span> */}
+                <span className=" absolute top-0 left-0 rounded-full bg-indigo-500 p-1 text-xs text-white "></span>
               </button>
             </div>
           </div>
