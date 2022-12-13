@@ -1,6 +1,6 @@
-import ItemCard from "../../components/itemCard";
-import NavBar from "../../components/navbar";
-import { trpc } from "../../utils/trpc";
+import ItemCard from "../components/itemCard";
+import NavBar from "../components/navbar";
+import { trpc } from "../utils/trpc";
 // import data from "./product";
 
 const Products = () => {
@@ -12,6 +12,9 @@ const Products = () => {
   // const [name, setName] = useState("");
   const { data } = trpc.product.getAll.useQuery();
 
+  // const { data: cartData } = trpc.cart.get.useQuery();
+
+  // check undefined
   // function searchButtonClicked() {
   //   // let search : string
   //   if (document.getElementById("searchInput")?.textContent) {

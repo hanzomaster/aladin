@@ -1,9 +1,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
+import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 import DropdownComponent from "./dropdownmenu";
 
@@ -15,100 +15,49 @@ import DropdownComponent from "./dropdownmenu";
 //     props: { cartData },
 //   };
 // };
+const maleData = [
+  "Coat",
+  "Hoodie",
+  "Jeans",
+  "Pants",
+  "Pj",
+  "Polo",
+  "Shirt",
+  "Shorts",
+  "Sweater",
+  "T-shirt",
+];
+
+const femaleData = [
+  "Coat",
+  "Hoodie",
+  "Jeans",
+  "Pants",
+  "Pj",
+  "Polo",
+  "Shirt",
+  "Shorts",
+  "Sweater",
+  "T-shirt",
+];
+const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
+const menuData = ["Sign in", "Sign up"];
 
 const NavBar = () => {
-  const maleData = [
-    "Coat",
-    "Hoodie",
-    "Jeans",
-    "Pants",
-    "Pj",
-    "Polo",
-    "Shirt",
-    "Shorts",
-    "Sweater",
-    "T-shirt",
-  ];
+  const { cart, setCart } = useCart();
 
-  const femaleData = [
-    "Coat",
-    "Hoodie",
-    "Jeans",
-    "Pants",
-    "Pj",
-    "Polo",
-    "Shirt",
-    "Shorts",
-    "Sweater",
-    "T-shirt",
-  ];
-  const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
-  const menuData = ["Sign in", "Sign up"];
-
-  const { data: sessionData } = useSession();
-  const { data: cartData, refetch, isRefetching, isFetched } = trpc.cart.get.useQuery();
-  const mutation = trpc.cartItem.delete.useMutation();
-
-  // const { data: cartData } = trpc.cart.get.useQuery();
+  const utils = trpc.useContext();
+  const { data: cartData } = trpc.cart.get.useQuery();
+  const mutation = trpc.cartItem.delete.useMutation({
+    onSuccess() {
+      utils.cart.get.invalidate();
+    },
+  });
 
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useState(cartData?.cartItem);
-
-  // const [cartData, setCart] = useState(cart);
-
-  const AuthShowcase: React.FC = () => {
-    const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery();
-
-    return (
-      <>
-        {!sessionData && (
-          <div className="flex ">
-            <button
-              className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
-              onClick={sessionData ? () => signOut() : () => signIn()}>
-              Sign in
-            </button>
-
-            <button className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
-              Sign up
-            </button>
-          </div>
-        )}
-        {sessionData && <DropdownComponent title="user" type="user" data={userFunc} />}
-      </>
-    );
-  };
-
-  // useEffect(() => {
-  //   async function myFunction() {
-  //     await refetch();
-
-  //     setCart(() => {
-  //       return cartData?.cartItem;
-  //     });
-  //   }
-
-  //   myFunction();
-  // }, []);
-
-  function addCart() {
-    setOpen(true);
-    async function myFunction() {
-      await refetch();
-
-      setCart(() => {
-        return cartData?.cartItem;
-      });
-    }
-
-    myFunction();
-  }
 
   const removeItem = (productDetailId: string) => {
     mutation.mutate({ productDetailId: productDetailId });
-    setCart(cart?.filter((a) => a.productDetail.id !== productDetailId));
-
-    // setCartData(cart);
   };
 
   const [count, setCount] = useState(0);
@@ -166,14 +115,7 @@ const NavBar = () => {
                             <button
                               type="button"
                               className="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                              onClick={() => {
-                                setOpen(false);
-                                refetch();
-                                setCart(() => {
-                                  refetch();
-                                  return cartData?.cartItem;
-                                });
-                              }}>
+                              onClick={() => setOpen(false)}>
                               <span className="sr-only">Close panel</span>
                               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                             </button>
@@ -188,7 +130,7 @@ const NavBar = () => {
                             <ul role="list" className="-my-6 divide-y divide-gray-200 ">
                               {/* Code here */}
                               {open &&
-                                (!isRefetching ? cart : cartData?.cartItem)?.map(
+                                (cart.loading ? cart?.data?.cartItem : cartData?.cartItem)?.map(
                                   (product, index) => (
                                     <li key={product.productDetail.id} className="flex py-6">
                                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -351,7 +293,6 @@ const NavBar = () => {
                 </Link>
               </button>
             </div>
-            <AuthShowcase />
             <div className="flex justify-center px-4 md:block">
               <button
                 className="
@@ -361,19 +302,10 @@ const NavBar = () => {
                   dark:text-gray-200
                   dark:hover:text-gray-300
                   "
-                onClick={addCart}>
+                onClick={() => setOpen(true)}>
                 <i className="fas fa-shopping-cart"></i>
 
-                <span
-                  className="
-                       absolute
-                       top-0
-                       left-0
-                       rounded-full
-                       bg-indigo-500 p-1
-                       text-xs
-                       text-white
-                       "></span>
+                {/* <span className=" absolute top-0 left-0 rounded-full bg-indigo-500 p-1 text-xs text-white "></span> */}
               </button>
             </div>
           </div>

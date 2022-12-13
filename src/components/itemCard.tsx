@@ -1,22 +1,29 @@
 // import { BsHeart } from 'react-icons/bs'
 // import data from ".//product";
 import { RadioGroup } from "@headlessui/react";
+import { ProductDetail } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
-
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 export default function ItemCard({ item }: { item: any }) {
+  const { cart, setCart } = useCart();
+  const utils = trpc.useContext();
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
-  const mutation = trpc.cartItem.updateOrCreate.useMutation();
+  const mutation = trpc.cartItem.updateOrCreate.useMutation({
+    onSuccess: () => {
+      utils.cart.get.invalidate();
+    },
+  });
 
   const colors: string[] = [];
 
-  item.productDetail?.forEach((color) => {
+  item.productDetail?.forEach((color: ProductDetail) => {
     colors.push(`#${color.colorCode}`);
   });
 
@@ -76,7 +83,7 @@ export default function ItemCard({ item }: { item: any }) {
             className="mt-3">
             <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
             <span className="flex items-center space-x-3">
-              {item.productDetail?.map((item1, index) => {
+              {item.productDetail?.map((item1: ProductDetail, index: number) => {
                 // const color = colorNames("bg-[", "#c29]");
                 return (
                   <RadioGroup.Option

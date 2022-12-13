@@ -2,38 +2,39 @@ import { Menu, Transition } from "@headlessui/react";
 import { signOut, useSession } from "next-auth/react";
 import { Fragment } from "react";
 
-const maleData = [
-  "Coat",
-  "Hoodie",
-  "Jeans",
-  "Pants",
-  "Pj",
-  "Polo",
-  "Shirt",
-  "Shorts",
-  "Sweater",
-  "T-shirt",
-];
-const femaleData = [
-  "Coat",
-  "Hoodie",
-  "Jeans",
-  "Pants",
-  "Pj",
-  "Polo",
-  "Shirt",
-  "Shorts",
-  "Sweater",
-  "T-shirt",
-];
-const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
-const menuData = ["Sign in", "Sign up"];
+// TODO - Remove this
+// const maleData = [
+//   "Coat",
+//   "Hoodie",
+//   "Jeans",
+//   "Pants",
+//   "Pj",
+//   "Polo",
+//   "Shirt",
+//   "Shorts",
+//   "Sweater",
+//   "T-shirt",
+// ];
+// const femaleData = [
+//   "Coat",
+//   "Hoodie",
+//   "Jeans",
+//   "Pants",
+//   "Pj",
+//   "Polo",
+//   "Shirt",
+//   "Shorts",
+//   "Sweater",
+//   "T-shirt",
+// ];
+// const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
+// const menuData = ["Sign in", "Sign up"];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function menuName(name: string, img: string) {
+function menuName(name: string, img: string | null | undefined) {
   if (name === "menu") {
     return (
       <>
@@ -126,6 +127,7 @@ export default function DropdownComponent({
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             {type !== "user" &&
+              //TODO - Thêm key vào
               data?.map((content) => {
                 return (
                   <>

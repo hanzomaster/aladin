@@ -3,20 +3,19 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { log } from "next-axiom";
 import Head from "next/head";
 import Image from "next/image";
+import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const { cart, setCart } = useCart();
+  const { data: cartData } = trpc.cart.get.useQuery();
+  if (cartData) {
+    setCart(cartData);
+  }
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
   const { data } = trpc.cart.get.useQuery();
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
-  const colors: string[] = [];
-
-  data?.productDetail?.forEach((color) => {
-    colors.push(`#${color.colorCode}`);
-  });
-  console.log(colors);
-  const colorred = colors[0];
   return (
     <>
       <Head>
@@ -61,11 +60,7 @@ const Home: NextPage = () => {
             documentation="https://www.prisma.io/docs/"
           />
         </div>
-        <div
-          className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500"
-          style={{
-            background: `${colorred}`,
-          }}>
+        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
         <AuthShowcase />

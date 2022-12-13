@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FormEvent, useEffect, useState } from "react";
-import { PATHS } from "../constants/paths";
+import { PATHS } from "./paths";
 
 enum FETCH_TYPES {
   CITIES = "FETCH_CITIES",

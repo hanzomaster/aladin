@@ -38,8 +38,15 @@ export const cartItemRouter = router({
         },
         include: {
           productDetail: {
-            select: {
-              colorCode: true,
+            include: {
+              product: {
+                select: {
+                  code: true,
+                  buyPrice: true,
+                  name: true,
+                  description: true,
+                },
+              },
             },
           },
         },
