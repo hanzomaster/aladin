@@ -8,6 +8,7 @@ export const cartItemRouter = router({
       z.object({
         productDetailId: z.string(),
         size: z.nativeEnum(ClothSize),
+        numberOfItems: z.number().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -33,7 +34,7 @@ export const cartItemRouter = router({
         },
         update: {
           numberOfItems: {
-            increment: 1,
+            set: input.numberOfItems,
           },
         },
         include: {
