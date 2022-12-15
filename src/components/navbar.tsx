@@ -94,6 +94,11 @@ const NavBar = () => {
     setMessage(event.target.value);
   };
 
+  const getKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      window.location.href = "/home?name=" + message;
+    }
+  };
   return (
     <>
       {/* Cart here  */}
@@ -242,6 +247,7 @@ const NavBar = () => {
                 name="search"
                 placeholder="Search"
                 onChange={handleChange}
+                onKeyDown={getKeyDown}
               />
               <button type="submit" className="absolute right-0 top-0 mt-3 mr-2">
                 <Link href={"/home?name=" + message}>
