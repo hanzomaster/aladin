@@ -30,6 +30,22 @@ export const productDetailRouter = router({
         },
       })
     ),
+  getOneWhereId: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.productDetail.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          productInStock: true,
+        },
+      })
+    ),
   create: adminProcedure.input(createProductDetailSchema).query(({ ctx, input }) =>
     ctx.prisma.productDetail.create({
       data: {

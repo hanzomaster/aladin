@@ -1,15 +1,26 @@
 import { z } from "zod";
-import { adminProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
 
 export const userRouter = router({
-  getAll: adminProcedure.query(({ ctx }) => {
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const userResponse = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        isAdmin: true,
+      },
+    });
+    return userResponse?.isAdmin;
+  }),
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
   getOneWhere: adminProcedure
     .input(
       z
         .object({
-          id: z.string().cuid(),
+          id: z.string().length(25),
           name: z.string(),
           email: z.string().email(),
         })
@@ -23,7 +34,7 @@ export const userRouter = router({
   update: adminProcedure
     .input(
       z.object({
-        id: z.string().cuid(),
+        id: z.string().length(25),
         dto: z
           .object({
             name: z.string(),
