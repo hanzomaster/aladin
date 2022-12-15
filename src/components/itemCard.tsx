@@ -15,6 +15,7 @@ export default function ItemCard({ item }: { item: any }) {
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
+  const [open, setOpen] = useState(false);
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
       utils.cart.get.invalidate();

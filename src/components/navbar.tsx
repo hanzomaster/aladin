@@ -152,7 +152,7 @@ const NavBar = () => {
                             <ul role="list" className="-my-6 divide-y divide-gray-200 ">
                               {/* Code here */}
                               {open &&
-                                (cart.loading ? cart?.data?.cartItem : cartData?.cartItem)?.map(
+                                (!cart.loading ? cart?.data?.cartItem : cartData?.cartItem)?.map(
                                   (product, index) => {
                                     total =
                                       total +
@@ -182,13 +182,11 @@ const NavBar = () => {
                         <p className="mt-0.5 text-sm text-gray-500">
                           Miễn phí vận chuyển toàn quốc.
                         </p>
-                        <div className="mt-6">
-                          <a
-                            href="checkout"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white">
+                        <button className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white">
+                          <a href={sessionData ? "checkout" : "/home"} className="">
                             Thanh toán
                           </a>
-                        </div>
+                        </button>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
                             hoặc
