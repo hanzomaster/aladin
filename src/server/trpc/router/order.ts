@@ -25,6 +25,7 @@ export const orderRouter = router({
         orderNumber: z.string().length(25),
       })
     )
+    //TODO - Finish this
     .query(({ ctx, input }) => {
       return ctx.prisma.order.findUnique({
         where: {},
