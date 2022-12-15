@@ -1,31 +1,44 @@
 // import { BsHeart } from 'react-icons/bs'
 // import data from ".//product";
 import { RadioGroup } from "@headlessui/react";
+import { ProductDetail } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
-
+import { useCart } from "../context/CartContext";
+import { trpc } from "../utils/trpc";
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 export default function ItemCard({ item }: { item: any }) {
+  const { cart, setCart } = useCart();
+  const utils = trpc.useContext();
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
+  const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
+  const mutation = trpc.cartItem.updateOrCreate.useMutation({
+    onSuccess: () => {
+      utils.cart.get.invalidate();
+    },
+  });
 
   const colors: string[] = [];
 
-  item.productDetail?.forEach((color) => {
+  item.productDetail?.forEach((color: ProductDetail) => {
     colors.push(`#${color.colorCode}`);
   });
 
+  const handleAddItemToCart = (id: string) => {
+    mutation.mutate({ productDetailId: id, size: "S" });
+  };
+
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
-    setSelectedImage(() => {
-      for (const product1 of item.productDetail) {
-        if (product1.colorCode === color) {
-          return product1.image;
-        }
+    for (const product1 of item.productDetail) {
+      if (product1.colorCode === color) {
+        setSelectedImage(product1.image);
+        setSelectedId(product1.id);
       }
-    });
+    }
   };
   return (
     <>
@@ -49,13 +62,17 @@ export default function ItemCard({ item }: { item: any }) {
                   alt=""
                 /> */}
           <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
-            <button className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white">
+            <button
+              className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white"
+              onClick={() =>
+                handleAddItemToCart(selectedId ? selectedId : item.productDetail[0]?.id)
+              }>
               Thêm vào giỏ hàng
             </button>
           </div>
         </div>
         <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
-          <a href={"/productdetail/" + item.code}>
+          <a href={"/productDetail/" + item.code}>
             {item.name} &#40;{item.line.gender}&#41;
           </a>
         </h2>
@@ -66,7 +83,7 @@ export default function ItemCard({ item }: { item: any }) {
             className="mt-3">
             <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
             <span className="flex items-center space-x-3">
-              {item.productDetail?.map((item1, index) => {
+              {item.productDetail?.map((item1: ProductDetail, index: number) => {
                 // const color = colorNames("bg-[", "#c29]");
                 return (
                   <RadioGroup.Option

@@ -1,31 +1,54 @@
 import { adminProcedure, protectedProcedure, router } from "../trpc";
-import { cartParams } from "./dto/cart.dto";
 
 export const cartRouter = router({
-  get: protectedProcedure
-    .input(cartParams)
-
-    .query(({ ctx, input }) =>
-      ctx.prisma.cart.findUnique({
-        where: {
-          userId: input.id,
-        },
-        include: {
-          cartItem: true,
-        },
-      })
-    ),
-  clear: protectedProcedure.input(cartParams).mutation(({ ctx, input }) =>
-    ctx.prisma.cartItem.deleteMany({
+  /**
+   * Get the cart of the current logged in user
+   */
+  get: protectedProcedure.query(({ ctx }) =>
+    ctx.prisma.cart.findUnique({
       where: {
-        cartId: input.id,
+        userId: ctx.session.user.id,
+      },
+      include: {
+        cartItem: {
+          include: {
+            productDetail: {
+              include: {
+                product: {
+                  select: {
+                    code: true,
+                    buyPrice: true,
+                    name: true,
+                    description: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     })
   ),
+  /**
+   * Clear the cart of the current logged in user
+   */
+  clear: protectedProcedure.mutation(async ({ ctx }) => {
+    const cartId = await ctx.prisma.cart.findUnique({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+    return ctx.prisma.cartItem.deleteMany({
+      where: {
+        cartId: cartId?.id,
+      },
+    });
+  }),
   getAll: adminProcedure.query(({ ctx }) =>
     ctx.prisma.cart.findMany({
-      skip: 0,
-      take: 10,
       include: {
         cartItem: true,
       },

@@ -1,6 +1,6 @@
 // import { BsHeart } from 'react-icons/bs'
 import Select from "react-select";
-import useLocationForm from "./constants/useLocationForm";
+import useLocationForm from "../constants/useLocationForm";
 
 const products = [
   {

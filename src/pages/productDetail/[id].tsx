@@ -7,49 +7,6 @@ import { Fragment, useState } from "react";
 import NavBar from "../../components/navbar";
 import { trpc } from "../../utils/trpc";
 
-// const product = {
-//   name: "Basic Tee 6-Pack ",
-//   price: "192.000",
-//   imageSrc: {
-//     "#d2d6d7": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sa432-m-1.webp",
-//     "#ad2134": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sr014-m-1.webp",
-//     "#201f24": "https://canifa.com/img/1000/1500/resize/6/i/6it22w004-sk010-m-1.webp",
-//   },
-//   imageAlt: "Two each of gray, white, and black shirts arranged on table.",
-//   colors: [
-//     { name: "#d2d6d7", class: "bg-[#d2d6d7]", selectedClass: "ring-gray-400" },
-//     { name: "#ad2134", class: "bg-[#ad2134]", selectedClass: "ring-gray-400" },
-//     { name: "#201f24", class: "bg-[#201f24]", selectedClass: "ring-gray-900" },
-//   ],
-
-// export async function getStaticPaths() {
-//   const { data } = trpc.product.getAll.useQuery();
-
-//   const paths = data?.map((item) => ({
-//     params: { id: item.code },
-//   }));
-//   return {
-//     paths,
-//     fallback: false, // can also be true or 'blocking'
-//   };
-// }
-
-// `getStaticPaths` requires using `getStaticProps`
-// export async function getStaticProps(context) {
-//   const id = context.params.id;
-//   const { data } = trpc.product.getOneWhere.useQuery({ code: id as string });
-//   return {
-//     // Passed to the page component as props
-//     props: { product: data },
-//   };
-// }
-const sizes = [
-  { name: "S", inStock: true },
-  { name: "M", inStock: true },
-  { name: "L", inStock: true },
-  { name: "XL", inStock: true },
-  { name: "XXL", inStock: false },
-];
 const sizeGuideSrc = "https://canifa.com/assets/Women-measurement.png";
 // const description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 // };
@@ -65,10 +22,15 @@ const ProductDetail: NextPage = () => {
   const { id } = router.query;
   const { data: product } = trpc.product.getOneWhere.useQuery({ code: id as string });
   const [selectedColor, setSelectedColor] = useState(product?.productDetail[0]?.colorCode);
-  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [selectedSize, setSelectedSize] = useState("S");
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
-
+  const [selectedId, setSelectedId] = useState(product?.productDetail[0]?.id as string);
+  // const sizes:
   const colors: string[] = [];
+
+  const { data: sizes } = trpc.productDetail.getOneWhereId.useQuery({
+    id: (selectedId ? selectedId : product?.productDetail[0]?.id) as string,
+  });
 
   product?.productDetail?.forEach((color) => {
     colors.push(`#${color.colorCode}`);
@@ -77,13 +39,12 @@ const ProductDetail: NextPage = () => {
   // change image when color is selected
   const handleChooseColor = (color: any) => {
     setSelectedColor(color);
-    setSelectedImage(() => {
-      for (const product1 of product?.productDetail) {
-        if (product1.colorCode === color) {
-          return product1.image;
-        }
+    for (const product1 of product?.productDetail) {
+      if (product1.colorCode === color) {
+        setSelectedImage(product1.image);
+        setSelectedId(product1.id);
       }
-    });
+    }
   };
 
   return (
@@ -257,14 +218,14 @@ const ProductDetail: NextPage = () => {
                           className="mt-4">
                           <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                           <div className="grid w-3/4 grid-cols-5 gap-4">
-                            {sizes.map((size) => (
+                            {sizes?.productInStock?.map((size) => (
                               <RadioGroup.Option
-                                key={size.name}
+                                key={size.size}
                                 value={size}
-                                disabled={!size.inStock}
+                                disabled={!(size.quantity > 0)}
                                 className={({ active }) =>
                                   classNames(
-                                    size.inStock
+                                    size.quantity > 0
                                       ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                                       : "cursor-not-allowed bg-gray-50 text-gray-200",
                                     active ? "ring-2 ring-indigo-500" : "",
@@ -273,8 +234,8 @@ const ProductDetail: NextPage = () => {
                                 }>
                                 {({ active, checked }) => (
                                   <>
-                                    <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
-                                    {size.inStock ? (
+                                    <RadioGroup.Label as="span">{size.size}</RadioGroup.Label>
+                                    {size.quantity > 0 ? (
                                       <span
                                         className={classNames(
                                           active ? "border" : "border-2",
