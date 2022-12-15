@@ -58,7 +58,6 @@ const NavBar = () => {
   });
 
   const [open, setOpen] = useState(false);
-
   const removeItem = (productDetailId: string) => {
     mutation.mutate({ productDetailId: productDetailId });
   };

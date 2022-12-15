@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { useState } from "react";
-import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 
 const CartItem = ({ product }: any) => {
   const [count, setCount] = useState(0);
   const utils = trpc.useContext();
-  const { cart, setCart } = useCart();
+
   const mutation = trpc.cartItem.delete.useMutation({
     onSuccess() {
       utils.cart.get.invalidate();

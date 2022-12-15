@@ -1,10 +1,13 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ClothSize } from "@prisma/client";
 import { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import NavBar from "../../components/navbar";
+import { useToast } from "../../components/Toast";
 import { trpc } from "../../utils/trpc";
 
 const sizeGuideSrc = "https://canifa.com/assets/Women-measurement.png";
@@ -18,13 +21,52 @@ function colorNames(...classes: any) {
 }
 const ProductDetail: NextPage = () => {
   const [open, setOpen] = useState(false);
+  const { add: toast } = useToast();
+
   const router = useRouter();
   const { id } = router.query;
   const { data: product } = trpc.product.getOneWhere.useQuery({ code: id as string });
+  const utils = trpc.useContext();
+  const { data: sessionData } = useSession();
   const [selectedColor, setSelectedColor] = useState(product?.productDetail[0]?.colorCode);
-  const [selectedSize, setSelectedSize] = useState("S");
+  const [selectedSize, setSelectedSize] = useState(ClothSize.S);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(product?.productDetail[0]?.id as string);
+  const mutation = trpc.cartItem.updateOrCreate.useMutation({
+    onSuccess: () => {
+      utils.cart.get.invalidate();
+      toast({
+        type: "success",
+        duration: 2000,
+        message: "Thêm vào giỏ hàng thành công",
+        position: "topRight",
+      });
+    },
+  });
+
+  const handleAddItemToCart = (id: string) => {
+    // // let size = ClothSize.S
+
+    // // switch(selectedSize) {
+    // //   case "M":
+    // //     size = ClothSize.M;
+    // //     break;
+
+    // }
+    // ClothSize.L
+
+    sessionData
+      ? mutation.mutate({
+          productDetailId: id,
+          size: selectedSize,
+        })
+      : toast({
+          type: "error",
+          duration: 2000,
+          message: "Bạn chưa đăng nhập",
+          position: "topRight",
+        });
+  };
   // const sizes:
   const colors: string[] = [];
 
@@ -223,6 +265,9 @@ const ProductDetail: NextPage = () => {
                                 key={size.size}
                                 value={size}
                                 disabled={!(size.quantity > 0)}
+                                onClick={() => {
+                                  setSelectedSize(size.size);
+                                }}
                                 className={({ active }) =>
                                   classNames(
                                     size.quantity > 0
@@ -294,16 +339,14 @@ const ProductDetail: NextPage = () => {
                       </div>
                       <button
                         type="submit"
+                        onClick={() =>
+                          handleAddItemToCart(
+                            selectedId ? selectedId : product.productDetail[0]?.id
+                          )
+                        }
                         className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white focus:outline-none hover:bg-[#28343a]
               ">
                         Thêm vào giỏ hàng
-                      </button>
-
-                      <button
-                        type="submit"
-                        className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white focus:outline-none hover:bg-[#28343a]
-              ">
-                        Mua ngay
                       </button>
                     </form>
                   </section>

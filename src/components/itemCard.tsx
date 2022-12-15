@@ -2,10 +2,13 @@
 // import data from ".//product";
 import { RadioGroup } from "@headlessui/react";
 import { ProductDetail } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
+
 import { trpc } from "../utils/trpc";
+import { useToast } from "./Toast";
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
@@ -16,6 +19,9 @@ export default function ItemCard({ item }: { item: any }) {
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
   const [open, setOpen] = useState(false);
+  const { data: sessionData } = useSession();
+  const { add: toast, remove } = useToast();
+
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
       utils.cart.get.invalidate();
@@ -29,7 +35,20 @@ export default function ItemCard({ item }: { item: any }) {
   });
 
   const handleAddItemToCart = (id: string) => {
-    mutation.mutate({ productDetailId: id, size: "S" });
+    toast({
+      type: "success",
+      duration: 2000,
+      message: "Thêm vào giỏ hàng thành công",
+      position: "topRight",
+    });
+    sessionData
+      ? mutation.mutate({ productDetailId: id, size: "S" })
+      : toast({
+          type: "error",
+          duration: 2000,
+          message: "Bạn chưa đăng nhập",
+          position: "topRight",
+        });
   };
 
   const handleChooseColor = (color: any) => {
