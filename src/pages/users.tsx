@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import Pagination from "../components/Pagination";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import UsersList from "../components/UsersList";
 import { trpc } from "../utils/trpc";
 export const postsPerPage = 10;
