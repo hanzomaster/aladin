@@ -48,10 +48,7 @@ const NewProduct: NextPage = () => {
             htmlFor="description">
             Mô tả
           </label>
-          <textarea
-            className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
-            autoFocus
-          />
+          <textarea className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base" />
         </div>
         <div className="my-5 lg:w-[60%]">
           <label className="my-5 text-sm font-semibold text-gray-500 md:text-base" htmlFor="email">
@@ -60,7 +57,6 @@ const NewProduct: NextPage = () => {
           <input
             className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
             type="text"
-            autoFocus
           />
         </div>
 

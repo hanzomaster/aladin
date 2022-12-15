@@ -1,8 +1,10 @@
-import React from "react";
+import { postsPerPage } from "../pages/orders";
+import { trpc } from "../utils/trpc";
 
-const OrdersList = ({ ordersData }: any) => {
+const UsersList = ({ usersData, handleActive }: any) => {
   return (
     <div className=" mb-10 w-full">
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre>; */}
       <table className="w-full">
         <thead className="border-b bg-white">
           <tr>
@@ -14,29 +16,23 @@ const OrdersList = ({ ordersData }: any) => {
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Mã đơn hàng
+              Mã số
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Khách hàng
+              Họ tên
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Ngày đặt hàng
+              Email
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Sản phẩm
+              Số điện thoại
             </th>
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Hóa đơn
-            </th>
-
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
@@ -45,20 +41,25 @@ const OrdersList = ({ ordersData }: any) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {ordersData?.map((order, index) => {
+          {usersData?.map((user, index) => {
             return (
               <tr
                 key={index}
                 className="border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base">
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{index + 1}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderNumber}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.customerNumber}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.id}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.name}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.email}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.phone}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {order.orderDate.toString()}
+                  <button
+                    className={`${
+                      user.status === true ? "bg-green-500" : "bg-red-500"
+                    } rounded-md px-2 py-1 text-xs font-medium text-white`}
+                    onClick={() => handleActive(user.id, user.status)}>
+                    {user.status === true ? "Active" : "Inactive"}
+                  </button>
                 </td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderdetail.length}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.current_price}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.status}</td>
               </tr>
             );
           })}
@@ -68,4 +69,4 @@ const OrdersList = ({ ordersData }: any) => {
   );
 };
 
-export default OrdersList;
+export default UsersList;

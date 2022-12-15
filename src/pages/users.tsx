@@ -2,32 +2,31 @@ import { NextPage } from "next";
 import Pagination from "../components/Pagination";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import OrdersList from "../components/OrdersList";
+import UsersList from "../components/UsersList";
 import { trpc } from "../utils/trpc";
 export const postsPerPage = 10;
 
-const Orders: NextPage = () => {
-  const [ordersData, setOrdersData] = useState([]);
+const Users: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // example data
-  useEffect(async () => {
-    const response = await axios.get(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-    );
+  const utils = trpc.useContext();
+  const { data } = trpc.user.getAll.useQuery();
+  const mutation = trpc.user.toggleActive.useMutation({
+    onSuccess() {
+      utils.user.getAll.invalidate();
+    },
+  });
 
-    setOrdersData(response.data);
-  }, []);
-
-  const { data } = trpc.order.getAll.useQuery();
-
+  const handleActive = (id: string, status: boolean) => {
+    mutation.mutate({ id, status });
+  };
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data?.slice(firstPostIndex, lastPostIndex);
   return (
     <div className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
-      <h1 className="text-3xl font-medium text-gray-900 ">Orders</h1>
-      <OrdersList ordersData={currentPosts} />
+      <h1 className="text-3xl font-medium text-gray-900 ">Users</h1>
+      <UsersList usersData={currentPosts} handleActive={handleActive} />
       <Pagination
         totalPosts={data?.length}
         postsPerPage={postsPerPage}
@@ -37,4 +36,4 @@ const Orders: NextPage = () => {
     </div>
   );
 };
-export default Orders;
+export default Users;

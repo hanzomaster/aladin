@@ -9,7 +9,7 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
   }
 
   return (
-    <div className="isolate inline-flex -space-x-px rounded-md shadow-sm">
+    <div className="absolute bottom-20 right-20 isolate inline-flex -space-x-px rounded-md shadow-sm">
       <button
         onClick={() => setCurrentPage(currentPage - 1)}
         className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 focus:z-20 hover:bg-gray-200">

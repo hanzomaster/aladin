@@ -65,7 +65,7 @@ export const userRouter = router({
    *
    * @param id The id of the user to make inactive
    */
-  makeInactive: adminProcedure
+  toggleActive: adminProcedure
     .input(
       z.object({
         id: z
@@ -76,15 +76,16 @@ export const userRouter = router({
           .cuid({
             message: "The id of the user must be a valid cuid",
           }),
+        status: z.boolean(),
       })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
           id: input.id,
         },
         data: {
-          status: false,
+          status: !input.status,
         },
       });
     }),
