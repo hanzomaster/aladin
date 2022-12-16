@@ -1,10 +1,10 @@
 import { NextPage } from "next";
-import SidebarAdmin from "../components/SidebarAdmin";
+import SidebarAdmin from "../../components/admin/SidebarAdmin";
 import extractColors from "extract-colors";
 import getPixels from "get-pixels";
 import Colors from "get-image-colors";
-import Table from "../components/Table";
-import DropDownItem from "../components/DropDownItem";
+import Table from "../../components/Table";
+import DropDownItem from "../../components/admin/DropDownItem";
 // import { test } from "../utils/test";
 const NewProduct: NextPage = () => {
   // console.log(test);

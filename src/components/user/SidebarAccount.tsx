@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SidebarItems from "./SidebarItems";
+import SidebarItems from "../SidebarItems";
 
 function SidebarAccount() {
   return (

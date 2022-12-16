@@ -1,9 +1,10 @@
 import { Product } from "@prisma/client";
-import React from "react";
+import React, { useState } from "react";
 import { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "../server/trpc/router/_app";
-import { trpc } from "../utils/trpc";
-const OrdersList = ({
+import { AppRouter } from "../../server/trpc/router/_app";
+import { trpc } from "../../utils/trpc";
+import QuantityProduct from "./QuantityProduct";
+const ProductsList = ({
   productsData,
 }: {
   productsData: inferRouterOutputs<AppRouter>["product"]["getAll"] | undefined;
@@ -38,11 +39,7 @@ const OrdersList = ({
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
               Tên sản phẩm
             </th>
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Màu sắc
-            </th>
+
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
@@ -51,23 +48,7 @@ const OrdersList = ({
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              S
-            </th>
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              M
-            </th>
-
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              L
-            </th>
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              XL
+              Số lượng
             </th>
           </tr>
         </thead>
@@ -84,13 +65,16 @@ const OrdersList = ({
                 </td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{product.line?.type}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{product.name}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {product.productDetail?.[0]?.colorCode}
-                </td>
+
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   {product.buyPrice.toString()}
                 </td>
+
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
+                  <QuantityProduct productDetail={product.productDetail} />
+                </td>
+
+                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   {product.productDetail?.[0]?.productInStock[0]?.quantity}
                 </td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
@@ -101,7 +85,7 @@ const OrdersList = ({
                 </td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   {product.productDetail?.[0]?.productInStock[3]?.quantity}
-                </td>
+                </td> */}
               </tr>
             );
           })}
@@ -111,4 +95,4 @@ const OrdersList = ({
   );
 };
 
-export default OrdersList;
+export default ProductsList;

@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import OrderedItem from "../components/OrderedItem";
-import SidebarAccount from "../components/SidebarAccount";
+import OrderedItem from "../components/user/OrderedItem";
+import SidebarAccount from "../components/user/SidebarAccount";
 import NavBar from "./component/navbar";
 import OrderDetail from "./orderdetail";
 

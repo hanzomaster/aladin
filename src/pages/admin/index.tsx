@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import SidebarAdmin from "../components/SidebarAdmin";
+import SidebarAdmin from "../../components/admin/SidebarAdmin";
 
 const Admin: NextPage = () => {
   return (

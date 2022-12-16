@@ -37,4 +37,3 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
 };
 
 export default Pagination;
-// {page == currentPage ? "active" : ""} +

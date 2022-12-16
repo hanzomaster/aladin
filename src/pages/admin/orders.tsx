@@ -1,10 +1,10 @@
 import { NextPage } from "next";
-import Pagination from "../components/Pagination";
+import Pagination from "../../components/admin/Pagination";
 import { useEffect, useState } from "react";
-import OrdersList from "../components/OrdersList";
-import { trpc } from "../utils/trpc";
+import OrdersList from "../../components/admin/OrdersList";
+import { trpc } from "../../utils/trpc";
 import { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "../server/trpc/router/_app";
+import { AppRouter } from "../../server/trpc/router/_app";
 export const postsPerPage = 10;
 
 const Orders: NextPage = () => {

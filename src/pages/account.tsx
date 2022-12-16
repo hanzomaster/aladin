@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useState } from "react";
-import SidebarAccount from "../components/SidebarAccount";
+import SidebarAccount from "../components/user/SidebarAccount";
 import Navbar from "./component/navbar";
 
 const Account: NextPage = () => {

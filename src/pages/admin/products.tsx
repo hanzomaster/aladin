@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import Pagination from "../components/Pagination";
+import Pagination from "../../components/admin/Pagination";
 import { useEffect, useState } from "react";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 import { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "../server/trpc/router/_app";
+import { AppRouter } from "../../server/trpc/router/_app";
 
-import ProductsList from "../components/ProductsList";
+import ProductsList from "../../components/admin/ProductsList";
 export const postsPerPage = 3;
 
 const Orders: NextPage = () => {
@@ -40,7 +40,7 @@ const Orders: NextPage = () => {
   return (
     <div className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
       <pre>{searchResult?.length}</pre>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
 
       <h1 className="text-3xl font-medium text-gray-900 ">Products</h1>
       <div className="mt-5 flex w-3/4 rounded border border-gray-300 bg-white shadow-sm">

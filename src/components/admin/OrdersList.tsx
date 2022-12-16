@@ -1,10 +1,14 @@
-import { postsPerPage } from "../pages/orders";
-import { trpc } from "../utils/trpc";
-
-const UsersList = ({ usersData, handleActive }: any) => {
+import { Order } from "@prisma/client";
+import React from "react";
+import { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "../../server/trpc/router/_app";
+const OrdersList = ({
+  ordersData,
+}: {
+  ordersData: inferRouterOutputs<AppRouter>["order"]["getAll"];
+}) => {
   return (
     <div className=" mb-10 w-full">
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre>; */}
       <table className="w-full">
         <thead className="border-b bg-white">
           <tr>
@@ -16,23 +20,29 @@ const UsersList = ({ usersData, handleActive }: any) => {
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Mã số
+              Mã đơn hàng
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Họ tên
+              Khách hàng
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Email
+              Ngày đặt hàng
             </th>
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Số điện thoại
+              Sản phẩm
             </th>
+            <th
+              scope="col"
+              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
+              Hóa đơn
+            </th>
+
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
@@ -41,25 +51,21 @@ const UsersList = ({ usersData, handleActive }: any) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {usersData?.map((user, index) => {
+          {ordersData?.map((order: Order, index: number) => {
             return (
               <tr
                 key={index}
                 className="border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base">
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{index + 1}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.id}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.name}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.email}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{user.phone}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderNumber}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.customerNumber}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  <button
-                    className={`${
-                      user.status === true ? "bg-green-500" : "bg-red-500"
-                    } rounded-md px-2 py-1 text-xs font-medium text-white`}
-                    onClick={() => handleActive(user.id, user.status)}>
-                    {user.status === true ? "Active" : "Inactive"}
-                  </button>
+                  {order.orderDate.toString()}
                 </td>
+                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{
+                order.}</td> */}
+                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.current_price}</td> */}
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.status}</td>
               </tr>
             );
           })}
@@ -69,4 +75,4 @@ const UsersList = ({ usersData, handleActive }: any) => {
   );
 };
 
-export default UsersList;
+export default OrdersList;

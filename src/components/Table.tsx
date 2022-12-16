@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import DragImage from "./DragImage";
+import DragImage from "./admin/DragImage";
 
 class Tabel extends React.Component {
   state = {

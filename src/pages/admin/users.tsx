@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import Pagination from "../components/Pagination";
+import Pagination from "../../components/admin/Pagination";
 import { useState } from "react";
-import UsersList from "../components/UsersList";
-import { trpc } from "../utils/trpc";
+import UsersList from "../../components/admin/UsersList";
+import { trpc } from "../../utils/trpc";
 export const postsPerPage = 10;
 
 const Users: NextPage = () => {
@@ -10,7 +10,7 @@ const Users: NextPage = () => {
 
   const utils = trpc.useContext();
   const { data } = trpc.user.getAll.useQuery();
-  const mutation = trpc.user.toggleActive.useMutation({
+  const mutation = trpc.user.toggleStatus.useMutation({
     onSuccess() {
       utils.user.getAll.invalidate();
     },
