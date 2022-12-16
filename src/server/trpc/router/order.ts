@@ -46,9 +46,20 @@ export const orderRouter = router({
     }),
   create: protectedProcedure
     .input(
-      z.object({
-        comment: z.string().optional(),
-      })
+      z
+        .object({
+          comment: z.string(),
+          address: z.object({
+            receiver: z.string(),
+            phone: z.string(),
+            city: z.string(),
+            district: z.string(),
+            ward: z.string(),
+            detail: z.string(),
+          }),
+          addressId: z.string(),
+        })
+        .partial()
     )
     .mutation(async ({ ctx, input }) => {
       const userCart = await ctx.prisma.cart.findUnique({
@@ -63,13 +74,9 @@ export const orderRouter = router({
               productDetail: {
                 select: {
                   id: true,
-                  colorCode: true,
-                  image: true,
                   product: {
                     select: {
                       buyPrice: true,
-                      name: true,
-                      description: true,
                     },
                   },
                 },
@@ -78,36 +85,69 @@ export const orderRouter = router({
           },
         },
       });
-      const userInfo = await ctx.prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        include: {
-          address: true,
-        },
-      });
-      const defaultAddress = userInfo?.address.find((address) => address.isDefault);
       if (!userCart) {
         throw new Error("Cart not found");
       }
       if (!userCart.cartItem.length) {
         throw new Error("Cart is empty");
       }
-      return ctx.prisma.order.create({
-        data: {
-          customerNumber: ctx.session.user.id,
-          address: `${defaultAddress?.receiver}, ${defaultAddress?.phone}\n${defaultAddress?.detail}, ${defaultAddress?.ward}, ${defaultAddress?.district}, ${defaultAddress?.city}`,
-          orderdetail: {
-            create: userCart.cartItem.map((cartItem) => ({
-              quantityInOrdered: cartItem.numberOfItems,
-              priceEach: cartItem.productDetail.product.buyPrice,
-              size: cartItem.size,
-              productDetailId: cartItem.productDetail.id,
-            })),
+      if (!input.address && !input.addressId) {
+        throw new Error("Address is required");
+      }
+      if (input.address && !input.addressId)
+        return ctx.prisma.order.create({
+          data: {
+            customer: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+            address: {
+              create: {
+                receiver: input.address.receiver,
+                phone: input.address.phone,
+                city: input.address.city,
+                district: input.address.district,
+                ward: input.address.ward,
+                detail: input.address.detail,
+                userId: ctx.session.user.id,
+              },
+            },
+            orderdetail: {
+              create: userCart.cartItem.map((cartItem) => ({
+                quantityInOrdered: cartItem.numberOfItems,
+                priceEach: cartItem.productDetail.product.buyPrice,
+                size: cartItem.size,
+                productDetailId: cartItem.productDetail.id,
+              })),
+            },
+            comments: input.comment,
           },
-          comments: input.comment,
-        },
-      });
+        });
+      if (!input.address && input.addressId)
+        return ctx.prisma.order.create({
+          data: {
+            customer: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+            address: {
+              connect: {
+                id: input.addressId,
+              },
+            },
+            orderdetail: {
+              create: userCart.cartItem.map((cartItem) => ({
+                quantityInOrdered: cartItem.numberOfItems,
+                priceEach: cartItem.productDetail.product.buyPrice,
+                size: cartItem.size,
+                productDetailId: cartItem.productDetail.id,
+              })),
+            },
+            comments: input.comment,
+          },
+        });
     }),
   updateStatus: publicProcedure
     .input(

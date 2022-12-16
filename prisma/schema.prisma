@@ -111,15 +111,17 @@ model Order {
     orderNumber    String        @id @default(cuid())
     orderDate      DateTime      @default(now())
     shippedDate    DateTime      @default(now())
-    address        String        @db.Text
+    addressId      String
     status         OrderStatus   @default(InProcess)
     comments       String?       @db.Text
     customerNumber String
     orderdetail    OrderDetail[]
 
-    customer User @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
+    customer User    @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
+    address  Address @relation(fields: [addressId], references: [id])
 
     @@index([customerNumber])
+    @@index([addressId])
     @@map("orders")
 }
 
@@ -150,6 +152,7 @@ model Cart {
 }
 
 model CartItem {
+    id              String    @id @default(cuid())
     productDetailId String
     cartId          String
     numberOfItems   Int       @default(1)
@@ -158,7 +161,7 @@ model CartItem {
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
     cart          Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
-    @@id([productDetailId, cartId])
+    @@unique([productDetailId, cartId, size])
     @@index([productDetailId])
     @@index([cartId])
     @@map("cart_item")
@@ -187,12 +190,13 @@ model Address {
     receiver  String  @db.VarChar(50)
     phone     String  @db.VarChar(50)
     city      String  @db.VarChar(50)
-    district  String? @db.VarChar(50)
-    ward      String? @db.VarChar(50)
-    detail    String? @db.Text
+    district  String  @db.VarChar(50)
+    ward      String  @db.VarChar(50)
+    detail    String  @db.Text
     isDefault Boolean @default(false)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Order Order[]
 
     @@index([userId])
     @@map("addresses")

@@ -7,12 +7,10 @@ export const cartItemRouter = router({
     .input(
       z.object({
         productDetailId: z.string(),
-        dto: z
-          .object({
-            size: z.nativeEnum(ClothSize),
-            numberOfItems: z.number().min(1),
-          })
-          .partial(),
+        dto: z.object({
+          size: z.nativeEnum(ClothSize),
+          numberOfItems: z.number().min(1),
+        }),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -26,9 +24,10 @@ export const cartItemRouter = router({
       }
       return ctx.prisma.cartItem.upsert({
         where: {
-          productDetailId_cartId: {
+          productDetailId_cartId_size: {
             cartId: cart.id,
             productDetailId: input.productDetailId,
+            size: input.dto.size,
           },
         },
         create: {
@@ -54,6 +53,7 @@ export const cartItemRouter = router({
     .input(
       z.object({
         productDetailId: z.string(),
+        size: z.nativeEnum(ClothSize),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -67,9 +67,10 @@ export const cartItemRouter = router({
       }
       return ctx.prisma.cartItem.delete({
         where: {
-          productDetailId_cartId: {
+          productDetailId_cartId_size: {
             cartId: cart.id,
             productDetailId: input.productDetailId,
+            size: input.size,
           },
         },
       });

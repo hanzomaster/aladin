@@ -4,7 +4,7 @@ CREATE TABLE `comments` (
     `productId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `content` TEXT NOT NULL,
-    `rating` DOUBLE NOT NULL,
+    `rating` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     INDEX `comments_productId_idx`(`productId`),
@@ -64,13 +64,14 @@ CREATE TABLE `productlines` (
 CREATE TABLE `orders` (
     `orderNumber` VARCHAR(191) NOT NULL,
     `orderDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `requiredDate` DATETIME(3) NOT NULL,
     `shippedDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `addressId` VARCHAR(191) NOT NULL,
     `status` ENUM('InProcess', 'Shipped', 'Cancelled') NOT NULL DEFAULT 'InProcess',
     `comments` TEXT NULL,
     `customerNumber` VARCHAR(191) NOT NULL,
 
     INDEX `orders_customerNumber_idx`(`customerNumber`),
+    INDEX `orders_addressId_idx`(`addressId`),
     PRIMARY KEY (`orderNumber`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -78,8 +79,9 @@ CREATE TABLE `orders` (
 CREATE TABLE `orderdetails` (
     `orderNumber` VARCHAR(191) NOT NULL,
     `productDetailId` VARCHAR(191) NOT NULL,
-    `quantityInOrderd` INTEGER NOT NULL,
+    `quantityInOrdered` INTEGER NOT NULL,
     `priceEach` DECIMAL(10, 2) NOT NULL,
+    `size` ENUM('S', 'M', 'L', 'XL', 'XXl') NOT NULL,
     `orderLineNumber` SMALLINT NULL,
 
     INDEX `orderdetails_orderNumber_idx`(`orderNumber`),
@@ -98,13 +100,16 @@ CREATE TABLE `cart` (
 
 -- CreateTable
 CREATE TABLE `cart_item` (
+    `id` VARCHAR(191) NOT NULL,
     `productDetailId` VARCHAR(191) NOT NULL,
     `cartId` VARCHAR(191) NOT NULL,
-    `numberOfItems` INTEGER NOT NULL,
+    `numberOfItems` INTEGER NOT NULL DEFAULT 1,
+    `size` ENUM('S', 'M', 'L', 'XL', 'XXl') NOT NULL,
 
     INDEX `cart_item_productDetailId_idx`(`productDetailId`),
     INDEX `cart_item_cartId_idx`(`cartId`),
-    PRIMARY KEY (`productDetailId`, `cartId`)
+    UNIQUE INDEX `cart_item_productDetailId_cartId_size_key`(`productDetailId`, `cartId`, `size`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
