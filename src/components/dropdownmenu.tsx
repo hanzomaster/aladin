@@ -110,7 +110,7 @@ export default function DropdownComponent({
 }: {
   title: any;
   type: any;
-  data: string[];
+  data: any;
 }) {
   const { data: sessionData } = useSession();
   return (
@@ -126,6 +126,9 @@ export default function DropdownComponent({
         leaveTo="transform opacity-0 scale-95">
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
+            {type === "user" && (
+              <h1 className="bg-slate-100 py-4 pl-3 font-bold">{sessionData?.user?.name}</h1>
+            )}
             {type !== "user" &&
               //TODO - Thêm key vào
               data?.map((content) => {
@@ -141,14 +144,6 @@ export default function DropdownComponent({
                           )}>
                           {content}
                         </a>
-                        // <a
-                        //   href
-                        // className={classNames(
-                        //   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        //   "block px-4 py-2 text-sm"
-                        // )}>
-                        //   {content}
-                        // </a>
                       )}
                     </Menu.Item>
                   </>
@@ -159,33 +154,42 @@ export default function DropdownComponent({
                 return (
                   <>
                     <Menu.Item>
-                      {({ active }) => (
-                        // <button
-                        //   className={classNames(
-                        //     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        //     "block px-2 py-2 text-sm"
-                        //   )}
-                        //   onClick={() => (content === "Đăng xuất" ? signOut() : null)}>
-                        //   {content}
-                        // </button>
-                        <div
-                          // href={"/home/" + content + "?gender=" + type}
-                          onClick={() => (content === "Đăng xuất" ? signOut() : null)}
-                          className={classNames(
-                            active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}>
-                          {content}
-                        </div>
-                        // <a
-                        //   href
-                        // className={classNames(
-                        //   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        //   "block px-4 py-2 text-sm"
-                        // )}>
-                        //   {content}
-                        // </a>
-                      )}
+                      {({ active }) => {
+                        if (content === "Đăng xuất")
+                          return (
+                            <div
+                              onClick={() => signOut()}
+                              className={classNames(
+                                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                "block cursor-pointer px-4 py-2 text-sm"
+                              )}>
+                              {content}
+                            </div>
+                          );
+                        if (content === "Quản lý tài khoản")
+                          return (
+                            <div
+                              onClick={() => (window.location.href = "/account")}
+                              className={classNames(
+                                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                "block cursor-pointer px-4 py-2 text-sm"
+                              )}>
+                              {content}
+                            </div>
+                          );
+
+                        if (content === "Quản lý đơn hàng")
+                          return (
+                            <div
+                              onClick={() => (window.location.href = "/purchase")}
+                              className={classNames(
+                                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                "block cursor-pointer px-4 py-2 text-sm"
+                              )}>
+                              {content}
+                            </div>
+                          );
+                      }}
                     </Menu.Item>
                   </>
                 );
