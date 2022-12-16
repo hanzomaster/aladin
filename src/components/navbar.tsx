@@ -17,7 +17,7 @@ import DropdownComponent from "./dropdownmenu";
 //     props: { cartData },
 //   };
 // };
-const maleData = [
+export const maleData = [
   "Coat",
   "Hoodie",
   "Jeans",
@@ -30,7 +30,7 @@ const maleData = [
   "T-shirt",
 ];
 
-const femaleData = [
+export const femaleData = [
   "Coat",
   "Hoodie",
   "Jeans",

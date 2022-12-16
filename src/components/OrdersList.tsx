@@ -1,6 +1,12 @@
+import { Order } from "@prisma/client";
 import React from "react";
-
-const OrdersList = ({ ordersData }: any) => {
+import { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "../server/trpc/router/_app";
+const OrdersList = ({
+  ordersData,
+}: {
+  ordersData: inferRouterOutputs<AppRouter>["order"]["getAll"];
+}) => {
   return (
     <div className=" mb-10 w-full">
       <table className="w-full">
@@ -45,7 +51,7 @@ const OrdersList = ({ ordersData }: any) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {ordersData?.map((order, index) => {
+          {ordersData?.map((order: Order, index: number) => {
             return (
               <tr
                 key={index}
@@ -56,8 +62,9 @@ const OrdersList = ({ ordersData }: any) => {
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   {order.orderDate.toString()}
                 </td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderdetail.length}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.current_price}</td>
+                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{
+                order.}</td> */}
+                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.current_price}</td> */}
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.status}</td>
               </tr>
             );
