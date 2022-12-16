@@ -1,4 +1,4 @@
-import { OrderStatus, Prisma } from "@prisma/client";
+import { ClothSize, OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
 
@@ -48,11 +48,13 @@ export const orderRouter = router({
       z.object({
         requireDate: z.date(),
         comments: z.string().optional(),
+        address: z.string(),
         orderdetail: z.array(
           z.object({
             productDetailId: z.string().cuid(),
             quantityInOrdered: z.number().int(),
             priceEach: z.number(),
+            size: z.nativeEnum(ClothSize),
           })
         ),
       })
@@ -61,13 +63,14 @@ export const orderRouter = router({
       return ctx.prisma.order.create({
         data: {
           customerNumber: ctx.session.user.id,
-          requiredDate: input.requireDate,
           comments: input.comments,
+          address: input.address,
           orderdetail: {
             create: input.orderdetail.map((item) => ({
               productDetailId: item.productDetailId,
               quantityInOrdered: item.quantityInOrdered,
               priceEach: item.priceEach,
+              size: item.size,
             })),
           },
         },
