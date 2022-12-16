@@ -41,9 +41,8 @@ export default function ItemCard({ item }: { item: any }) {
   });
 
   const handleAddItemToCart = (id: string) => {
-    
     sessionData
-      ? mutation.mutate({ productDetailId: id, dto: {} })
+      ? mutation.mutate({ productDetailId: id, dto: { size: "S" } })
       : toast({
           type: "error",
           duration: 2000,

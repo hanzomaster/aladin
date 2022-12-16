@@ -1,6 +1,5 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { ClothSize } from "@prisma/client";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -16,22 +15,20 @@ const sizeGuideSrc = "https://canifa.com/assets/Women-measurement.png";
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
-function colorNames(...classes: any) {
-  return classes.filter(Boolean).join("");
-}
+
 const ProductDetail: NextPage = () => {
   const [open, setOpen] = useState(false);
   const { add: toast } = useToast();
-
   const router = useRouter();
   const { id } = router.query;
   const { data: product } = trpc.product.getOneWhere.useQuery({ code: id as string });
   const utils = trpc.useContext();
   const { data: sessionData } = useSession();
   const [selectedColor, setSelectedColor] = useState(product?.productDetail[0]?.colorCode);
-  const [selectedSize, setSelectedSize] = useState(ClothSize.S);
+  const [selectedSize, setSelectedSize] = useState(size.S);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(product?.productDetail[0]?.id as string);
+
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
       utils.cart.get.invalidate();
@@ -42,23 +39,23 @@ const ProductDetail: NextPage = () => {
         position: "topRight",
       });
     },
+    onError: (error, variable, context) => {
+      toast({
+        type: "error",
+        duration: 10000,
+        message: "Lỗi r",
+        position: "topRight",
+      });
+    },
   });
 
-  const handleAddItemToCart = (id: string) => {
-    // // let size = ClothSize.S
-
-    // // switch(selectedSize) {
-    // //   case "M":
-    // //     size = ClothSize.M;
-    // //     break;
-
-    // }
-    // ClothSize.L
-
+  const handleAddItemToCart = () => {
+    console.log(selectedSize.toString());
+    debugger;
     sessionData
       ? mutation.mutate({
-          productDetailId: id,
-          size: selectedSize,
+          productDetailId: (selectedId ? selectedId : product?.productDetail[0]?.id) as string,
+          dto: {},
         })
       : toast({
           type: "error",
@@ -70,7 +67,7 @@ const ProductDetail: NextPage = () => {
   // const sizes:
   const colors: string[] = [];
 
-  const { data: sizes } = trpc.productDetail.getOneWhereId.useQuery({
+  const { data: productDetail } = trpc.productDetail.getOneWhereId.useQuery({
     id: (selectedId ? selectedId : product?.productDetail[0]?.id) as string,
   });
 
@@ -79,12 +76,14 @@ const ProductDetail: NextPage = () => {
   });
 
   // change image when color is selected
-  const handleChooseColor = (color: any) => {
+  const handleChooseColor = (color: string) => {
     setSelectedColor(color);
-    for (const product1 of product?.productDetail) {
-      if (product1.colorCode === color) {
-        setSelectedImage(product1.image);
-        setSelectedId(product1.id);
+    if (product?.productDetail) {
+      for (const product1 of product?.productDetail) {
+        if (product1.colorCode === color) {
+          setSelectedImage(product1.image);
+          setSelectedId(product1.id);
+        }
       }
     }
   };
@@ -260,7 +259,7 @@ const ProductDetail: NextPage = () => {
                           className="mt-4">
                           <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                           <div className="grid w-3/4 grid-cols-5 gap-4">
-                            {sizes?.productInStock?.map((size) => (
+                            {productDetail?.productInStock?.map((size) => (
                               <RadioGroup.Option
                                 key={size.size}
                                 value={size}
@@ -339,11 +338,10 @@ const ProductDetail: NextPage = () => {
                       </div>
                       <button
                         type="submit"
-                        onClick={() =>
-                          handleAddItemToCart(
-                            selectedId ? selectedId : product.productDetail[0]?.id
-                          )
-                        }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleAddItemToCart();
+                        }}
                         className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white focus:outline-none hover:bg-[#28343a]
               ">
                         Thêm vào giỏ hàng

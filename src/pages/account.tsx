@@ -1,5 +1,5 @@
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
@@ -36,10 +36,11 @@ const Account: NextPage = (session) => {
       setEnablePhone(false);
       toast({
         type: "success",
-        duration: 2000,
-        message: "Sửa đổi thông tin thành công!",
-        position: "bottomRight",
+        duration: 6000,
+        message: "Sửa đổi thông tin thành công!\n Vui lòng đăng nhập lại để cập nhật thông tin! ",
+        position: "topCenter",
       });
+      signOut();
     },
   });
   const [enableName, setEnableName] = useState(false);
