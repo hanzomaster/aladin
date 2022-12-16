@@ -1,9 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import Auth from "../components/layouts/Auth";
 
 export default function Register() {
-  const [hidden, setHidden] = useState("hidden: true");
   return (
     <>
       <Auth>
@@ -19,29 +18,34 @@ export default function Register() {
                     <button
                       className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
                       type="button">
-                      <img alt="..." className="mr-1 w-6" src="/img/google.svg" />
-                      Google
+                      <Image
+                        alt="..."
+                        className="mr-1 w-6"
+                        src="/img/google.svg"
+                        width={36}
+                        height={36}
+                      />
+                      &nbsp;Google
                     </button>
                   </div>
                   <hr className="border-b-1 mt-6 border-[#CBD5E1]" />
                 </div>
                 <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
                   <div className="mb-3 text-center font-bold text-[#94A3B8]">
-                    <small>Or sign up with credentials</small>
+                    <small>Or sign up with email</small>
                   </div>
                   <form>
-                    {/* <div className="relative mb-3 w-full">
+                    <div className="relative mb-3 w-full">
                       <label
                         className="mb-2 block text-xs font-bold uppercase text-[#475569]"
                         htmlFor="grid-password">
                         Name
                       </label>
                       <input
-                        type="email"
                         className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-[#475569] placeholder-[#CBD5E1] shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
                         placeholder="Name"
                       />
-                    </div> */}
+                    </div>
 
                     <div className="relative mb-3 w-full">
                       <label

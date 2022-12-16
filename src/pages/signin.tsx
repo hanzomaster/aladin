@@ -1,6 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-
-// layout for page
 
 import Auth from "../components/layouts/Auth";
 
@@ -10,18 +9,24 @@ export default function Login() {
       <Auth>
         <div className="container mx-auto h-full px-4">
           <div className="flex h-full content-center items-center justify-center">
-            <div className="w-full px-4 lg:w-4/12">
+            <div className="w-full px-4 lg:w-6/12">
               <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg border-0 bg-[#E2E8F0] shadow-lg">
                 <div className="mb-0 rounded-t px-6 py-6">
                   <div className="mb-3 text-center">
-                    <h6 className="text-[#F8FAFC]0 text-sm font-bold">Sign in with</h6>
+                    <h6 className="text-sm font-bold text-[#64748B]">Sign in with</h6>
                   </div>
                   <div className="btn-wrapper text-center">
                     <button
-                      className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal font-bold uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
+                      className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
                       type="button">
-                      <img alt="..." className="mr-1 w-5" src="/img/google.svg" />
-                      Google
+                      <Image
+                        alt="..."
+                        className="mr-1 w-6"
+                        src="/img/google.svg"
+                        height={36}
+                        width={36}
+                      />
+                      &nbsp;Google
                     </button>
                   </div>
                   <hr className="border-b-1 mt-6 border-[#CBD5E1]" />

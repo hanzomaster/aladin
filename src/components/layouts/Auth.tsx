@@ -1,21 +1,18 @@
-import React from "react";
-
 // components
 
 import Navbar from "../navbars/AuthNavbar";
 
-
-export default function Auth({ children }: any) {
+export default function Auth({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar transparent />
+      <Navbar />
       <main>
-        <section className="relative w-full h-full py-40 min-h-screen">
+        <section className="relative h-full min-h-screen w-full py-40">
           <div
-            className="absolute top-0 w-full h-full bg-[#37474F] bg-no-repeat bg-full"
-            style={{
-              backgroundImage: "url('/img/register_bg_2.png')",
-            }}
+            className="bg-full absolute top-0 h-full w-full bg-[#37474F] bg-no-repeat"
+            // style={{
+            //   backgroundImage: "url('/img/register_bg_2.png')",
+            // }}
           ></div>
           {children}
         </section>

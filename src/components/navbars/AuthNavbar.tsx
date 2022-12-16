@@ -1,80 +1,66 @@
-import React from "react";
 import Link from "next/link";
-import { Props } from "next/script";
-// components
+import React from "react";
 
-
-
-export default function Navbar({props}: any) {
+export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
-        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+      <nav className="navbar-expand-lg absolute top-0 z-50 flex w-full flex-wrap items-center justify-between px-2 py-3">
+        <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
+          <div className="relative flex w-full justify-between lg:static lg:block lg:w-auto lg:justify-start">
             <Link href="/">
               <a
-                className="text-white text-lg font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-                href="#pablo"
-              >
+                className="mr-4 inline-block whitespace-nowrap py-2 text-lg font-bold uppercase leading-relaxed text-white"
+                href="#pablo">
                 Aladin
               </a>
             </Link>
             <button
-              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              className="block cursor-pointer rounded border border-solid border-transparent bg-transparent px-3 py-1 text-xl leading-none outline-none focus:outline-none lg:hidden"
               type="button"
-              onClick={() => setNavbarOpen(!navbarOpen)}
-            >
-              <i className="text-white fas fa-bars"></i>
+              onClick={() => setNavbarOpen(!navbarOpen)}>
+              <i className="fas fa-bars text-white"></i>
             </button>
           </div>
           <div
             className={
-              "lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none" +
+              "flex-grow items-center bg-white lg:flex lg:bg-opacity-0 lg:shadow-none" +
               (navbarOpen ? " block rounded shadow-lg" : " hidden")
             }
-            id="example-navbar-warning"
-          >
-            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              
+            id="example-navbar-warning">
+            <ul className="flex list-none flex-col lg:ml-auto lg:flex-row">
               <li className="flex items-center">
                 <a
-                  className="lg:text-white lg:hover:text-[#E2E8F0] text-[#334155] px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold "
-                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F"
-                  
-                >
-                  <i className="lg:text-[#E2E8F0] text-[#94A3B8] fab fa-facebook text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Share</span>
+                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-[#334155] lg:py-2 lg:text-white lg:hover:text-[#E2E8F0] "
+                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F">
+                  <i className="fab fa-facebook leading-lg text-lg text-[#94A3B8] lg:text-[#E2E8F0] " />
+                  <span className="ml-2 inline-block lg:hidden">Share</span>
                 </a>
               </li>
 
               <li className="flex items-center">
                 <a
-                  className="lg:text-white lg:hover:text-[#E2E8F0] text-[#334155] px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20NextJS%20UI%20Kit%20and%20Admin.%20Let%20Notus%20NextJS%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level."
-
-                >
-                  <i className="lg:text-[#E2E8F0] text-[#94A3B8] fab fa-twitter text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Tweet</span>
+                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-[#334155] lg:py-2 lg:text-white lg:hover:text-[#E2E8F0]"
+                  href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20NextJS%20UI%20Kit%20and%20Admin.%20Let%20Notus%20NextJS%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level.">
+                  <i className="fab fa-twitter leading-lg text-lg text-[#94A3B8] lg:text-[#E2E8F0] " />
+                  <span className="ml-2 inline-block lg:hidden">Tweet</span>
                 </a>
               </li>
 
               <li className="flex items-center">
                 <a
-                  className="lg:text-white lg:hover:text-[#E2E8F0] text-[#334155] px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://github.com/creativetimofficial/notus-nextjs?ref=nnjs-auth-navbar"
-                >
-                  <i className="lg:text-[#E2E8F0] text-[#94A3B8] fab fa-github text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Star</span>
+                  className="flex items-center px-3 py-4 text-xs font-bold uppercase text-[#334155] lg:py-2 lg:text-white lg:hover:text-[#E2E8F0]"
+                  href="https://github.com/creativetimofficial/notus-nextjs?ref=nnjs-auth-navbar">
+                  <i className="fab fa-github leading-lg text-lg text-[#94A3B8] lg:text-[#E2E8F0] " />
+                  <span className="ml-2 inline-block lg:hidden">Star</span>
                 </a>
               </li>
 
               <li className="flex items-center">
-                <Link href = "/">
+                <Link href="/">
                   <button
-                    className="bg-white text-[#334155] active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                    type="button"
-                  >
+                    className="active:bg-blueGray-50 ml-3 mb-3 rounded bg-white px-4 py-2 text-xs font-bold uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none lg:mr-1 lg:mb-0"
+                    type="button">
                     <i className="fas fa-arrow-alt-circle-down"></i> Home
                   </button>
                 </Link>
