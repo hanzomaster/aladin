@@ -1,15 +1,22 @@
 import { NextPage } from "next";
-import SidebarAdmin from "../../components/admin/SidebarAdmin";
+import NavbarAdmin from "../../components/admin/NavbarAdmin";
+
+import { trpc } from "../../utils/trpc";
 
 const Admin: NextPage = () => {
+  const { data: users } = trpc.user.getAll.useQuery();
+  const { data: orders } = trpc.order.getAll.useQuery();
+  const { data: products } = trpc.product.getAll.useQuery();
   return (
-    <div className="flex h-full w-full text-sm md:text-base">
-      <SidebarAdmin />
-      <main className="w-full bg-[#f9fafb] px-5 pt-10 md:px-20 md:pt-20">
+    <div className=" h-full w-full text-sm md:text-base">
+      <NavbarAdmin />
+      <main className="w-full bg-[#f9fafb] px-5 py-10 md:px-36 ">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:px-32 lg:py-10">
           <div className="rounded-xl bg-[#ffcfe1] p-4 shadow-sm ">
             <div className="p-4">
-              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">12 500</div>
+              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
+                {users?.length}
+              </div>
               <div className="flex text-sm text-gray-600 md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +37,9 @@ const Admin: NextPage = () => {
           </div>
           <div className="rounded-xl bg-[#fef3c7] p-4 shadow-sm ">
             <div className="p-4">
-              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">12 500</div>
+              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
+                {orders?.length}
+              </div>
               <div className="flex  text-sm text-gray-600 md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +60,9 @@ const Admin: NextPage = () => {
           </div>
           <div className="rounded-xl bg-[#d1fae5] p-4 shadow-sm ">
             <div className="p-4">
-              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">12 500</div>
+              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
+                {products?.length}
+              </div>
               <div className="flex text-sm text-gray-600 md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

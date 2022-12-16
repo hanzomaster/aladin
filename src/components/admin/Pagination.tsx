@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import React from "react";
-
-const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) => {
+export const postsPerPage = 3;
+const Pagination = ({ totalPosts, setCurrentPage, currentPage }) => {
   let pages = [];
 
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
@@ -9,7 +9,7 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
   }
 
   return (
-    <div className="absolute bottom-20 right-20 isolate inline-flex -space-x-px rounded-md shadow-sm">
+    <div className="absolute bottom-10 right-5 isolate inline-flex -space-x-px rounded-md shadow-sm md:right-10 lg:right-20">
       <button
         onClick={() => setCurrentPage(currentPage - 1)}
         className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 focus:z-20 hover:bg-gray-200">

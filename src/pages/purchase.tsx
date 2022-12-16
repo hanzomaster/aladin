@@ -1,8 +1,6 @@
 import { NextPage } from "next";
 import OrderedItem from "../components/user/OrderedItem";
 import SidebarAccount from "../components/user/SidebarAccount";
-import NavBar from "./component/navbar";
-import OrderDetail from "./orderdetail";
 
 const Purchase: NextPage = () => {
   return (

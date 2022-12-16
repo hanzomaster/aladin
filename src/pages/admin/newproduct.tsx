@@ -1,19 +1,16 @@
 import { NextPage } from "next";
-import SidebarAdmin from "../../components/admin/SidebarAdmin";
-import extractColors from "extract-colors";
-import getPixels from "get-pixels";
-import Colors from "get-image-colors";
 import Table from "../../components/Table";
 import DropDownItem from "../../components/admin/DropDownItem";
+import NavbarAdmin from "../../components/admin/NavbarAdmin";
 // import { test } from "../utils/test";
 const NewProduct: NextPage = () => {
   // console.log(test);
   return (
-    <div className="flex w-full">
-      <SidebarAdmin></SidebarAdmin>
-      <main className="w-full px-5 pt-10 md:px-10">
-        <div className="my-5 flex justify-between pr-20 lg:w-[60%]">
-          <div className="flex items-center">
+    <div className="h-full w-full text-sm md:text-base">
+      <NavbarAdmin />
+      <main className="w-full px-10 pt-10 md:px-28">
+        <div className="my-5 flex flex-col lg:w-[60%] lg:flex-row lg:justify-between">
+          <div className="flex items-center md:flex-row">
             <label
               className="my-5 mr-10 text-sm font-semibold text-gray-500 md:text-base"
               htmlFor="email">

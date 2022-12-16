@@ -1,6 +1,4 @@
-import Link from "next/link";
-
-const SidebarItems = [
+export const NavbarItems = [
   {
     title: "Home",
     path: "/admin",
@@ -94,21 +92,3 @@ const SidebarItems = [
     ),
   },
 ];
-function SidebarAdmin() {
-  return (
-    <div className="align-center flex flex-col border-r-2 py-14 font-medium text-gray-800 sm:w-1/4 lg:w-1/6">
-      {/* sidebar */}
-      {SidebarItems.map((item) => {
-        return (
-          <div
-            key={item.title}
-            className=" my-3 mx-4 flex items-center px-2 py-3 text-base visited:bg-slate-50 hover:bg-slate-50 hover:text-gray-500 sm:text-lg md:text-xl">
-            <i className="mr-2">{item.icon}</i>
-            <Link href={item.path}>{item.title}</Link>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-export default SidebarAdmin;

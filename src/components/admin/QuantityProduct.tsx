@@ -12,12 +12,12 @@ function QuantityProduct({ productDetail }) {
     setIsOpen(false);
   }
 
-  function openModal(productCode: string) {
+  function openModal() {
     setIsOpen(true);
   }
   return (
     <div>
-      <button className="text-indigo-500 hover:text-indigo-400" onClick={openModal}>
+      <button className="text-[#0070f3] hover:text-[#0070f3]/80" onClick={openModal}>
         Chi tiết
       </button>
       <Transition appear show={isOpen} as={Fragment}>

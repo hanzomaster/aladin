@@ -1,6 +1,3 @@
-import { postsPerPage } from "../../pages/admin/orders";
-import { trpc } from "../../utils/trpc";
-
 const UsersList = ({ usersData, handleActive }: any) => {
   return (
     <div className=" mb-10 w-full">
