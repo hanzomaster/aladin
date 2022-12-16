@@ -3,6 +3,8 @@ import { getSession, useSession } from "next-auth/react";
 import { useState } from "react";
 import Navbar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
+import { useToast } from "../components/Toast";
+import { trpc } from "../utils/trpc";
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -26,10 +28,33 @@ const Account: NextPage = (session) => {
   // dynamic handle focus on input
   const { data: sessionData } = useSession();
   const [name, setName] = useState(sessionData?.user?.name);
+  const { add: toast } = useToast();
   const [phone, setPhone] = useState("0");
-
+  const mutation = trpc.user.update.useMutation({
+    onSuccess: () => {
+      setEnableName(false);
+      setEnablePhone(false);
+      toast({
+        type: "success",
+        duration: 2000,
+        message: "Sửa đổi thông tin thành công!",
+        position: "bottomRight",
+      });
+    },
+  });
   const [enableName, setEnableName] = useState(false);
   const [enablePhone, setEnablePhone] = useState(false);
+
+  const handleNameChange = (event: any) => {
+    setName(event.target.value);
+  };
+  const handlePhoneChange = (event: any) => {
+    setPhone(event.target.value);
+  };
+
+  const saveButtonClicked = () => {
+    mutation.mutate({ dto: { name: name as string, phone: phone } });
+  };
 
   const handleEnableName = () => {
     setEnableName(true);
@@ -80,6 +105,7 @@ const Account: NextPage = (session) => {
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
                   value={name}
+                  onChange={handleNameChange}
                   disabled={!enableName}
                 />
               </div>
@@ -96,6 +122,7 @@ const Account: NextPage = (session) => {
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
+                  onChange={handlePhoneChange}
                   value={phone}
                   disabled={!enablePhone}
                 />
@@ -142,6 +169,7 @@ const Account: NextPage = (session) => {
 
               <button
                 className=" mt-5 h-12 w-full rounded-lg border-2 bg-[#da291c] text-lg font-medium uppercase  text-white hover:bg-[#cd5a52] active:border-2 active:border-stone-900 active:shadow-lg md:mt-10 md:text-xl"
+                onClick={() => saveButtonClicked()}
                 disabled={!(enableName || enablePhone)}
                 hidden={!(enableName || enablePhone)}>
                 Lưu

@@ -1,9 +1,14 @@
+import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { getProviders, getSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import Auth from "../../components/layouts/Auth";
 
-import Auth from "../components/layouts/Auth";
-
-export default function Login() {
+export default function Login({
+  providers,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [email, setEmail] = useState("");
   return (
     <>
       <Auth>
@@ -18,7 +23,8 @@ export default function Login() {
                   <div className="btn-wrapper text-center">
                     <button
                       className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
-                      type="button">
+                      type="button"
+                      onClick={() => signIn(providers.google.id)}>
                       <Image
                         alt="..."
                         className="mr-1 w-6"
@@ -26,7 +32,7 @@ export default function Login() {
                         height={36}
                         width={36}
                       />
-                      &nbsp;Google
+                      &nbsp;{providers.google.name || "Google"}
                     </button>
                   </div>
                   <hr className="border-b-1 mt-6 border-[#CBD5E1]" />
@@ -35,7 +41,14 @@ export default function Login() {
                   <div className="mb-3 text-center font-bold text-[#94A3B8]">
                     <small>Or sign in with credentials</small>
                   </div>
-                  <form>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      signIn("email", {
+                        email,
+                        callbackUrl: "/home",
+                      });
+                    }}>
                     <div className="relative mb-3 w-full">
                       <label
                         className="mb-2 block text-xs font-bold uppercase text-[#475569]"
@@ -43,9 +56,12 @@ export default function Login() {
                         Email
                       </label>
                       <input
+                        id="email"
                         type="email"
                         className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-[#475569] placeholder-[#CBD5E1] shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
                         placeholder="Email"
+                        required
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
 
@@ -78,7 +94,7 @@ export default function Login() {
                     <div className="mt-6 text-center">
                       <button
                         className="mr-1 mb-1 w-full rounded bg-[#1E293B] px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-[#475569]"
-                        type="button">
+                        type="submit">
                         Sign In
                       </button>
                     </div>
@@ -92,7 +108,7 @@ export default function Login() {
                   </a>
                 </div>
                 <div className="w-1/2 text-right">
-                  <Link href="/register">
+                  <Link href="/auth/register">
                     <a className="text-[#E2E8F0]">
                       <small>Create new account</small>
                     </a>
@@ -106,3 +122,23 @@ export default function Login() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+
+  const providers = await getProviders();
+
+  return {
+    props: {
+      providers,
+    },
+  };
+};

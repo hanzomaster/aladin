@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema,
+  updateProductSchema
 } from "./dto";
 
 export const productRouter = router({
@@ -134,7 +134,10 @@ export const productRouter = router({
       },
     })
   ),
-  create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
+  /**
+   * Create a new product
+   */
+  create: adminProcedure.input(createProductSchema).mutation(({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
         name: input.name,
@@ -170,7 +173,7 @@ export const productRouter = router({
         dto: updateProductSchema,
       })
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       if (!input.dto.productDetail) {
         return ctx.prisma.product.update({
           where: {
@@ -223,7 +226,7 @@ export const productRouter = router({
         code: z.string().cuid(),
       })
     )
-    .mutation(async ({ ctx, input }) =>
+    .mutation(({ ctx, input }) =>
       ctx.prisma.product.delete({
         where: {
           code: input.code,

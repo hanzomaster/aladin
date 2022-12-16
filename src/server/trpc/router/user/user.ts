@@ -2,25 +2,14 @@ import { z } from "zod";
 import { adminProcedure, protectedProcedure, router } from "../../trpc";
 
 export const userRouter = router({
-  me: protectedProcedure.query(async ({ ctx }) => {
-    const userResponse = await ctx.prisma.user.findFirst({
-      where: {
-        id: ctx.session.user.id,
-      },
-      select: {
-        isAdmin: true,
-      },
-    });
-    return userResponse?.isAdmin;
-  }),
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
   getOneWhere: adminProcedure
     .input(
       z
         .object({
-          id: z.string().length(25),
+          id: z.string().cuid(),
           name: z.string(),
           email: z.string().email(),
         })
@@ -31,22 +20,21 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: adminProcedure
+  update: protectedProcedure
     .input(
       z.object({
-        id: z.string().length(25),
         dto: z
           .object({
             name: z.string(),
-            email: z.string().email(),
+            phone: z.string().max(50),
           })
           .partial(),
       })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
         },
         data: input.dto,
       });
@@ -76,7 +64,7 @@ export const userRouter = router({
    *
    * @param id The id of the user to make inactive
    */
-  makeInactive: adminProcedure
+  toggleStatus: adminProcedure
     .input(
       z.object({
         id: z
@@ -89,7 +77,7 @@ export const userRouter = router({
           }),
       })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
           id: input.id,

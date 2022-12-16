@@ -58,6 +58,7 @@ const CheckOut = () => {
   const { data: sessionData } = useSession();
   const [disable, setDiable] = useState(true);
   const { data: cartData } = trpc.cart.get.useQuery();
+  const mutation = trpc.order.create.useMutation();
   let total = 0;
   const [phone, setPhone] = useState("");
 
@@ -71,6 +72,9 @@ const CheckOut = () => {
     setName(event.target.value);
   };
 
+  const handleCheckOutBtnClicked = () => {
+    mutation.mutate({ comment: "" });
+  };
   const {
     cityOptions,
     districtOptions,

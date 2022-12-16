@@ -41,7 +41,9 @@ const CartItem = ({ product }: any) => {
 
       <div className="ml-4 flex flex-1 flex-col">
         <div>
-          <div className="flex justify-between text-base font-medium text-gray-900">
+          <a
+            href={"/productDetail/" + product?.productDetail?.product?.code}
+            className="flex cursor-pointer justify-between text-base font-medium text-gray-900 hover:text-red-500">
             <h3>
               <p>{product?.productDetail?.product?.name}</p>
             </h3>
@@ -49,7 +51,7 @@ const CartItem = ({ product }: any) => {
               {product?.productDetail?.product?.buyPrice.toString()}
               ,000 &#8363;
             </p>
-          </div>
+          </a>
           <div className="block inline-block">
             <p
               style={{
