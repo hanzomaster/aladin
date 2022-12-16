@@ -2750,6 +2750,2654 @@ const entries: Prisma.ProductCreateInput[] = [
       },
     },
   },
+
+  // 5 female hoodies 
+  {
+    name: "Hoodie 6",
+    description: "Hoodie 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Hoodie",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Hoodie",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 420,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1f3oJUz9pOu9qp1LnUsMqPjfvh8_umW1_",
+        colorCode: "d9d8de",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Hoodie 7",
+    description: "Hoodie 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Hoodie",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Hoodie",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 610,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1cWSvHOumZL6xrniDRKDZmIrBp5q8hrXX",
+        colorCode: "d7e3f3",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 106,
+              },
+              {
+                size: "L",
+                quantity: 210,
+              },
+              {
+                size: "XL",
+                quantity: 110,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Hoodie 8",
+    description: "Hoodie 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Hoodie",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Hoodie",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 430,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1B8aMpQZZRu14sg2FTdxrbaVgbMeU_8sU",
+        colorCode: "1a1a1a",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 80,
+              },
+              {
+                size: "M",
+                quantity: 60,
+              },
+              {
+                size: "L",
+                quantity: 30,
+              },
+              {
+                size: "XL",
+                quantity: 50,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Hoodie 9",
+    description: "Hoodie 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Hoodie",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Hoodie",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1-KeHUV6hv_cCYMiAudTx7IO6BDvXcBDq",
+        colorCode: "e2c2c7",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 90,
+              },
+              {
+                size: "M",
+                quantity: 89,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 70,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Hoodie 10",
+    description: "Hoodie 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Hoodie",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Hoodie",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 560,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1d0NTMr7KYwas7A9RtsBaKMCrpeYnS33C",
+        colorCode: "d2884b",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 95,
+              },
+              {
+                size: "M",
+                quantity: 100,
+              },
+              {
+                size: "L",
+                quantity: 80,
+              },
+              {
+                size: "XL",
+                quantity: 70,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  // female shirts
+  {
+    name: "Shirt 6",
+    description: "Shirt 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1NLHI4HZGfPXNEelLNrhbr48m51IY2qV7",
+        colorCode: "eedfe8",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shirt 7",
+    description: "Shirt 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1QSp_TX7a2xBWjN2wfwcM_VE1BYm4CKAB",
+        colorCode: "ebb0c2",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },  
+  {
+    name: "Shirt 8",
+    description: "Shirt 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1rQ38wXB6HISTq6mVwETOtKG6de-uXXNl",
+        colorCode: "c28d61",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shirt 9",
+    description: "Shirt 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1utaQ1YuqVAsInfkyUP_rpCzZ6oAh93RV",
+        colorCode: "131313",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shirt 10",
+    description: "Shirt 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1dtPAnNVkbTW_aAVtH_EIs-5XjhR4M7JZ",
+        colorCode: "d7f5e0",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  // female polo
+  {
+    name: "Polo 6",
+    description: "Polo 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Polo",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Polo",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1SNzIrnvgFB0OHv-1bV3GCLaizyPXJmuW",
+        colorCode: "f8f8f8",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },  
+  {
+    name: "Polo 7",
+    description: "Polo 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Polo",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Polo",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1CB_I19iEQP6js74gahUcoCvzTVtg0ry2",
+        colorCode: "f0e3e1",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  }, 
+  {
+    name: "Polo 8",
+    description: "Polo 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Polo",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Polo",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1WUT7Nnngn72_2XUcYOuQKVy-x9KBRm2Y",
+        colorCode: "f1f5f9",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Polo 9",
+    description: "Polo 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Polo",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Polo",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=10isTcMA5oFi0ETxQ3SuybI07FhBN7KLR",
+        colorCode: "191715",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Polo 10",
+    description: "Polo 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Polo",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Polo",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 320,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1tXTq3uAs6zJFQVjVUgLGH7d6gNJqnWqM",
+        colorCode: "f5f4f9",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  //female jeans
+  {
+    name: "Jeans 6",
+    description: "Jeans 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Jeans",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Jeans",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 520,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1jMcdlHvqbKNhIic6RKklFi7ix0PXMzJK",
+        colorCode: "4e5e7f",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Jeans 7",
+    description: "Jeans 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Jeans",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Jeans",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 520,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1XIYSBHOjYDPoAgHXiSd4YTP43cRs0-ai",
+        colorCode: "566e94",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  }, 
+  {
+    name: "Jeans 8",
+    description: "Jeans 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Jeans",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Jeans",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 520,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1IOjWk4QkugEsM-krD71X4P1IMgyMq7D6",
+        colorCode: "8c9fbc",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Jeans 9",
+    description: "Jeans 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Jeans",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Jeans",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 520,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1bpyeS8KGFAn9mkiH81Mo2prvActYkY_o",
+        colorCode: "8c9fbc",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },  
+  {
+    name: "Jeans 10",
+    description: "Jeans 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Jeans",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Jeans",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 520,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1Re9f0LOja1x1NYbG14qAJbof-KO-zTV4",
+        colorCode: "8c9fbc",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },  
+
+  // female pants
+  {
+    name: "Pants 6",
+    description: "Pants 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Pants",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Pants",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 470,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1BDA5Muksi8oFJzSXLfznH14LrNd8_d2_",
+        colorCode: "efedec",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Pants 7",
+    description: "Pants 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Pants",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Pants",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 470,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1kE4JMWLNQhmqJATjP2vA49F6kwW6LQdh",
+        colorCode: "c8cde2",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  }, 
+  {
+    name: "Pants 8",
+    description: "Pants 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Pants",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Pants",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 470,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1veRBmsLeajaKMtGV_xn4W6BLS73bLaYa",
+        colorCode: "a2a3ae",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Pants 9",
+    description: "Pants 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Pants",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Pants",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 470,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1gB8krxmROIXLjDV0KdRhWIvQgZZj4AuW",
+        colorCode: "1e1f25",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Pants 10",
+    description: "Pants 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Pants",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Pants",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 470,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1C9QwytLzU7oGSDzZ6UqZ5WFCBdRoizZm",
+        colorCode: "dfc4a9",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  // female shorts
+  {
+    name: "Shorts 6",
+    description: "Shorts 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shorts",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shorts",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 330,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1DN1wO7tXODXdzGspfYTzRlbMbgqZBCGI",
+        colorCode: "272a2e",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shorts 7",
+    description: "Shorts 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shorts",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shorts",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 330,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1K8wRP5NLqBZmJkchiGGliHWVGxDwOOeg",
+        colorCode: "365c99",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shorts 8",
+    description: "Shorts 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shorts",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shorts",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 330,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=10aiHpzXNpi59NU4GANtH4SyE26gImlTw",
+        colorCode: "a7a7a5",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shorts 9",
+    description: "Shorts 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shorts",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shorts",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 330,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1k_PvNIJl9fDkxD_1Ak7zYZHvNUE8G5cq",
+        colorCode: "accdc9",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "Shorts 10",
+    description: "Shorts 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Shorts",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Shorts",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 330,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1H7HyiJttsN1fWv1UB0YBqLRqFOu2Z724",
+        colorCode: "baaedb",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 90,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  // female sweater
+  {
+    name: "Sweater 6",
+    description: "Sweater 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Sweater",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Sweater",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 460,
+    productDetail: {
+      // many color here for Sweater 6
+      create: [
+        {
+          // pink
+          image: "https://drive.google.com/uc?id=1ZXUKHO1FprYHD9-iRH1LB1WYfiI1EclS",
+          colorCode: "f4ddde",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // black
+          image: "https://drive.google.com/uc?id=1J5L-RV7HBvzKU6Mfop9JwSAGyvbBHsfG",
+          colorCode: "020d1f",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // white
+          image: "https://drive.google.com/uc?id=15GLVXW9-CP09GhefzdIwwHb5E9jatuAS",
+          colorCode: "e9e3de",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "Sweater 7",
+    description: "Sweater 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Sweater",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Sweater",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 460,
+    productDetail: {
+      // many color here for Sweater 7
+      create: [
+        {
+          // pink
+          image: "https://drive.google.com/uc?id=1lyMv7ACOff_sYSR4u1-g9wJUfWO2Pnub",
+          colorCode: "f1aeae",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // white
+          image: "https://drive.google.com/uc?id=1-Sxk-6qRyFRMU99UOYLrMRcYVFE1zcE7",
+          colorCode: "edece8",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+
+  // female coat
+  {
+    name: "Coat 6",
+    description: "Coat 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Coat",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Coat",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 600,
+    productDetail: {
+      // many color here for Coat 6
+      create: [
+        {
+          // purple
+          image: "https://drive.google.com/uc?id=1HGfSRKFxlOnYGewRlD_aYQg1wGN6iHAs",
+          colorCode: "bda1c1",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // blue
+          image: "https://drive.google.com/uc?id=1pXctVAjIZuRHZCGhaXS04doQ-dMNqzLe",
+          colorCode: "c0d2dd",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // white
+          image: "https://drive.google.com/uc?id=1rQcZHyaACkfEZoHCkdg_FGJVvw6Kc0jC",
+          colorCode: "f7ece6",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "Coat 7",
+    description: "Coat 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Coat",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Coat",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 600,
+    productDetail: {
+      // many color here for Coat 7
+      create: [
+        {
+          // purple
+          image: "https://drive.google.com/uc?id=1q5bN6VDck_8b2XD6KxDfoViHnElytInU",
+          colorCode: "a38399",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // grey
+          image: "https://drive.google.com/uc?id=1VqVcKa4clmmFliuNtrm2BrG3UvQ9G1Tr",
+          colorCode: "8f96a3",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "Coat 8",
+    description: "Coat 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Coat",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Coat",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 600,
+    productDetail: {
+      // many color here for Coat 8
+      create: [
+        {
+          // white
+          image: "https://drive.google.com/uc?id=1ji2lzZeveJwsR3BAvsLzMXLhoN3bOHWC",
+          colorCode: "f2f5f1",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // mint
+          image: "https://drive.google.com/uc?id=1XDFfYJz0oA2kw2c5NOh77tEYL4VDDISu",
+          colorCode: "bacccd",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "Coat 9",
+    description: "Coat 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Coat",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Coat",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 600,
+    productDetail: {
+      // many color here for Coat 9
+      create: [
+        {
+          // white
+          image: "https://drive.google.com/uc?id=1Qr5G1wFsBtzt7nk2_v7jP9vz1EJdRQJF",
+          colorCode: "edebe7",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // brown
+          image: "https://drive.google.com/uc?id=1OgQsJs_3817CQOSTjpdlTKv6lVEOHKO6",
+          colorCode: "d89668",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "Coat 10",
+    description: "Coat 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "Coat",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "Coat",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 600,
+    productDetail: {
+      // many color here for Coat 10
+      create: [
+        {
+          // white
+          image: "https://drive.google.com/uc?id=1X_eLZoN9GRkiVbiMMWAI7aJdE4eUyzZg",
+          colorCode: "d9d5d2",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // black
+          image: "https://drive.google.com/uc?id=1ohOEYxim4eENVV3-w77aOfHgrJap5chH",
+          colorCode: "2f323a",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+
+  // female pj
+  {
+    name: "PJ 6",
+    description: "PJ 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "PJ",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "PJ",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 550,
+    productDetail: {
+      // many color here for PJ 6
+      create: [
+        {
+          // pink
+          image: "https://drive.google.com/uc?id=17sn5aKxalNhAsDAoXvwgWbJ-69_NITZT",
+          colorCode: "fcede9",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // black
+          image: "https://drive.google.com/uc?id=1FuwN9Vo0BdmqageBAXfFo6NCM0ibZ5jU",
+          colorCode: "272942",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "PJ 7",
+    description: "PJ 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "PJ",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "PJ",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 510,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=15Lm8aOios0hMBoYn7qcDQlm6pmLPEf9p",
+        colorCode: "f2e2de",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 106,
+              },
+              {
+                size: "L",
+                quantity: 210,
+              },
+              {
+                size: "XL",
+                quantity: 110,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "PJ 8",
+    description: "PJ 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "PJ",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "PJ",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 530,
+    productDetail: {
+      // many color here for PJ 8
+      create: [
+        {
+          // grey
+          image: "https://drive.google.com/uc?id=1zzhKBsxpdtIfL9zDqPrpl6GbMLZiByvb",
+          colorCode: "c0c6cb",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // black
+          image: "https://drive.google.com/uc?id=1ABfVVD4LCemr4yJ_sfAQMR8dASlGX7rW",
+          colorCode: "222339",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+        {
+          // pink
+          image: "https://drive.google.com/uc?id=1-_6mCyjmj-fn67LMXOdqiPUvYV97UcFW",
+          colorCode: "ffdad2",
+          productInStock: {
+            createMany: {
+              data: [
+                {
+                  size: "S",
+                  quantity: 150,
+                },
+                {
+                  size: "M",
+                  quantity: 150,
+                },
+                {
+                  size: "L",
+                  quantity: 100,
+                },
+                {
+                  size: "XL",
+                  quantity: 110,
+                },
+              ],
+              skipDuplicates: true,
+            },
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: "PJ 9",
+    description: "PJ 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "PJ",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "PJ",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 510,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1kgaOo9WiGA0m57eemqqv-_wJ-NLcY3zh",
+        colorCode: "131b31",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 106,
+              },
+              {
+                size: "L",
+                quantity: 210,
+              },
+              {
+                size: "XL",
+                quantity: 110,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "PJ 10",
+    description: "PJ 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "PJ",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "PJ",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 540,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1iFGTvQsglW_b_g_ITjijGXn5qLht1tmA",
+        colorCode: "f6d1bb",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 100,
+              },
+              {
+                size: "M",
+                quantity: 106,
+              },
+              {
+                size: "L",
+                quantity: 210,
+              },
+              {
+                size: "XL",
+                quantity: 110,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+
+  // female t-shirts
+  {
+    name: "T-Shirt 6",
+    description: "T-Shirt 6 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "T-Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "T-Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 360,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1yWYNMZINB4PeRFgRJ6c9Z7iCrRbRR074",
+        colorCode: "eaece0",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 110,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 95,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "T-Shirt 7",
+    description: "T-Shirt 7 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "T-Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "T-Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 360,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1rirXKLJWeSkmIFvkBOIEsuW-APX4PNuM",
+        colorCode: "f0f5f4",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 110,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 95,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "T-Shirt 8",
+    description: "T-Shirt 8 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "T-Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "T-Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 360,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1I1TTxqf9CWhJxQ5Q7toLT84rP7SKOeDR",
+        colorCode: "edc707",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 110,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 95,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "T-Shirt 9",
+    description: "T-Shirt 9 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "T-Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "T-Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 360,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=10LWDrlNtvRHVI8CAQyCIYop3Hxk5tkB9",
+        colorCode: "d5c5d8",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 110,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 95,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "T-Shirt 10",
+    description: "T-Shirt 10 description",
+    line: {
+      connectOrCreate: {
+        where: {
+          type_gender: {
+            type: "T-Shirt",
+            gender: Gender.F,
+          },
+        },
+        create: {
+          type: "T-Shirt",
+          gender: Gender.F,
+        },
+      },
+    },
+    buyPrice: 360,
+    productDetail: {
+      create: {
+        image: "https://drive.google.com/uc?id=1v1ZND4qQgF7hYY_LmHfB_slutT2wCVBa",
+        colorCode: "161819",
+        productInStock: {
+          createMany: {
+            data: [
+              {
+                size: "S",
+                quantity: 110,
+              },
+              {
+                size: "M",
+                quantity: 120,
+              },
+              {
+                size: "L",
+                quantity: 95,
+              },
+              {
+                size: "XL",
+                quantity: 90,
+              },
+            ],
+            skipDuplicates: true,
+          },
+        },
+      },
+    },
+  },
 ];
 
 export default async function createProducts(prisma: PrismaClient) {
