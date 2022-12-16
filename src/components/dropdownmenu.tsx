@@ -108,9 +108,9 @@ export default function DropdownComponent({
   type,
   data,
 }: {
-  title: any;
-  type: any;
-  data: any;
+  title: string;
+  type: string;
+  data: string[];
 }) {
   const { data: sessionData } = useSession();
   return (
@@ -130,7 +130,6 @@ export default function DropdownComponent({
               <h1 className="bg-slate-100 py-4 pl-3 font-bold">{sessionData?.user?.name}</h1>
             )}
             {type !== "user" &&
-              //TODO - Thêm key vào
               data?.map((content) => {
                 return (
                   <>

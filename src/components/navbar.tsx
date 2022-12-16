@@ -152,13 +152,13 @@ const NavBar = () => {
                               {/* Code here */}
                               {open &&
                                 (!cart.loading ? cart?.data?.cartItem : cartData?.cartItem)?.map(
-                                  (product, index) => {
+                                  (product) => {
                                     total =
                                       total +
                                       parseFloat(
                                         (
-                                          product.productDetail.product.buyPrice *
-                                          product.numberOfItems
+                                          (product.productDetail.product
+                                            .buyPrice as unknown as number) * product.numberOfItems
                                         ).toString()
                                       );
                                     return (

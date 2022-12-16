@@ -51,7 +51,7 @@ export default function ItemCard({ item }: { item: any }) {
         });
   };
 
-  const handleChooseColor = (color: any) => {
+  const handleChooseColor = (color: string) => {
     setSelectedColor(color);
     for (const product1 of item.productDetail) {
       if (product1.colorCode === color) {

@@ -107,7 +107,7 @@ const CheckOut = () => {
                       </label>
                       <input
                         name="firstName"
-                        value={name === "" ? sessionData?.user?.name : name}
+                        value={sessionData?.user?.name ?? name}
                         onChange={handleNameChange}
                         type="text"
                         placeholder="Họ"
@@ -251,7 +251,8 @@ const CheckOut = () => {
                           total +
                           parseFloat(
                             (
-                              product.productDetail.product.buyPrice * product.numberOfItems
+                              (product.productDetail.product.buyPrice as unknown as number) *
+                              product.numberOfItems
                             ).toString()
                           );
                         return (
@@ -264,7 +265,9 @@ const CheckOut = () => {
                                   src={product?.productDetail?.image}
                                   layout="fill"
                                   alt="Ảnh sản phẩm"
-                                  className=" object-cover object-center"></Image>
+                                  className=" object-cover object-center"
+                                  priority
+                                />
                               </div>
                             </div>
 

@@ -1,6 +1,6 @@
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { getSession, signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Navbar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
 import { useToast } from "../components/Toast";
@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (
   };
 };
 
-const Account: NextPage = (session) => {
+const Account: NextPage = () => {
   // dynamic handle focus on input
   const { data: sessionData } = useSession();
   const [name, setName] = useState(sessionData?.user?.name);
@@ -46,10 +46,10 @@ const Account: NextPage = (session) => {
   const [enableName, setEnableName] = useState(false);
   const [enablePhone, setEnablePhone] = useState(false);
 
-  const handleNameChange = (event: any) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-  const handlePhoneChange = (event: any) => {
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPhone(event.target.value);
   };
 
@@ -91,7 +91,7 @@ const Account: NextPage = (session) => {
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="email"
-                  value={sessionData?.user?.email}
+                  value={sessionData?.user?.email ?? "Loading..."}
                   disabled
                 />
               </div>
@@ -105,7 +105,7 @@ const Account: NextPage = (session) => {
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
-                  value={name}
+                  value={name ?? "Loading..."}
                   onChange={handleNameChange}
                   disabled={!enableName}
                 />

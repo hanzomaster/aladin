@@ -1,5 +1,6 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ClothSize } from "@prisma/client";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -16,6 +17,8 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
+type ClothSizeLiteral = `${ClothSize}`;
+
 const ProductDetail: NextPage = () => {
   const [open, setOpen] = useState(false);
   const { add: toast } = useToast();
@@ -25,7 +28,7 @@ const ProductDetail: NextPage = () => {
   const utils = trpc.useContext();
   const { data: sessionData } = useSession();
   const [selectedColor, setSelectedColor] = useState(product?.productDetail[0]?.colorCode);
-  const [selectedSize, setSelectedSize] = useState(size.S);
+  const [selectedSize, setSelectedSize] = useState<ClothSizeLiteral>(ClothSize.L);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(product?.productDetail[0]?.id as string);
 
@@ -55,7 +58,10 @@ const ProductDetail: NextPage = () => {
     sessionData
       ? mutation.mutate({
           productDetailId: (selectedId ? selectedId : product?.productDetail[0]?.id) as string,
-          dto: {},
+          dto: {
+            numberOfItems: 1,
+            size: selectedSize,
+          },
         })
       : toast({
           type: "error",
@@ -135,7 +141,7 @@ const ProductDetail: NextPage = () => {
 
                     {/* Price */}
                     <div className="text-3xl font-bold text-black">
-                      {(product?.buyPrice * 0.6).toString()}000 &#8363;
+                      {((product?.buyPrice as unknown as number) * 0.6).toString()}000 &#8363;
                     </div>
 
                     {/* Description */}
@@ -255,21 +261,19 @@ const ProductDetail: NextPage = () => {
 
                         <RadioGroup
                           value={selectedSize}
-                          onChange={setSelectedSize}
+                          // onChange={setSelectedSize}
                           className="mt-4">
                           <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                           <div className="grid w-3/4 grid-cols-5 gap-4">
-                            {productDetail?.productInStock?.map((size) => (
+                            {productDetail?.productInStock?.map((productInStock) => (
                               <RadioGroup.Option
-                                key={size.size}
-                                value={size}
-                                disabled={!(size.quantity > 0)}
-                                onClick={() => {
-                                  setSelectedSize(size.size);
-                                }}
+                                key={productInStock.size}
+                                value={productInStock.size}
+                                disabled={productInStock.quantity <= 0}
+                                onClick={() => setSelectedSize(productInStock.size)}
                                 className={({ active }) =>
                                   classNames(
-                                    size.quantity > 0
+                                    productInStock.quantity > 0
                                       ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                                       : "cursor-not-allowed bg-gray-50 text-gray-200",
                                     active ? "ring-2 ring-indigo-500" : "",
@@ -278,8 +282,10 @@ const ProductDetail: NextPage = () => {
                                 }>
                                 {({ active, checked }) => (
                                   <>
-                                    <RadioGroup.Label as="span">{size.size}</RadioGroup.Label>
-                                    {size.quantity > 0 ? (
+                                    <RadioGroup.Label as="span">
+                                      {productInStock.size}
+                                    </RadioGroup.Label>
+                                    {productInStock.quantity > 0 ? (
                                       <span
                                         className={classNames(
                                           active ? "border" : "border-2",
