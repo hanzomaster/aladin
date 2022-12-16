@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { adminProcedure, router } from "../../trpc";
+import { adminProcedure, protectedProcedure, router } from "../../trpc";
 
 export const userRouter = router({
   getAll: adminProcedure.query(({ ctx }) => {
@@ -20,14 +20,13 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: adminProcedure
+  update: protectedProcedure
     .input(
       z.object({
-        id: z.string().cuid(),
         dto: z
           .object({
             name: z.string(),
-            email: z.string().email(),
+            phone: z.string().max(50),
           })
           .partial(),
       })
@@ -35,7 +34,7 @@ export const userRouter = router({
     .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
         },
         data: input.dto,
       });

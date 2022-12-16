@@ -1,4 +1,4 @@
-import { ClothSize, OrderStatus, Prisma } from "@prisma/client";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
 
@@ -13,6 +13,7 @@ const orderInclude: Prisma.OrderInclude = {
     },
   },
 };
+
 export const orderRouter = router({
   getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.order.findMany({
@@ -46,33 +47,65 @@ export const orderRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        requireDate: z.date(),
-        comments: z.string().optional(),
-        address: z.string(),
-        orderdetail: z.array(
-          z.object({
-            productDetailId: z.string().cuid(),
-            quantityInOrdered: z.number().int(),
-            priceEach: z.number(),
-            size: z.nativeEnum(ClothSize),
-          })
-        ),
+        comment: z.string().optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const userCart = await ctx.prisma.cart.findUnique({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        include: {
+          cartItem: {
+            select: {
+              numberOfItems: true,
+              size: true,
+              productDetail: {
+                select: {
+                  id: true,
+                  colorCode: true,
+                  image: true,
+                  product: {
+                    select: {
+                      buyPrice: true,
+                      name: true,
+                      description: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      const userInfo = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        include: {
+          address: true,
+        },
+      });
+      const defaultAddress = userInfo?.address.find((address) => address.isDefault);
+      if (!userCart) {
+        throw new Error("Cart not found");
+      }
+      if (!userCart.cartItem.length) {
+        throw new Error("Cart is empty");
+      }
       return ctx.prisma.order.create({
         data: {
           customerNumber: ctx.session.user.id,
-          comments: input.comments,
-          address: input.address,
+          address: `${defaultAddress?.receiver}, ${defaultAddress?.phone}\n${defaultAddress?.detail}, ${defaultAddress?.ward}, ${defaultAddress?.district}, ${defaultAddress?.city}`,
           orderdetail: {
-            create: input.orderdetail.map((item) => ({
-              productDetailId: item.productDetailId,
-              quantityInOrdered: item.quantityInOrdered,
-              priceEach: item.priceEach,
-              size: item.size,
+            create: userCart.cartItem.map((cartItem) => ({
+              quantityInOrdered: cartItem.numberOfItems,
+              priceEach: cartItem.productDetail.product.buyPrice,
+              size: cartItem.size,
+              productDetailId: cartItem.productDetail.id,
             })),
           },
+          comments: input.comment,
         },
       });
     }),

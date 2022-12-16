@@ -16,6 +16,7 @@ export const cartRouter = router({
             size: true,
             productDetail: {
               select: {
+                id: true,
                 colorCode: true,
                 image: true,
                 product: {
@@ -45,7 +46,26 @@ export const cartRouter = router({
   getAll: adminProcedure.query(({ ctx }) =>
     ctx.prisma.cart.findMany({
       include: {
-        cartItem: true,
+        cartItem: {
+          select: {
+            numberOfItems: true,
+            size: true,
+            productDetail: {
+              select: {
+                id: true,
+                colorCode: true,
+                image: true,
+                product: {
+                  select: {
+                    buyPrice: true,
+                    name: true,
+                    description: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     })
   ),

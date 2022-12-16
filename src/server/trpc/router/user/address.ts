@@ -70,6 +70,41 @@ export const addressRouter = router({
         data: input.dto,
       });
     }),
+  makeDefault: protectedProcedure
+    .input(z.object({ id: z.string().cuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const address = await ctx.prisma.address.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (!address) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+      if (address.userId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
+      await ctx.prisma.address.updateMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        data: {
+          isDefault: false,
+        },
+      });
+      return ctx.prisma.address.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isDefault: true,
+        },
+      });
+    }),
   delete: protectedProcedure
     .input(
       z.object({
