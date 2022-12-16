@@ -24,6 +24,12 @@ export default function ItemCard({ item }: { item: any }) {
 
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
+      toast({
+        type: "success",
+        duration: 2000,
+        message: "Thêm vào giỏ hàng thành công",
+        position: "topRight",
+      });
       utils.cart.get.invalidate();
     },
   });
@@ -35,14 +41,9 @@ export default function ItemCard({ item }: { item: any }) {
   });
 
   const handleAddItemToCart = (id: string) => {
-    toast({
-      type: "success",
-      duration: 2000,
-      message: "Thêm vào giỏ hàng thành công",
-      position: "topRight",
-    });
+    
     sessionData
-      ? mutation.mutate({ productDetailId: id, size: "S" })
+      ? mutation.mutate({ productDetailId: id, dto: {} })
       : toast({
           type: "error",
           duration: 2000,
