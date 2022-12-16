@@ -124,11 +124,11 @@ model Order {
 }
 
 model OrderDetail {
-    orderNumber      String
-    productDetailId  String
-    quantityInOrderd Int
-    priceEach        Decimal @db.Decimal(10, 2)
-    orderLineNumber  Int?    @db.SmallInt
+    orderNumber       String
+    productDetailId   String
+    quantityInOrdered Int
+    priceEach         Decimal @db.Decimal(10, 2)
+    orderLineNumber   Int?    @db.SmallInt
 
     order         Order         @relation(fields: [orderNumber], references: [orderNumber], onDelete: Cascade)
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
