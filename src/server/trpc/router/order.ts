@@ -15,6 +15,7 @@ export const orderRouter = router({
             },
           },
         },
+        address: true,
       },
     });
   }),
@@ -33,6 +34,7 @@ export const orderRouter = router({
             },
           },
         },
+        address: true,
       },
     });
   }),
@@ -57,6 +59,7 @@ export const orderRouter = router({
               },
             },
           },
+          address: true,
         },
       });
     }),

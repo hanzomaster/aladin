@@ -44,45 +44,6 @@ export const addressRouter = router({
         },
       })
     ),
-  update: protectedProcedure
-    .input(
-      z.object({
-        id: z.string().cuid(),
-        dto: z
-          .object({
-            receiver: z.string(),
-            phone: z.string(),
-            city: z.string(),
-            district: z.string(),
-            ward: z.string(),
-            detail: z.string(),
-          })
-          .partial(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const address = await ctx.prisma.address.findUnique({
-        where: {
-          id: input.id,
-        },
-      });
-      if (!address) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-        });
-      }
-      if (address.userId !== ctx.session.user.id) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-        });
-      }
-      return ctx.prisma.address.update({
-        where: {
-          id: input.id,
-        },
-        data: input.dto,
-      });
-    }),
   makeDefault: protectedProcedure
     .input(z.object({ id: z.string().cuid() }))
     .mutation(async ({ ctx, input }) => {
@@ -101,7 +62,7 @@ export const addressRouter = router({
           code: "BAD_REQUEST",
         });
       }
-      await ctx.prisma.address.updateMany({
+      ctx.prisma.address.updateMany({
         where: {
           userId: ctx.session.user.id,
         },
