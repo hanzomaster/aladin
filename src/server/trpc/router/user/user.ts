@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { adminProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../../trpc";
+import { addressRouter } from "./address";
+import { commentRouter } from "./comment";
 
 export const userRouter = router({
+  address: addressRouter,
+  comment: commentRouter,
   getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
@@ -20,22 +24,21 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: adminProcedure
+  update: protectedProcedure
     .input(
       z.object({
-        id: z.string().cuid(),
         dto: z
           .object({
             name: z.string(),
-            email: z.string().email(),
+            phone: z.string().max(50),
           })
           .partial(),
       })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
         },
         data: input.dto,
       });
@@ -65,7 +68,7 @@ export const userRouter = router({
    *
    * @param id The id of the user to make inactive
    */
-  makeInactive: adminProcedure
+  toggleStatus: adminProcedure
     .input(
       z.object({
         id: z
@@ -78,7 +81,7 @@ export const userRouter = router({
           }),
       })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
           id: input.id,

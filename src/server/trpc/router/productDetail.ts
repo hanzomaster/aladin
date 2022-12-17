@@ -30,7 +30,23 @@ export const productDetailRouter = router({
         },
       })
     ),
-  create: adminProcedure.input(createProductDetailSchema).query(({ ctx, input }) =>
+  getOneWhereId: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.productDetail.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          productInStock: true,
+        },
+      })
+    ),
+  create: adminProcedure.input(createProductDetailSchema).mutation(({ ctx, input }) =>
     ctx.prisma.productDetail.create({
       data: {
         product: {
@@ -43,7 +59,7 @@ export const productDetailRouter = router({
       },
     })
   ),
-  update: adminProcedure.input(updateProductDetailSchema).query(({ ctx, input }) =>
+  update: adminProcedure.input(updateProductDetailSchema).mutation(({ ctx, input }) =>
     ctx.prisma.productDetail.update({
       where: {
         productCode_colorCode: {
@@ -57,7 +73,7 @@ export const productDetailRouter = router({
       },
     })
   ),
-  delete: adminProcedure.input(deleteProductDetailSchema).query(({ ctx, input }) => {
+  delete: adminProcedure.input(deleteProductDetailSchema).mutation(({ ctx, input }) => {
     if (!input.id && input.product_color) {
       return ctx.prisma.productDetail.delete({
         where: {

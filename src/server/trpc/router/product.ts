@@ -1,28 +1,11 @@
-import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { adminProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema
+  updateProductSchema,
 } from "./dto";
-
-const includeProductLineAndProductDetail: Prisma.ProductInclude = {
-  line: {
-    select: {
-      type: true,
-      gender: true,
-      textDescription: true,
-      htmlDescription: true,
-    },
-  },
-  productDetail: {
-    include: {
-      productInStock: true
-    }
-  },
-};
 
 export const productRouter = router({
   /**
@@ -45,7 +28,26 @@ export const productRouter = router({
             contains: input.name,
           },
         },
-        include: includeProductLineAndProductDetail,
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            include: {
+              productInStock: {
+                select: {
+                  size: true,
+                  quantity: true,
+                },
+              },
+            },
+          },
+        },
       })
     ),
   /**
@@ -60,7 +62,26 @@ export const productRouter = router({
     ctx.prisma.product.findMany({
       skip: input?.skip,
       take: input?.take,
-      include: includeProductLineAndProductDetail,
+      include: {
+        line: {
+          select: {
+            type: true,
+            gender: true,
+            textDescription: true,
+            htmlDescription: true,
+          },
+        },
+        productDetail: {
+          include: {
+            productInStock: {
+              select: {
+                size: true,
+                quantity: true,
+              },
+            },
+          },
+        },
+      },
     })
   ),
   /**
@@ -79,7 +100,26 @@ export const productRouter = router({
     .query(({ ctx, input }) =>
       ctx.prisma.product.findUnique({
         where: input,
-        include: includeProductLineAndProductDetail,
+        include: {
+          line: {
+            select: {
+              type: true,
+              gender: true,
+              textDescription: true,
+              htmlDescription: true,
+            },
+          },
+          productDetail: {
+            include: {
+              productInStock: {
+                select: {
+                  size: true,
+                  quantity: true,
+                },
+              },
+            },
+          },
+        },
       })
     ),
   /**
@@ -97,13 +137,32 @@ export const productRouter = router({
           gender: input.gender,
         },
       },
-      include: includeProductLineAndProductDetail,
+      include: {
+        line: {
+          select: {
+            type: true,
+            gender: true,
+            textDescription: true,
+            htmlDescription: true,
+          },
+        },
+        productDetail: {
+          include: {
+            productInStock: {
+              select: {
+                size: true,
+                quantity: true,
+              },
+            },
+          },
+        },
+      },
     })
   ),
   /**
    * Create a new product
    */
-  create: adminProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
+  create: adminProcedure.input(createProductSchema).mutation(({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
         name: input.name,
@@ -147,10 +206,9 @@ export const productRouter = router({
         dto: updateProductSchema,
       })
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       if (!input.dto.productDetail) {
         return ctx.prisma.product.update({
-          include: includeProductLineAndProductDetail,
           where: {
             code: input.code,
           },
@@ -168,7 +226,6 @@ export const productRouter = router({
         });
       } else {
         return ctx.prisma.product.update({
-          include: includeProductLineAndProductDetail,
           where: {
             code: input.code,
           },
@@ -209,7 +266,7 @@ export const productRouter = router({
         code: z.string().cuid(),
       })
     )
-    .mutation(async ({ ctx, input }) =>
+    .mutation(({ ctx, input }) =>
       ctx.prisma.product.delete({
         where: {
           code: input.code,

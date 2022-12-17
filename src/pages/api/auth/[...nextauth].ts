@@ -22,7 +22,6 @@ export const authOptions: NextAuthOptions = {
           userId: message.user.id,
         },
       });
-
       if (message.user.email && env.ADMIN_EMAILS.split(",").includes(message.user.email)) {
         await prisma.user.update({
           where: {
@@ -30,6 +29,28 @@ export const authOptions: NextAuthOptions = {
           },
           data: {
             isAdmin: true,
+          },
+        });
+      }
+    },
+    linkAccount: async ({ user, account, profile }) => {
+      if (!user.name) {
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            name: profile.name,
+          },
+        });
+      }
+      if (!user.image) {
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            image: profile.image,
           },
         });
       }
@@ -47,6 +68,7 @@ export const authOptions: NextAuthOptions = {
         }
         return identifier.toLowerCase().trim();
       },
+      maxAge: 60 * 60, // 1 hour
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -59,6 +81,11 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     maxAge: 7 * 24 * 60 * 60, // 7 days
+  },
+  pages: {
+    signIn: "/auth/signin",
+    newUser: "/auth/register",
+    verifyRequest: "/auth/verify-request",
   },
 };
 

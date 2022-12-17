@@ -40,7 +40,7 @@ model Comment {
     productId String
     userId    String
     content   String   @db.Text
-    rating    Float
+    rating    Int?
     createdAt DateTime @default(now())
 
     product Product @relation(fields: [productId], references: [code], onDelete: Cascade)
@@ -110,25 +110,28 @@ model ProductLine {
 model Order {
     orderNumber    String        @id @default(cuid())
     orderDate      DateTime      @default(now())
-    requiredDate   DateTime
     shippedDate    DateTime      @default(now())
+    addressId      String
     status         OrderStatus   @default(InProcess)
     comments       String?       @db.Text
     customerNumber String
     orderdetail    OrderDetail[]
 
-    customer User @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
+    customer User    @relation(fields: [customerNumber], references: [id], onDelete: Cascade)
+    address  Address @relation(fields: [addressId], references: [id])
 
     @@index([customerNumber])
+    @@index([addressId])
     @@map("orders")
 }
 
 model OrderDetail {
-    orderNumber      String
-    productDetailId  String
-    quantityInOrderd Int
-    priceEach        Decimal @db.Decimal(10, 2)
-    orderLineNumber  Int?    @db.SmallInt
+    orderNumber       String
+    productDetailId   String
+    quantityInOrdered Int
+    priceEach         Decimal   @db.Decimal(10, 2)
+    size              ClothSize
+    orderLineNumber   Int?      @db.SmallInt
 
     order         Order         @relation(fields: [orderNumber], references: [orderNumber], onDelete: Cascade)
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
@@ -149,14 +152,16 @@ model Cart {
 }
 
 model CartItem {
+    id              String    @id @default(cuid())
     productDetailId String
     cartId          String
-    numberOfItems   Int
+    numberOfItems   Int       @default(1)
+    size            ClothSize
 
     productDetail ProductDetail @relation(fields: [productDetailId], references: [id], onDelete: Cascade)
     cart          Cart          @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
-    @@id([productDetailId, cartId])
+    @@unique([productDetailId, cartId, size])
     @@index([productDetailId])
     @@index([cartId])
     @@map("cart_item")
@@ -185,12 +190,13 @@ model Address {
     receiver  String  @db.VarChar(50)
     phone     String  @db.VarChar(50)
     city      String  @db.VarChar(50)
-    district  String? @db.VarChar(50)
-    ward      String? @db.VarChar(50)
-    detail    String? @db.Text
+    district  String  @db.VarChar(50)
+    ward      String  @db.VarChar(50)
+    detail    String  @db.Text
     isDefault Boolean @default(false)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Order Order[]
 
     @@index([userId])
     @@map("addresses")

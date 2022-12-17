@@ -9,7 +9,7 @@ import { orderDetailRouter } from "./orderDetail";
 import { productRouter } from "./product";
 import { productDetailRouter } from "./productDetail";
 import { productLineRouter } from "./productLine";
-import { userRouter } from "./user";
+import { userRouter } from "./user/user";
 
 export const appRouter = router({
   example: exampleRouter,
