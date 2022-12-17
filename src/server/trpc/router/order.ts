@@ -1,24 +1,20 @@
-import { OrderStatus, Prisma } from "@prisma/client";
+import { OrderStatus } from "@prisma/client";
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
-
-const orderInclude: Prisma.OrderInclude = {
-  orderdetail: {
-    include: {
-      productDetail: {
-        include: {
-          product: true,
-        },
-      },
-    },
-  },
-};
 
 export const orderRouter = router({
   getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.order.findMany({
       include: {
-        orderdetail: true,
+        orderdetail: {
+          include: {
+            productDetail: {
+              include: {
+                product: true,
+              },
+            },
+          },
+        },
       },
     });
   }),
@@ -28,7 +24,15 @@ export const orderRouter = router({
         customerNumber: ctx.session.user.id,
       },
       include: {
-        orderdetail: true,
+        orderdetail: {
+          include: {
+            productDetail: {
+              include: {
+                product: true,
+              },
+            },
+          },
+        },
       },
     });
   }),
@@ -43,7 +47,17 @@ export const orderRouter = router({
         where: {
           orderNumber: input.orderNumber,
         },
-        include: orderInclude,
+        include: {
+          orderdetail: {
+            include: {
+              productDetail: {
+                include: {
+                  product: true,
+                },
+              },
+            },
+          },
+        },
       });
     }),
   create: protectedProcedure
@@ -96,8 +110,9 @@ export const orderRouter = router({
       if (!input.address && !input.addressId) {
         throw new Error("Address is required");
       }
+      let result;
       if (input.address && !input.addressId)
-        return ctx.prisma.order.create({
+        result = ctx.prisma.order.create({
           data: {
             customer: {
               connect: {
@@ -126,8 +141,8 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
-      if (!input.address && input.addressId)
-        return ctx.prisma.order.create({
+      if (!input.address && input.addressId) {
+        result = ctx.prisma.order.create({
           data: {
             customer: {
               connect: {
@@ -150,6 +165,13 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
+      }
+      ctx.prisma.cart.delete({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+      return result;
     }),
   updateStatus: publicProcedure
     .input(

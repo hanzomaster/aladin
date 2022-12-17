@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import NavBar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
@@ -21,12 +22,16 @@ const Purchase: NextPage = () => {
             </header>
             <main className="pl-5 md:pl-10 lg:pl-32">
               {orders?.map((item) => {
+                let total = 0;
+                for (const item1 of item.orderdetail) {
+                  total = total + parseFloat(item1.priceEach.toString()) * item1.quantityInOrdered;
+                }
                 return (
-                  <Link key={item.orderNumber} href="/orderdetail">
+                  <Link key={item.orderNumber} href={"/orderdetail/" + item.orderNumber}>
                     <div className=" m d:px-4 relative my-4 h-full w-full cursor-pointer bg-gray-50 px-2 pb-2 hover:bg-gray-100">
                       <header className="flex justify-between border-b-2 py-4">
                         <h1 className="  text-base font-semibold text-gray-800 sm:text-lg md:text-xl">
-                          #1234
+                          {item.orderNumber}
                         </h1>
                         <div className="flex flex-col items-center text-xs sm:flex-row sm:text-base md:text-lg">
                           <p className="mr-2 sm:mr-4">{item.orderDate.toDateString()}</p>
@@ -35,25 +40,39 @@ const Purchase: NextPage = () => {
                       </header>
                       <main className="w-full">
                         <div className="mt-4 flex">
-                          <div className="w-12 pb-4 sm:w-16 md:w-20">
-                            <img
+                          <div className=" relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                            <div className="relative h-full w-full"></div>
+                            <Image
+                              src={
+                                item.orderdetail[0]?.productDetail.image
+                                  ? item.orderdetail[0]?.productDetail.image
+                                  : ""
+                              }
+                              layout="fill"
+                              alt="Ảnh sản phẩm"
+                              className="object-cover object-center"></Image>
+                            {/* <img
                               className="w-full md:block"
                               src="https://i.ibb.co/84qQR4p/Rectangle-10.png"
                               alt="dress"
-                            />
+                            /> */}
                           </div>
                           <div className="flex w-full flex-col justify-between px-2 md:px-10">
                             <div className="flex w-full justify-between">
                               <h1 className="text-sm font-medium text-gray-800 sm:text-base md:text-lg">
-                                Premium Quaility Dress
+                                {item.orderdetail[0]?.productDetail.product.name}
                               </h1>
-                              <div className="flex flex-col md:flex-row">
-                                <p className="text-sm leading-6 sm:text-base xl:text-lg">$36.00</p>
-                                <span className="text-sm text-red-300 line-through sm:text-base xl:text-lg">
-                                  {" "}
-                                  $45.00
-                                </span>
+                            </div>
+                            <div className="relative right-0 top-0 pr-4 ">
+                              <div className="r-0 mt-0.5 inline-block">
+                                <del className="ml-2 text-lg text-red-700">
+                                  {item.orderdetail[0]?.priceEach.toString()}000 &#8363;
+                                </del>
                               </div>
+
+                              <p className="r-0 mt-2 ml-1 inline-block pr-4  text-xl">
+                                {(item.orderdetail[0]?.priceEach * 0.6).toString()}000 &#8363;
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -61,7 +80,7 @@ const Purchase: NextPage = () => {
                         <div className="absolute right-0 bottom-0 mb-2 pr-4 ">
                           <span className="text-xs sm:text-sm md:text-base">Tổng số tiền: </span>
                           <span className="text-sm font-medium text-gray-800 sm:text-lg md:text-xl">
-                            179.000đ
+                            {total},000 &#8363;
                           </span>
                         </div>
                       </main>
