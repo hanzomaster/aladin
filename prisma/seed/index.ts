@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import createProducts from "./Product";
 import createProductLines from "./ProductLine";
+import createUsers from "./User";
 const prisma = new PrismaClient();
 
-const seeds = [createProductLines, createProducts];
+const seeds = [createProductLines, createProducts, createUsers];
 
 async function main() {
   console.log("Start seeding ...");
