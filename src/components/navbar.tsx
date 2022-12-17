@@ -58,9 +58,6 @@ const NavBar = () => {
   });
 
   const [open, setOpen] = useState(false);
-  const removeItem = (productDetailId: string) => {
-    mutation.mutate({ productDetailId: productDetailId });
-  };
 
   let total = 0;
 
@@ -97,6 +94,10 @@ const NavBar = () => {
     if (event.key === "Enter") {
       window.location.href = "/home?name=" + message;
     }
+  };
+
+  const checkOutBtnClicked = () => {
+    sessionData ? (window.location.href = "/checkout") : null;
   };
   return (
     <>
@@ -181,17 +182,19 @@ const NavBar = () => {
                         <p className="mt-0.5 text-sm text-gray-500">
                           Miễn phí vận chuyển toàn quốc.
                         </p>
-                        <button className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white">
-                          <a href={sessionData ? "checkout" : "/home"} className="">
-                            Thanh toán
-                          </a>
+                        <button
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white"
+                          onClick={() => {
+                            checkOutBtnClicked();
+                          }}>
+                          Thanh toán
                         </button>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
                             hoặc
                             <button
                               type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              className="pl-1 font-medium text-indigo-600 hover:text-indigo-500"
                               onClick={() => {
                                 setOpen(false);
                               }}>

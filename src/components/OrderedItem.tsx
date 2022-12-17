@@ -1,50 +1,56 @@
-import Link from "next/link";
+import Image from "next/image";
 
-function OrderedItem() {
+function OrderedItem({ item }: { item: any }) {
   return (
-    <Link href="/orderdetail">
-      <div className=" m d:px-4 relative my-4 h-full w-full cursor-pointer bg-gray-50 px-2 pb-2 hover:bg-gray-100">
-        <header className="flex justify-between border-b-2 py-4">
-          <h1 className="  text-base font-semibold text-gray-800 sm:text-lg md:text-xl">#1234</h1>
-          <div className="flex flex-col items-center text-xs sm:flex-row sm:text-base md:text-lg">
-            <p className="mr-2 sm:mr-4">5/12/2022</p>
-            <p className="text-[#0070f3]">Đang giao</p>
-          </div>
-        </header>
-        <main className="w-full">
-          <div className="mt-4 flex">
-            <div className="w-12 pb-4 sm:w-16 md:w-20">
-              <img
-                className="w-full md:block"
-                src="https://i.ibb.co/84qQR4p/Rectangle-10.png"
-                alt="dress"
-              />
-            </div>
-            <div className="flex w-full flex-col justify-between px-2 md:px-10">
-              <div className="flex w-full justify-between">
-                <h1 className="text-sm font-medium text-gray-800 sm:text-base md:text-lg">
-                  Premium Quaility Dress
-                </h1>
-                <div className="flex flex-col md:flex-row">
-                  <p className="text-sm leading-6 sm:text-base xl:text-lg">$36.00</p>
-                  <span className="text-sm text-red-300 line-through sm:text-base xl:text-lg">
-                    {" "}
-                    $45.00
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute right-0 bottom-0 mb-2 pr-4 ">
-            <span className="text-xs sm:text-sm md:text-base">Tổng số tiền: </span>
-            <span className="text-sm font-medium text-gray-800 sm:text-lg md:text-xl">
-              179.000đ
-            </span>
-          </div>
-        </main>
+    <div className="mt-4 flex w-full flex-col items-start justify-start md:mt-6 md:flex-row md:items-center md:space-x-6 xl:space-x-8 ">
+      <div className=" relative h-32 w-28 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+        <div className="relative h-full w-full"></div>
+        <Image
+          src={item.productDetail.image ? item.productDetail.image : ""}
+          layout="fill"
+          alt="Ảnh sản phẩm"
+          className="object-cover object-center"></Image>
+        {/* <img
+              className="w-full md:block"
+              src="https://i.ibb.co/84qQR4p/Rectangle-10.png"
+              alt="dress"
+            /> */}
       </div>
-    </Link>
+      <div className="flex w-full flex-col items-start justify-between space-y-4 border-b border-gray-200  pb-8 md:flex-row md:space-y-0">
+        <div className="flex w-full flex-col items-start justify-start space-y-8">
+          <h3 className="text-xl font-semibold leading-6 text-gray-800 xl:text-2xl">
+            {item.productDetail.product.name}
+          </h3>
+          <div className="flex flex-col items-start justify-start space-y-2">
+            <p className="text-sm leading-none text-gray-800">
+              <span className="text-gray-600">Size: </span> {item.size}
+            </p>
+            <p className="text-sm leading-none text-gray-800">
+              <span className="text-gray-600">Color: </span>{" "}
+              <span
+                style={{
+                  background: `#${item.productDetail.colorCode}`,
+                }}>
+                {item.productDetail.colorCode}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div className="flex w-full items-start justify-between space-x-8">
+          <p className="text-base leading-6 xl:text-lg">
+            {item.priceEach * 0.6},000 &#8363;{" "}
+            <span className="text-red-300 line-through">
+              {" "}
+              {item.priceEach.toString()},000 &#8363;
+            </span>
+          </p>
+          <p className="text-base leading-6 text-gray-800 xl:text-lg">{item.quantityInOrdered}</p>
+          <p className="text-base font-semibold leading-6 text-gray-800 xl:text-lg">
+            {item.priceEach * item.quantityInOrdered}000&#8363;
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 export default OrderedItem;

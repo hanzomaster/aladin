@@ -1,6 +1,9 @@
+import { ClothSize } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
+
+type ClothSizeLiteral = `${ClothSize}`;
 
 const CartItem = ({ product }: any) => {
   const [count, setCount] = useState(0);
@@ -14,8 +17,8 @@ const CartItem = ({ product }: any) => {
 
   const [open, setOpen] = useState(false);
 
-  const removeItem = (productDetailId: string) => {
-    mutation.mutate({ productDetailId: productDetailId });
+  const removeItem = (productDetailId: string, size: ClothSizeLiteral) => {
+    mutation.mutate({ productDetailId: productDetailId, size: size });
   };
   const inc = () => {
     setCount(count + 1);
@@ -85,7 +88,9 @@ const CartItem = ({ product }: any) => {
             <button
               type="button"
               className="font-medium text-indigo-600 hover:text-indigo-500"
-              onClick={() => removeItem(product?.productDetail.id)}>
+              onClick={() =>
+                removeItem(product?.productDetail.id, product?.size as ClothSizeLiteral)
+              }>
               Remove
             </button>
           </div>
