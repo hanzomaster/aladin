@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
