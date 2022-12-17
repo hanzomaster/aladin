@@ -3,62 +3,30 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import Select from "react-select";
+import { useToast } from "../components/Toast";
 import useLocationForm from "../constants/useLocationForm";
 import { trpc } from "../utils/trpc";
 
-// const products = [
-//   {
-//     id: 1,
-//     name: "Throwback Hip Bag",
-//     href: "#",
-//     color: "Salmon",
-//     price: "$90.00",
-//     quantity: 1,
-//     imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-//     imageAlt:
-//       "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-//   },
-//   {
-//     id: 2,
-//     name: "Medium Stuff Satchel",
-//     href: "#",
-//     color: "Blue",
-//     price: "$32.00",
-//     quantity: 1,
-//     imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-//     imageAlt:
-//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-//   },
-//   {
-//     id: 2,
-//     name: "Medium Stuff Satchel",
-//     href: "#",
-//     color: "Blue",
-//     price: "$32.00",
-//     quantity: 1,
-//     imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-//     imageAlt:
-//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-//   },
-//   {
-//     id: 2,
-//     name: "Medium Stuff Satchel",
-//     href: "#",
-//     color: "Blue",
-//     price: "$32.000000",
-//     quantity: 1,
-//     imageSrc: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-//     imageAlt:
-//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-//   },
-// More products...
-// ];
 const CheckOut = () => {
   const { state, onCitySelect, onDistrictSelect, onWardSelect, onSubmit } = useLocationForm(false);
   const { data: sessionData } = useSession();
   const [disable, setDiable] = useState(true);
+  const { add: toast } = useToast();
   const { data: cartData } = trpc.cart.get.useQuery();
-  const mutation = trpc.order.create.useMutation();
+  const mutation = trpc.order.create.useMutation({
+    onError: () => {
+      window.location.href = "/checkoutsuccess/error";
+    },
+    onSuccess: () => {
+      toast({
+        type: "success",
+        duration: 6000,
+        message: "Đặt hàng thành công!",
+        position: "topCenter",
+      });
+      window.location.href = "/checkoutsuccess/success";
+    },
+  });
   let total = 0;
   const [phone, setPhone] = useState("");
 
@@ -66,14 +34,35 @@ const CheckOut = () => {
     setPhone(event.target.value);
   };
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(sessionData?.user?.name);
 
   const handleNameChange = (event: any) => {
     setName(event.target.value);
   };
 
+  const [detailAdress, setDetailAdress] = useState("");
+
+  const handleDetailAdressChange = (event: any) => {
+    setDetailAdress(event.target.value);
+  };
+
+  const [comment, setComment] = useState("");
+
+  const handleCommentChange = (event: any) => {
+    setComment(event.target.value);
+  };
   const handleCheckOutBtnClicked = () => {
-    mutation.mutate({ comment: "" });
+    mutation.mutate({
+      comment: "",
+      address: {
+        phone: phone,
+        receiver: name as string,
+        city: selectedCity?.label as string,
+        district: selectedDistrict?.label as string,
+        ward: selectedWard?.label as string,
+        detail: detailAdress,
+      },
+    });
   };
   const {
     cityOptions,
@@ -107,7 +96,7 @@ const CheckOut = () => {
                       </label>
                       <input
                         name="firstName"
-                        value={sessionData?.user?.name ?? name}
+                        value={name as string}
                         onChange={handleNameChange}
                         type="text"
                         placeholder="Họ"
@@ -203,7 +192,9 @@ const CheckOut = () => {
                       <input
                         name="Last Name"
                         type="text"
+                        value={detailAdress}
                         placeholder=""
+                        onChange={handleDetailAdressChange}
                         className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                       />
                     </div>
@@ -233,7 +224,8 @@ const CheckOut = () => {
                   <div className="mt-4">
                     <button
                       className="text-black-200 w-full rounded-lg bg-gray-300 px-6 py-2 font-bold enabled:hover:bg-gray-900 enabled:hover:text-white "
-                      disabled={disable || phone === "" || name === ""}>
+                      disabled={disable || phone === "" || name === ""}
+                      onClick={() => handleCheckOutBtnClicked()}>
                       Xác nhận thanh toán
                     </button>
                   </div>

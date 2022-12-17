@@ -3,13 +3,26 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../../trpc";
 
 export const addressRouter = router({
-  getAll: protectedProcedure.query(({ ctx }) =>
+  get: protectedProcedure.query(({ ctx }) =>
     ctx.prisma.address.findMany({
       where: {
         userId: ctx.session.user.id,
       },
     })
   ),
+  getById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.address.findUnique({
+        where: {
+          id: input.id,
+        },
+      })
+    ),
   create: protectedProcedure
     .input(
       z.object({
@@ -18,8 +31,8 @@ export const addressRouter = router({
           phone: z.string(),
           city: z.string(),
           district: z.string(),
-          ward: z.string().optional(),
-          detail: z.string().optional(),
+          ward: z.string(),
+          detail: z.string(),
         }),
       })
     )

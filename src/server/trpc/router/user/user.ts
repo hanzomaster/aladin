@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, router } from "../../trpc";
+import { addressRouter } from "./address";
+import { commentRouter } from "./comment";
 
 export const userRouter = router({
+  address: addressRouter,
+  comment: commentRouter,
   getAll: adminProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
