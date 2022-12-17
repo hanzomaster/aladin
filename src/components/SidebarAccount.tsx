@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import SidebarItems from "./SidebarItems";
 
@@ -9,7 +10,8 @@ function SidebarAccount() {
         return (
           <div
             key={item.name}
-            className=" my-3 flex items-center text-base hover:text-gray-500 sm:text-lg md:text-xl">
+            className=" my-3 flex items-center text-base hover:text-gray-500 sm:text-lg md:text-xl"
+            onClick={() => (item.name === "Đăng xuất" ? signOut() : null)}>
             <i className="mr-2">{item.icon}</i>
             <Link href={item.link}>{item.name}</Link>
           </div>

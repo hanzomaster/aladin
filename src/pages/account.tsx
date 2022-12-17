@@ -1,13 +1,61 @@
-import type { NextPage } from "next";
-import { useState } from "react";
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { getSession, signOut, useSession } from "next-auth/react";
+import { ChangeEvent, useState } from "react";
+import Navbar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
-import Navbar from "./component/navbar";
+import { useToast } from "../components/Toast";
+import { trpc } from "../utils/trpc";
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  // check session with next-auth
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};
 
 const Account: NextPage = () => {
   // dynamic handle focus on input
-
+  const { data: sessionData } = useSession();
+  const [name, setName] = useState(sessionData?.user?.name);
+  const { add: toast } = useToast();
+  const [phone, setPhone] = useState("0");
+  const mutation = trpc.user.update.useMutation({
+    onSuccess: () => {
+      setEnableName(false);
+      setEnablePhone(false);
+      toast({
+        type: "success",
+        duration: 6000,
+        message: "Sửa đổi thông tin thành công!\n Vui lòng đăng nhập lại để cập nhật thông tin! ",
+        position: "topCenter",
+      });
+      signOut();
+    },
+  });
   const [enableName, setEnableName] = useState(false);
   const [enablePhone, setEnablePhone] = useState(false);
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPhone(event.target.value);
+  };
+
+  const saveButtonClicked = () => {
+    mutation.mutate({ dto: { name: name as string, phone: phone } });
+  };
 
   const handleEnableName = () => {
     setEnableName(true);
@@ -18,10 +66,13 @@ const Account: NextPage = () => {
   return (
     <div className="h-full w-full text-sm md:text-base">
       {/* Navbar */}
-      {/* <Navbar /> */}
+      <section>
+        <Navbar />
+      </section>
+
       {/* Content */}
-      <div>
-        <div className="mt-[calc(100%-)] flex h-full border-4 px-4 pb-20 lg:px-10">
+      <div className=" p- mx-1 gap-5 py-10">
+        <div className="mt-10 flex h-full border-4 px-4 pb-20 lg:px-10">
           <SidebarAccount />
           {/* main */}
           <div className="w-full sm:w-[80%] xl:w-[60%]">
@@ -38,9 +89,9 @@ const Account: NextPage = () => {
                   Email
                 </label>
                 <input
-                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
+                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="email"
-                  value={"20020420@vnu.edu.vn"}
+                  value={sessionData?.user?.email ?? "Loading..."}
                   disabled
                 />
               </div>
@@ -52,14 +103,17 @@ const Account: NextPage = () => {
                   </button>
                 </label>
                 <input
-                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
+                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
-                  value={"Huyen"}
+                  value={name ?? "Loading..."}
+                  onChange={handleNameChange}
                   disabled={!enableName}
                 />
               </div>
               <div className="my-5">
-                <label className="my-5 font-semibold text-gray-500" htmlFor="phone">
+                <label
+                  className="my-5 font-semibold text-gray-500 disabled:bg-slate-300"
+                  htmlFor="phone">
                   Số điện thoại
                   {/* button to set focus to the input */}
                   <button className="ml-2 text-[#0070f3]" onClick={handleEnablePhone}>
@@ -67,9 +121,10 @@ const Account: NextPage = () => {
                   </button>
                 </label>
                 <input
-                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
+                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
-                  value={"012345678"}
+                  onChange={handlePhoneChange}
+                  value={phone}
                   disabled={!enablePhone}
                 />
               </div>
@@ -110,12 +165,12 @@ const Account: NextPage = () => {
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                   type="date"
                   value={"2002-04-20"}
-                  disabled
                 />
               </div>
 
               <button
-                className=" mt-5 h-12 w-full rounded-md border-2 bg-[#da291c] text-lg  font-medium uppercase text-white md:mt-10 md:text-xl"
+                className=" mt-5 h-12 w-full rounded-lg border-2 bg-[#da291c] text-lg font-medium uppercase  text-white hover:bg-[#cd5a52] active:border-2 active:border-stone-900 active:shadow-lg md:mt-10 md:text-xl"
+                onClick={() => saveButtonClicked()}
                 disabled={!(enableName || enablePhone)}
                 hidden={!(enableName || enablePhone)}>
                 Lưu

@@ -25,14 +25,6 @@ const Error: NextPage = () => {
                 </button>
               </div>
             </div>
-            {/* <div className="hidden md:flex md:items-center md:justify-end space-x-4">
-                    <button className="px-6 py-2 w-36 transition ease-in duration-200 uppercase hover:bg-blue-500 text-white border border-blue-400 bg-blue-400 focus:outline-none">
-                        Login
-                    </button>
-                    <button className="px-6 py-2 w-36 transition ease-in duration-200 uppercase hover:bg-blue-400 hover:text-white border border-blue-400 focus:outline-none">
-                        Register
-                    </button>
-                </div> */}
           </div>
         </nav>
       </header>
