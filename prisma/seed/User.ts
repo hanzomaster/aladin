@@ -255,7 +255,7 @@ const entries: Prisma.UserCreateInput[] = [
             "ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula",
           product: {
             connect: {
-              name: "Jean 4",
+              name: "Jeans 4",
             },
           },
         },
@@ -359,7 +359,7 @@ const entries: Prisma.UserCreateInput[] = [
           content: "quis libero nullam",
           product: {
             connect: {
-              name: "Jean 4",
+              name: "Jeans 4",
             },
           },
         },
@@ -455,7 +455,7 @@ const entries: Prisma.UserCreateInput[] = [
           content: "quam suspendisse potenti nullam porttitor lacus",
           product: {
             connect: {
-              name: "Jean 4",
+              name: "Jeans 4",
             },
           },
         },
@@ -473,5 +473,5 @@ export default async function createUsers(prisma: PrismaClient) {
     });
     succeed++;
   }
-  console.log(`\tCreated ${succeed} users of ${entries.length}`);
+  console.log(`\tCreated ${succeed} users out of ${entries.length}`);
 }

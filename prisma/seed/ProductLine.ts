@@ -100,5 +100,5 @@ export default async function createProductLines(prisma: PrismaClient) {
     });
     succeed++;
   }
-  console.log(`\tCreated ${succeed} product lines of ${entries.length}`);
+  console.log(`\tCreated ${succeed} product lines out of ${entries.length}`);
 }

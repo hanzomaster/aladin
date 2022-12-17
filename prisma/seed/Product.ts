@@ -1,7 +1,7 @@
 import { Gender, Prisma, PrismaClient } from "@prisma/client";
 
 const entries: Prisma.ProductCreateInput[] = [
-  // 5 male hoodies 
+  // 5 male hoodies
   {
     name: "Hoodie 1",
     description: "Hoodie 1 description",
@@ -2751,7 +2751,7 @@ const entries: Prisma.ProductCreateInput[] = [
     },
   },
 
-  // 5 female hoodies 
+  // 5 female hoodies
   {
     name: "Hoodie 6",
     description: "Hoodie 6 description",
@@ -3089,7 +3089,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  },  
+  },
   {
     name: "Shirt 8",
     description: "Shirt 8 description",
@@ -3283,7 +3283,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  },  
+  },
   {
     name: "Polo 7",
     description: "Polo 7 description",
@@ -3331,7 +3331,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  }, 
+  },
   {
     name: "Polo 8",
     description: "Polo 8 description",
@@ -3573,7 +3573,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  }, 
+  },
   {
     name: "Jeans 8",
     description: "Jeans 8 description",
@@ -3669,7 +3669,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  },  
+  },
   {
     name: "Jeans 10",
     description: "Jeans 10 description",
@@ -3717,7 +3717,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  },  
+  },
 
   // female pants
   {
@@ -3815,7 +3815,7 @@ const entries: Prisma.ProductCreateInput[] = [
         },
       },
     },
-  }, 
+  },
   {
     name: "Pants 8",
     description: "Pants 8 description",
@@ -5413,5 +5413,5 @@ export default async function createProducts(prisma: PrismaClient) {
     });
     succeed++;
   }
-  console.log(`\tCreated ${succeed} products of ${entries.length}`);
+  console.log(`\tCreated ${succeed} products out of ${entries.length}`);
 }
