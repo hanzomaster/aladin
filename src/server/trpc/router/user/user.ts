@@ -31,14 +31,17 @@ export const userRouter = router({
         where: input,
       });
     }),
-  update: adminProcedure
+  update: protectedProcedure
     .input(
       z.object({
+<<<<<<< HEAD
         id: z.string().length(25),
+=======
+>>>>>>> origin/main
         dto: z
           .object({
             name: z.string(),
-            email: z.string().email(),
+            phone: z.string().max(50),
           })
           .partial(),
       })
@@ -46,7 +49,7 @@ export const userRouter = router({
     .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
         },
         data: input.dto,
       });

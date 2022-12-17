@@ -3,13 +3,26 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../../trpc";
 
 export const addressRouter = router({
-  getAll: protectedProcedure.query(({ ctx }) =>
+  get: protectedProcedure.query(({ ctx }) =>
     ctx.prisma.address.findMany({
       where: {
         userId: ctx.session.user.id,
       },
     })
   ),
+  getById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.address.findUnique({
+        where: {
+          id: input.id,
+        },
+      })
+    ),
   create: protectedProcedure
     .input(
       z.object({
@@ -18,8 +31,8 @@ export const addressRouter = router({
           phone: z.string(),
           city: z.string(),
           district: z.string(),
-          ward: z.string().optional(),
-          detail: z.string().optional(),
+          ward: z.string(),
+          detail: z.string(),
         }),
       })
     )
@@ -68,6 +81,41 @@ export const addressRouter = router({
           id: input.id,
         },
         data: input.dto,
+      });
+    }),
+  makeDefault: protectedProcedure
+    .input(z.object({ id: z.string().cuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const address = await ctx.prisma.address.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (!address) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+      if (address.userId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
+      await ctx.prisma.address.updateMany({
+        where: {
+          userId: ctx.session.user.id,
+        },
+        data: {
+          isDefault: false,
+        },
+      });
+      return ctx.prisma.address.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isDefault: true,
+        },
       });
     }),
   delete: protectedProcedure
