@@ -32,13 +32,10 @@ const Orders: NextPage = () => {
   // Get current posts to paginate
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
-  const currentPosts: inferRouterOutputs<AppRouter>["order"]["getAll"] = searchResult?.slice(
-    firstPostIndex,
-    lastPostIndex
-  );
+  const currentPosts = searchResult?.slice(firstPostIndex, lastPostIndex);
   return (
     <div className="h-full w-full text-sm md:text-base">
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <NavbarAdmin />
       <main className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
         <h1 className="text-3xl font-medium text-gray-900 ">Orders</h1>

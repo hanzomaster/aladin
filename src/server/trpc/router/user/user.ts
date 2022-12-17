@@ -34,10 +34,7 @@ export const userRouter = router({
   update: protectedProcedure
     .input(
       z.object({
-<<<<<<< HEAD
         id: z.string().length(25),
-=======
->>>>>>> origin/main
         dto: z
           .object({
             name: z.string(),

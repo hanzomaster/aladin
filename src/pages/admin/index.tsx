@@ -1,7 +1,16 @@
 import { NextPage } from "next";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
+import { getAmountOrder } from "../../components/admin/OrdersList";
 
 import { trpc } from "../../utils/trpc";
+
+function getSumAmountOrders(orders) {
+  let sumAmount = 0;
+  orders?.map((order) => {
+    sumAmount += getAmountOrder(order?.orderdetail);
+  });
+  return sumAmount;
+}
 
 const Admin: NextPage = () => {
   const { data: users } = trpc.user.getAll.useQuery();
@@ -83,7 +92,9 @@ const Admin: NextPage = () => {
           </div>
           <div className="rounded-xl bg-[#70d1e5] p-4 shadow-sm ">
             <div className="p-4">
-              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">12 500</div>
+              <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
+                {getSumAmountOrders(orders)}
+              </div>
               <div className="flex text-sm text-gray-600 md:text-base">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

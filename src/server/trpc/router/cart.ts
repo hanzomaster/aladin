@@ -13,14 +13,7 @@ export const cartRouter = router({
         cartItem: {
           include: {
             productDetail: {
-<<<<<<< HEAD
               include: {
-=======
-              select: {
-                id: true,
-                colorCode: true,
-                image: true,
->>>>>>> origin/main
                 product: {
                   select: {
                     code: true,

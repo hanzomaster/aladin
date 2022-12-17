@@ -1,7 +1,24 @@
-import { Order } from "@prisma/client";
+import { Order, OrderDetail } from "@prisma/client";
 import React from "react";
 import { inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
+
+export function getAmountOrder(orderdetail: OrderDetail[]) {
+  let sum = 0;
+  orderdetail?.map((item) => {
+    sum += item?.quantityInOrdered * (item?.priceEach as any);
+  });
+  return sum;
+}
+
+function convertDate(inputFormat) {
+  function pad(s) {
+    return s < 10 ? "0" + s : s;
+  }
+  const d = new Date(inputFormat);
+  return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join("/");
+}
+
 const OrdersList = ({
   ordersData,
 }: {
@@ -32,11 +49,7 @@ const OrdersList = ({
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
               Ngày đặt hàng
             </th>
-            <th
-              scope="col"
-              className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Sản phẩm
-            </th>
+
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
@@ -51,7 +64,7 @@ const OrdersList = ({
           </tr>
         </thead>
         <tbody className="bg-white">
-          {ordersData?.map((order: Order, index: number) => {
+          {ordersData?.map((order, index: number) => {
             return (
               <tr
                 key={index}
@@ -60,12 +73,37 @@ const OrdersList = ({
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderNumber}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.customerNumber}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {order.orderDate.toString()}
+                  {`${convertDate(
+                    order.orderDate
+                  )} ${order.orderDate.getHours()}h:${order.orderDate.getMinutes()}m:${order.orderDate.getSeconds()}s`}
                 </td>
-                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{
-                order.}</td> */}
-                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.current_price}</td> */}
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.status}</td>
+
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">
+                  {getAmountOrder(order?.orderdetail)}
+                </td>
+
+                {/* order status */}
+                {order.status == "InProcess" && (
+                  <td className="whitespace-nowrap px-2 py-3 md:px-6">
+                    <span className="rounded-full bg-yellow-100 px-3 pt-1 pb-2 text-base font-medium text-yellow-700 ">
+                      Đang giao
+                    </span>
+                  </td>
+                )}
+                {order.status == "Cancelled" && (
+                  <td className="whitespace-nowrap px-2 py-3 md:px-6">
+                    <span className="rounded-full bg-red-100 px-3 pt-1 pb-2 text-base font-medium text-red-700 ">
+                      Đã hủy
+                    </span>
+                  </td>
+                )}
+                {order.status == "Shipped" && (
+                  <td className="whitespace-nowrap px-2 py-3 md:px-6 ">
+                    <span className="rounded-full bg-green-100 px-3 pt-1 pb-2 text-base font-medium text-green-700 ">
+                      Đã giao
+                    </span>
+                  </td>
+                )}
               </tr>
             );
           })}

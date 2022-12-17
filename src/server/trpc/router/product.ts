@@ -134,14 +134,7 @@ export const productRouter = router({
       },
     })
   ),
-<<<<<<< HEAD
   create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
-=======
-  /**
-   * Create a new product
-   */
-  create: adminProcedure.input(createProductSchema).mutation(({ ctx, input }) =>
->>>>>>> origin/main
     ctx.prisma.product.create({
       data: {
         name: input.name,
