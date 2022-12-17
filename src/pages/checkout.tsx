@@ -225,7 +225,10 @@ const CheckOut = () => {
                     <button
                       className="text-black-200 w-full rounded-lg bg-gray-300 px-6 py-2 font-bold enabled:hover:bg-gray-900 enabled:hover:text-white "
                       disabled={disable || phone === "" || name === ""}
-                      onClick={() => handleCheckOutBtnClicked()}>
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleCheckOutBtnClicked();
+                      }}>
                       Xác nhận thanh toán
                     </button>
                   </div>
