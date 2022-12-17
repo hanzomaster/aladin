@@ -94,8 +94,9 @@ export const orderRouter = router({
       if (!input.address && !input.addressId) {
         throw new Error("Address is required");
       }
+      let result;
       if (input.address && !input.addressId)
-        return ctx.prisma.order.create({
+        result = ctx.prisma.order.create({
           data: {
             customer: {
               connect: {
@@ -124,8 +125,8 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
-      if (!input.address && input.addressId)
-        return ctx.prisma.order.create({
+      if (!input.address && input.addressId) {
+        result = ctx.prisma.order.create({
           data: {
             customer: {
               connect: {
@@ -148,6 +149,13 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
+      }
+      ctx.prisma.cart.delete({
+        where: {
+          userId: ctx.session.user.id,
+        },
+      });
+      return result;
     }),
   updateStatus: publicProcedure
     .input(
