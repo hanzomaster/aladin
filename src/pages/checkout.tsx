@@ -247,7 +247,8 @@ const CheckOut = () => {
                           parseFloat(
                             (
                               (product.productDetail.product.buyPrice as unknown as number) *
-                              product.numberOfItems
+                              product.numberOfItems *
+                              0.6
                             ).toString()
                           );
                         return (
@@ -273,8 +274,14 @@ const CheckOut = () => {
                                     <p>{product?.productDetail?.product?.name}</p>
                                   </h3>
                                   <p className="ml-4">
-                                    {product?.productDetail?.product?.buyPrice.toString()}
-                                    ,000 &#8363;
+                                    {(
+                                      parseFloat(
+                                        product?.productDetail?.product?.buyPrice.toString()
+                                      ) * 1000
+                                    ).toLocaleString("vi-VN", {
+                                      style: "currency",
+                                      currency: "VND",
+                                    })}
                                   </p>
                                 </div>
                                 <div className="block inline-block">
@@ -309,13 +316,28 @@ const CheckOut = () => {
                   </h2>
                 </div>
                 <div className="text-heading flex w-full items-center border-b border-gray-300 py-4 text-sm font-semibold last:border-b-0 last:pb-0 last:text-base lg:py-5 lg:px-3">
-                  Giá đơn hàng<span className="ml-2">{total},000&#8363;</span>
+                  Giá đơn hàng
+                  <span className="ml-2 text-base">
+                    {(total * 1000).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                    <small className="mr-3 ml-2  rounded-full bg-red-700 px-2 tracking-widest text-white">
+                      -40&#37;
+                    </small>
+                  </span>
                 </div>
                 <div className="text-heading flex w-full items-center border-b border-gray-300 py-4 text-sm font-semibold last:border-b-0 last:pb-0 last:text-base lg:py-5 lg:px-3">
                   Phí ship<span className="ml-2">0&#8363;</span>
                 </div>
                 <div className="text-heading flex w-full items-center border-b border-gray-300 py-4 text-sm font-semibold last:border-b-0 last:pb-0 last:text-base lg:py-5 lg:px-3">
-                  Tổng<span className="ml-2">{total},000&#8363;</span>
+                  Tổng
+                  <span className="ml-2">
+                    {(total * 1000).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </span>
                 </div>
               </div>
             </div>

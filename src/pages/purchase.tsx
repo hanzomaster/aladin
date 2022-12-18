@@ -67,12 +67,20 @@ const Purchase: NextPage = () => {
                             <div className="relative right-0 top-0 pr-4 ">
                               <div className="r-0 mt-0.5 inline-block">
                                 <del className="ml-2 text-lg text-red-700">
-                                  {item.orderdetail[0]?.priceEach.toString()}000 &#8363;
+                                  {(item.orderdetail[0]?.priceEach * 1000).toLocaleString("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  })}
                                 </del>
                               </div>
 
                               <p className="r-0 mt-2 ml-1 inline-block pr-4  text-xl">
-                                {(item.orderdetail[0]?.priceEach * 0.6).toString()}000 &#8363;
+                                {(
+                                  parseFloat(item.orderdetail[0]?.priceEach.toString()) * 600
+                                ).toLocaleString("vi-VN", {
+                                  style: "currency",
+                                  currency: "VND",
+                                })}
                               </p>
                             </div>
                           </div>
@@ -81,7 +89,10 @@ const Purchase: NextPage = () => {
                         <div className="absolute right-0 bottom-0 mb-2 pr-4 ">
                           <span className="text-xs sm:text-sm md:text-base">Tổng số tiền: </span>
                           <span className="text-sm font-medium text-gray-800 sm:text-lg md:text-xl">
-                            {total},000 &#8363;
+                            {(total * 600).toLocaleString("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
                           </span>
                         </div>
                       </main>

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import NavBar from "../../components/navbar";
-import OrderedItem from "../../components/OrderedItem";
+import OrderedItem from "../../components/user/OrderedItem";
+
 import { trpc } from "../../utils/trpc";
 
 const OrderDetail = () => {
@@ -54,7 +55,11 @@ const OrderDetail = () => {
                       </span>
                     </p>
                     <p className="text-base leading-4 text-gray-600">
-                      {total * 0.4}000 &#8363; (40%)
+                      {(total * 0.4 * 1000).toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}{" "}
+                      (40%)
                     </p>
                   </div>
                   <div className="flex w-full items-center justify-between">
@@ -65,7 +70,11 @@ const OrderDetail = () => {
                 <div className="flex w-full items-center justify-between">
                   <p className="text-base font-semibold leading-4 text-gray-800">Tổng</p>
                   <p className="text-base font-semibold leading-4 text-gray-600">
-                    {total * 0.6}000 &#8363;
+                    {(total * 600).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                    ;
                   </p>
                 </div>
               </div>

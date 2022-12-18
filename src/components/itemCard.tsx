@@ -140,7 +140,12 @@ export default function ItemCard({ item }: { item: any }) {
         </div>
 
         <div className="mt-0.5 inline-block">
-          <del className="ml-2 text-lg text-red-700">{item.buyPrice.toString()}000 &#8363;</del>
+          <del className="ml-2 text-lg text-red-700">
+            {(item.buyPrice * 1000).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </del>
           <small className="mr-3 ml-2  rounded-full bg-red-700 px-2 tracking-widest text-white">
             -40&#37;
           </small>
@@ -148,7 +153,10 @@ export default function ItemCard({ item }: { item: any }) {
 
         <br />
         <span className="mt-2 ml-1 inline-block text-xl">
-          {(item.buyPrice * 0.6).toString()}000 &#8363;
+          {(item.buyPrice * 600).toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
         </span>
       </div>
     </>

@@ -177,7 +177,12 @@ const NavBar = () => {
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Tổng giá tiền</p>
-                          <p>{total},000 &#8363;</p>
+                          <p>
+                            {(total * 1000).toLocaleString("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
+                          </p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
                           Miễn phí vận chuyển toàn quốc.
