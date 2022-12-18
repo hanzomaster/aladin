@@ -5,6 +5,7 @@ import { useS3Upload } from "next-s3-upload";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {

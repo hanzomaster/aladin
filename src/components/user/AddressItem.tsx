@@ -1,4 +1,3 @@
-import { Address } from "@prisma/client";
 import { useState } from "react";
 
 function AddressItem({ address, setDefault, deleteAddress }) {
