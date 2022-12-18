@@ -27,6 +27,10 @@ export const userRouter = router({
   update: protectedProcedure
     .input(
       z.object({
+<<<<<<<<< Temporary merge branch 1
+        id: z.string().length(25),
+=========
+>>>>>>>>> Temporary merge branch 2
         dto: z
           .object({
             name: z.string(),
@@ -79,6 +83,7 @@ export const userRouter = router({
           .cuid({
             message: "The id of the user must be a valid cuid",
           }),
+        status: z.boolean(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -87,7 +92,7 @@ export const userRouter = router({
           id: input.id,
         },
         data: {
-          status: false,
+          status: !input.status,
         },
       });
     }),

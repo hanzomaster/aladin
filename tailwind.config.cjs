@@ -4,6 +4,13 @@ module.exports = {
   theme: {
     extend: {},
   },
+<<<<<<<<< Temporary merge branch 1
+  safelist: [
+    {
+      pattern: /bg-/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    }
+],
   plugins: [
     require('tailwind-scrollbar')
   ],

@@ -39,7 +39,7 @@ const Products = () => {
   }
   if (gender) {
     // const [name, setName] = useState("");
-    const { data } = trpc.product.getManyWhere.useQuery({
+    const { data } = trpc.product.Where.useQuery({
       type: name as string,
       gender: gender === "male" ? "M" : "F",
     });
