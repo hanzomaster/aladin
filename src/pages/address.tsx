@@ -4,44 +4,67 @@ import AddressItem from "../components/AddressItem";
 import Navbar from "../components/navbar";
 import SidebarAccount from "../components/SidebarAccount";
 import { Address } from "../types";
+import { trpc } from "../utils/trpc";
 
-const expAddress: Address = {
-  detail: "62 Trần Thái Tông",
-  neighborhood: "Dịch Vọng Hậu",
-  district: "Cầu Giấy",
-  province: "Hà Nội",
-};
+// const expAddress: Address = {
+//   detail: "62 Trần Thái Tông",
+//   neighborhood: "Dịch Vọng Hậu",
+//   district: "Cầu Giấy",
+//   province: "Hà Nội",
+// };
 
-const expAddressList = [
-  {
-    name: "Huyền",
-    phone: "12345678",
-    address: expAddress,
-    default: true,
-  },
-  {
-    name: "Nguyễn Thanh Huyền",
-    phone: "12345678",
-    address: expAddress,
-    default: false,
-  },
-  {
-    name: "Nguyễn Thanh Huyền",
-    phone: "12345678",
-    address: expAddress,
-    default: false,
-  },
-];
+// const expAddressList = [
+//   {
+//     name: "Huyền",
+//     phone: "12345678",
+//     address: expAddress,
+//     default: true,
+//   },
+//   {
+//     name: "Nguyễn Thanh Huyền",
+//     phone: "12345678",
+//     address: expAddress,
+//     default: false,
+//   },
+//   {
+//     name: "Nguyễn Thanh Huyền",
+//     phone: "12345678",
+//     address: expAddress,
+//     default: false,
+//   },
+// ];
 
 const AddressView: NextPage = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [addressList, setAddressList] = useState(expAddressList);
+  const { data } = trpc.user.address.get.useQuery();
 
-  const handleDeleteAddress = (index: number) => {
-    const newAddressList = [...addressList];
-    newAddressList.splice(index, 1);
-    setAddressList(newAddressList);
+  const utils = trpc.useContext();
+  const defaultMutation = trpc.user.address.makeDefault.useMutation({
+    onSuccess() {
+      utils.user.address.get.invalidate();
+    },
+  });
+
+  const setDefault = (id: string) => {
+    defaultMutation.mutate({ id });
   };
+
+  const deleteMutation = trpc.user.address.delete.useMutation({
+    onSuccess() {
+      utils.user.address.get.invalidate();
+    },
+  });
+  const deleteAddress = (id) => {
+    deleteMutation.mutate({ id });
+  };
+
+  // const [selectedIndex, setSelectedIndex] = useState(0);
+  // const [addressList, setAddressList] = useState(data);
+
+  // const handleDeleteAddress = (index: number) => {
+  //   const newAddressList = [...addressList];
+  //   newAddressList.splice(index, 1);
+  //   setAddressList(newAddressList);
+  // };
 
   return (
     <div className="h-full w-full text-sm md:text-base ">
@@ -49,6 +72,8 @@ const AddressView: NextPage = () => {
       <Navbar />
       {/* Content */}
       <div className="p- mx-1 py-10">
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+
         <div className="mt-10 flex h-full w-full border-b-4 px-2 sm:px-4 lg:px-10">
           <SidebarAccount />
           {/* main */}
@@ -71,15 +96,13 @@ const AddressView: NextPage = () => {
 
             <main className=" pl-10 pr-[5rem]  md:pl-10 lg:pl-32 ">
               <div className="flex flex-col">
-                {addressList.map((address, index) => (
+                {data?.map((address, index) => (
                   <AddressItem
                     key={index}
-                    name={address.name}
-                    phone={address.phone}
-                    address={address.address}
-                    default={selectedIndex === index && true}
-                    setDefault={() => setSelectedIndex(index)}
-                    deleteAddress={() => handleDeleteAddress(index)}
+                    address={address}
+                    // default={selectedIndex === index && true}
+                    setDefault={setDefault}
+                    deleteAddress={deleteAddress}
                   />
                 ))}
               </div>
