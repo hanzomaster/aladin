@@ -2,8 +2,8 @@ import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "ne
 import { getSession, signOut, useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
 import Navbar from "../components/navbar";
-import SidebarAccount from "../components/SidebarAccount";
 import { useToast } from "../components/Toast";
+import SidebarAccount from "../components/user/SidebarAccount";
 import { trpc } from "../utils/trpc";
 
 export const getServerSideProps: GetServerSideProps = async (

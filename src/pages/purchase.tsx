@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import NavBar from "../components/navbar";
-import SidebarAccount from "../components/SidebarAccount";
+import SidebarAccount from "../components/user/SidebarAccount";
 import { trpc } from "../utils/trpc";
 
 const Purchase: NextPage = () => {
