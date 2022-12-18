@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Address } from "../../types";
 
 interface Props {
   name: string;

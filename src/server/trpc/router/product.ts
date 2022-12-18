@@ -4,7 +4,7 @@ import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema
+  updateProductSchema,
 } from "./dto";
 
 export const productRouter = router({
