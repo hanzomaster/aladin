@@ -46,4 +46,4 @@ yarn-error.log*
 
 .idea/
 
-.env*
+product.js

@@ -3,12 +3,14 @@ CREATE TABLE `comments` (
     `id` VARCHAR(191) NOT NULL,
     `productId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `content` TEXT NOT NULL,
-    `rating` INTEGER NULL,
+    `content` TEXT NULL,
+    `rating` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     INDEX `comments_productId_idx`(`productId`),
     INDEX `comments_userId_idx`(`userId`),
+    UNIQUE INDEX `comments_userId_productId_key`(`userId`, `productId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -116,7 +118,7 @@ CREATE TABLE `cart_item` (
 CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
-    `email` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NOT NULL,
     `emailVerified` DATETIME(3) NULL,
     `image` VARCHAR(191) NULL,
     `phone` VARCHAR(50) NULL,
@@ -134,9 +136,9 @@ CREATE TABLE `addresses` (
     `receiver` VARCHAR(50) NOT NULL,
     `phone` VARCHAR(50) NOT NULL,
     `city` VARCHAR(50) NOT NULL,
-    `district` VARCHAR(50) NULL,
-    `ward` VARCHAR(50) NULL,
-    `detail` TEXT NULL,
+    `district` VARCHAR(50) NOT NULL,
+    `ward` VARCHAR(50) NOT NULL,
+    `detail` TEXT NOT NULL,
     `isDefault` BOOLEAN NOT NULL DEFAULT false,
 
     INDEX `addresses_userId_idx`(`userId`),

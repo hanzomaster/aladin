@@ -39,13 +39,15 @@ model Comment {
     id        String   @id @default(cuid())
     productId String
     userId    String
-    content   String   @db.Text
-    rating    Int?
+    content   String?  @db.Text
+    rating    Int
     createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     product Product @relation(fields: [productId], references: [code], onDelete: Cascade)
     user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    @@unique([userId, productId])
     @@index([productId])
     @@index([userId])
     @@map("comments")
@@ -170,7 +172,7 @@ model CartItem {
 model User {
     id            String    @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String    @unique
     emailVerified DateTime?
     image         String?
     phone         String?   @db.VarChar(50)
@@ -181,7 +183,7 @@ model User {
     sessions      Session[]
     order         Order[]
     cart          Cart?
-    Comment       Comment[]
+    comment       Comment[]
 }
 
 model Address {

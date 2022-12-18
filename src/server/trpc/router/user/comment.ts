@@ -1,14 +1,28 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../../trpc";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "../../trpc";
 
 export const commentRouter = router({
-  getAll: protectedProcedure.query(({ ctx }) =>
+  getAll: adminProcedure.query(({ ctx }) => ctx.prisma.comment.findMany()),
+  get: protectedProcedure.query(({ ctx }) =>
     ctx.prisma.comment.findMany({
       where: {
         userId: ctx.session.user.id,
       },
     })
   ),
+  getOfProduct: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.comment.findMany({
+        where: {
+          productId: input.id,
+        },
+      })
+    ),
   create: protectedProcedure
     .input(
       z.object({

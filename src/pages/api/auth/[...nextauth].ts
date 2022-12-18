@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         });
       }
     },
-    linkAccount: async ({ user, account, profile }) => {
+    linkAccount: async ({ user, profile }) => {
       if (!user.name) {
         await prisma.user.update({
           where: {
@@ -55,6 +55,17 @@ export const authOptions: NextAuthOptions = {
         });
       }
     },
+    // signIn({ user }) {
+    //   prisma.cart.upsert({
+    //     where: {
+    //       userId: user.id,
+    //     },
+    //     create: {
+    //       userId: user.id,
+    //     },
+    //     update: {},
+    //   });
+    // },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
