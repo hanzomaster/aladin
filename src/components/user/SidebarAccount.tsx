@@ -1,10 +1,10 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import SidebarItems from "./SidebarItems";
+import SidebarItems from "../SidebarItems";
 
 function SidebarAccount() {
   return (
-    <div className="align-center flex w-1/3 flex-col border-r-2 pt-24 sm:w-1/4 lg:w-1/6">
+    <div className="align-center flex w-1/3 flex-col border-r-2 pt-24  text-gray-600 sm:w-1/4 lg:w-1/6">
       {/* sidebar */}
       {SidebarItems.map((item) => {
         return (

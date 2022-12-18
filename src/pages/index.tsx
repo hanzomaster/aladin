@@ -12,7 +12,7 @@ const Home: NextPage = () => {
     setCart(cartData);
   }
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  const { data } = trpc.cart.get.useQuery();
+  const { data } = trpc.product.getAll.useQuery();
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
   return (
