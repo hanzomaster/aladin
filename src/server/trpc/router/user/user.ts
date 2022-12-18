@@ -27,10 +27,6 @@ export const userRouter = router({
   update: protectedProcedure
     .input(
       z.object({
-<<<<<<<<< Temporary merge branch 1
-        id: z.string().length(25),
-=========
->>>>>>>>> Temporary merge branch 2
         dto: z
           .object({
             name: z.string(),
