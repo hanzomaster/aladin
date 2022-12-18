@@ -1,4 +1,4 @@
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
 
@@ -113,9 +113,34 @@ export const orderRouter = router({
       if (!input.address && !input.addressId) {
         throw new Error("Address is required");
       }
-      let result;
+      let result: Prisma.OrderGetPayload<null> | undefined;
+      if (!input.address && input.addressId) {
+        result = await ctx.prisma.order.create({
+          data: {
+            customer: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+            address: {
+              connect: {
+                id: input.addressId,
+              },
+            },
+            orderdetail: {
+              create: userCart.cartItem.map((cartItem) => ({
+                quantityInOrdered: cartItem.numberOfItems,
+                priceEach: cartItem.productDetail.product.buyPrice,
+                size: cartItem.size,
+                productDetailId: cartItem.productDetail.id,
+              })),
+            },
+            comments: input.comment,
+          },
+        });
+      }
       if (input.address && !input.addressId)
-        result = ctx.prisma.order.create({
+        result = await ctx.prisma.order.create({
           data: {
             customer: {
               connect: {
@@ -144,31 +169,6 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
-      if (!input.address && input.addressId) {
-        result = ctx.prisma.order.create({
-          data: {
-            customer: {
-              connect: {
-                id: ctx.session.user.id,
-              },
-            },
-            address: {
-              connect: {
-                id: input.addressId,
-              },
-            },
-            orderdetail: {
-              create: userCart.cartItem.map((cartItem) => ({
-                quantityInOrdered: cartItem.numberOfItems,
-                priceEach: cartItem.productDetail.product.buyPrice,
-                size: cartItem.size,
-                productDetailId: cartItem.productDetail.id,
-              })),
-            },
-            comments: input.comment,
-          },
-        });
-      }
       ctx.prisma.cart.delete({
         where: {
           userId: ctx.session.user.id,

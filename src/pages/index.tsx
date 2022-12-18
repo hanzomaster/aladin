@@ -9,7 +9,7 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  // const { data } = trpc.product.getAll.useQuery();
+  const { mutate } = trpc.order.create.useMutation();
 
   const [imageUrl, setImageUrl] = useState<string>();
   const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
@@ -29,10 +29,20 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <FileInput onChange={handleFileChange} />
-
       <button onClick={openFileDialog}>Upload file</button>
       <pre>{imageUrl}</pre>
-      {imageUrl && <img src={imageUrl} />}
+      {imageUrl && <Image src={imageUrl} alt="" width={300} height={300} />}
+
+      <button
+        onClick={() =>
+          mutate({
+            addressId: "clbtp5ld20000xnd8gb1gbcik",
+            comment: "testing",
+          })
+        }>
+        Create order
+      </button>
+
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           Create <span className="text-purple-300">T3</span> App
