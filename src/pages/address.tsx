@@ -1,38 +1,10 @@
 import { NextPage } from "next";
 import { useState } from "react";
-import AddressItem from "../components/AddressItem";
+import AddressItem from "../components/user/AddressItem";
 import Navbar from "../components/navbar";
-import SidebarAccount from "../components/SidebarAccount";
+import SidebarAccount from "../components/user/SidebarAccount";
 import { Address } from "../types";
 import { trpc } from "../utils/trpc";
-
-// const expAddress: Address = {
-//   detail: "62 Trần Thái Tông",
-//   neighborhood: "Dịch Vọng Hậu",
-//   district: "Cầu Giấy",
-//   province: "Hà Nội",
-// };
-
-// const expAddressList = [
-//   {
-//     name: "Huyền",
-//     phone: "12345678",
-//     address: expAddress,
-//     default: true,
-//   },
-//   {
-//     name: "Nguyễn Thanh Huyền",
-//     phone: "12345678",
-//     address: expAddress,
-//     default: false,
-//   },
-//   {
-//     name: "Nguyễn Thanh Huyền",
-//     phone: "12345678",
-//     address: expAddress,
-//     default: false,
-//   },
-// ];
 
 const AddressView: NextPage = () => {
   const { data } = trpc.user.address.get.useQuery();
@@ -57,22 +29,13 @@ const AddressView: NextPage = () => {
     deleteMutation.mutate({ id });
   };
 
-  // const [selectedIndex, setSelectedIndex] = useState(0);
-  // const [addressList, setAddressList] = useState(data);
-
-  // const handleDeleteAddress = (index: number) => {
-  //   const newAddressList = [...addressList];
-  //   newAddressList.splice(index, 1);
-  //   setAddressList(newAddressList);
-  // };
-
   return (
     <div className="h-full w-full text-sm md:text-base ">
       {/* Navbar */}
       <Navbar />
       {/* Content */}
       <div className="p- mx-1 py-10">
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
 
         <div className="mt-10 flex h-full w-full border-b-4 px-2 sm:px-4 lg:px-10">
           <SidebarAccount />
