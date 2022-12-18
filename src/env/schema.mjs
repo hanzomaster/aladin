@@ -30,6 +30,10 @@ export const serverSchema = z.object({
       }
     })
   ),
+  S3_UPLOAD_KEY: z.string(),
+  S3_UPLOAD_SECRET: z.string(),
+  S3_UPLOAD_BUCKET: z.string(),
+  S3_UPLOAD_REGION: z.string(),
 });
 
 /**

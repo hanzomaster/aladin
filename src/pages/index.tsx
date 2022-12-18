@@ -1,16 +1,26 @@
 import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { log } from "next-axiom";
+import { useS3Upload } from "next-s3-upload";
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  const { data } = trpc.product.getAll.useQuery();
+  // const { data } = trpc.product.getAll.useQuery();
+
+  const [imageUrl, setImageUrl] = useState<string>();
+  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+
+  const handleFileChange = async (file: File) => {
+    const { url } = await uploadToS3(file);
+    setImageUrl(url);
+  };
+
   // NOTE - test logging with Axiom
   log.info("what the fuck is this");
-
   return (
     <>
       <Head>
@@ -18,6 +28,11 @@ const Home: NextPage = () => {
         <meta name="description" content="An E-commerce website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <FileInput onChange={handleFileChange} />
+
+      <button onClick={openFileDialog}>Upload file</button>
+      <pre>{imageUrl}</pre>
+      {imageUrl && <img src={imageUrl} />}
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           Create <span className="text-purple-300">T3</span> App
@@ -67,7 +82,8 @@ const Home: NextPage = () => {
           height={500}
           priority
         />
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        <pre>{JSON.stringify({ testing: "hello" }, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </main>
     </>
   );
