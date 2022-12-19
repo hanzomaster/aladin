@@ -4,6 +4,7 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "../../../env/server.mjs";
+import { CustomsendVerificationRequest } from "./signinemail";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -80,6 +81,9 @@ export const authOptions: NextAuthOptions = {
         return identifier.toLowerCase().trim();
       },
       maxAge: 60 * 60, // 1 hour
+      sendVerificationRequest({ identifier, url, provider }) {
+        CustomsendVerificationRequest({ identifier, url, provider });
+      },
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
