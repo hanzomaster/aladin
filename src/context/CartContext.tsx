@@ -19,7 +19,10 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { data, status } = trpc.cart.get.useQuery();
-  const [cart, setCart] = useState({
+  const [cart, setCart] = useState<{
+    data: inferRouterOutputs<AppRouter>["cart"]["get"] | undefined;
+    loading: boolean;
+  }>({
     data: undefined,
     loading: true,
   });

@@ -8,7 +8,7 @@ import useLocationForm from "../constants/useLocationForm";
 import { trpc } from "../utils/trpc";
 
 const CheckOut = () => {
-  const { state, onCitySelect, onDistrictSelect, onWardSelect, onSubmit } = useLocationForm(false);
+  const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
   const { data: sessionData } = useSession();
   const [disable, setDiable] = useState(true);
   const { add: toast } = useToast();
@@ -30,25 +30,25 @@ const CheckOut = () => {
   let total = 0;
   const [phone, setPhone] = useState("");
 
-  const handlePhoneChange = (event: any) => {
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(event.target.value);
   };
 
   const [name, setName] = useState(sessionData?.user?.name);
 
-  const handleNameChange = (event: any) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
   const [detailAdress, setDetailAdress] = useState("");
 
-  const handleDetailAdressChange = (event: any) => {
+  const handleDetailAdressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDetailAdress(event.target.value);
   };
 
   const [comment, setComment] = useState("");
 
-  const handleCommentChange = (event: any) => {
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
   };
   const handleCheckOutBtnClicked = () => {
@@ -262,7 +262,7 @@ const CheckOut = () => {
                                   layout="fill"
                                   alt="Ảnh sản phẩm"
                                   className=" object-cover object-center"
-                                  priority
+                                  priority={true}
                                 />
                               </div>
                             </div>

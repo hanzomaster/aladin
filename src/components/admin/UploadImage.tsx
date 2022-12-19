@@ -1,14 +1,14 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 
-const CardProfile = (props) => {
+const CardProfile = () => {
   const fileUploader = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState(null);
-  const profileTrigger = (event) => {
+  const [image, setImage] = useState<any>(null);
+  const profileTrigger = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     fileUploader.current?.click();
   };
 
-  const handleImage = (e) => {
+  const handleImage = (e: any) => {
     const file = e.target.files[0];
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);

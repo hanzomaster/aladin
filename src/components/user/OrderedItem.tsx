@@ -9,6 +9,7 @@ function OrderedItem({ item }: { item: any }) {
           src={item.productDetail.image ? item.productDetail.image : ""}
           layout="fill"
           alt="Ảnh sản phẩm"
+          priority={true}
           className="object-cover object-center"></Image>
         {/* <img
               className="w-full md:block"

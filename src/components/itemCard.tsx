@@ -73,9 +73,9 @@ export default function ItemCard({ item }: { item: any }) {
               layout="fill"
               className="object-cover"
               alt="Image"
-              priority></Image>
+              priority={true}
+              unoptimized={true}></Image>
           </div>
-
           {/* <img
                   className="h-96 w-full object-cover"
                   src={item.productDetail[0]?.image}

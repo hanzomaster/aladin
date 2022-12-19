@@ -4,14 +4,21 @@ import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema
+  updateProductSchema,
 } from "./dto";
 
 export const productRouter = router({
+  count: publicProcedure.query(({ ctx }) => ctx.prisma.product.count()),
   search: publicProcedure
     .input(
       z.object({
         name: z.string().max(50),
+        option: z
+          .object({
+            skip: z.number().min(0).default(0),
+            take: z.number().min(1).max(100).default(20),
+          })
+          .optional(),
       })
     )
     .query(({ ctx, input }) =>
@@ -21,6 +28,8 @@ export const productRouter = router({
             contains: input.name,
           },
         },
+        skip: input.option?.skip,
+        take: input.option?.take,
         include: {
           line: {
             select: {
@@ -30,6 +39,7 @@ export const productRouter = router({
               htmlDescription: true,
             },
           },
+          _count: true,
           productDetail: {
             include: {
               productInStock: {
@@ -112,6 +122,8 @@ export const productRouter = router({
           gender: input.gender,
         },
       },
+      skip: input.option?.skip,
+      take: input.option?.take,
       include: {
         line: {
           select: {

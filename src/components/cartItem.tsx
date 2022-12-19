@@ -58,6 +58,7 @@ const CartItem = ({ product }: any) => {
             src={product?.productDetail?.image}
             layout="fill"
             alt="Ảnh sản phẩm"
+            priority={true}
             className=" object-cover object-center"></Image>
         </div>
       </div>

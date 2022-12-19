@@ -25,6 +25,10 @@ export const getManyProductSchema = z
         invalid_type_error: "Type must be a string",
       })
       .max(50),
+    option: z.object({
+      skip: z.number().min(0).default(0),
+      take: z.number().min(1).max(100).default(20),
+    }),
   })
   .partial();
 

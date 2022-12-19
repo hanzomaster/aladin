@@ -153,6 +153,8 @@ export default function DropdownComponent({
                 return (
                   <>
                     <Menu.Item>
+                      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                      {/* @ts-ignore */}
                       {({ active }) => {
                         if (content === "Đăng xuất")
                           return (

@@ -13,7 +13,7 @@ import { trpc } from "../../utils/trpc";
 const sizeGuideSrc = "https://canifa.com/assets/Women-measurement.png";
 // const description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 // };
-function classNames(...classes: any) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -42,7 +42,7 @@ const ProductDetail: NextPage = () => {
         position: "topRight",
       });
     },
-    onError: (error, variable, context) => {
+    onError: () => {
       toast({
         type: "error",
         duration: 10000,
@@ -114,6 +114,7 @@ const ProductDetail: NextPage = () => {
                           ? product?.productDetail[0]?.image
                           : ""
                       }
+                      priority={true}
                       layout="fill"
                       alt="Ảnh sản phẩm"
                       className="object-fit"></Image>

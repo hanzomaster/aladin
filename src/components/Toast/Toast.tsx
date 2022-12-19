@@ -12,6 +12,7 @@ import {
 } from "./utils";
 
 export const Toast = (props: ToastProps) => {
+  // eslint-disable-next-line prefer-const
   let { type = "info", icon = "", message = "---", id, duration = 3000 } = props;
   icon = icon === "" ? getIcon(type) : icon;
   duration = typeof duration === "string" ? +duration : duration;
@@ -29,9 +30,10 @@ export const Toast = (props: ToastProps) => {
     }
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       clearTimeout(dismissRef.current);
     };
-  }, []);
+  }, [duration, id, remove]);
 
   // progressBar
   const progressBarRef = useRef<ReturnType<typeof setInterval>>();

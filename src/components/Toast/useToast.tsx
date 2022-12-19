@@ -1,11 +1,13 @@
 import clsx from "clsx";
-import { createContext, FC, ReactNode, RefObject, useContext, useState } from "react";
+import { createContext, FC, ReactNode, useContext, useState } from "react";
 import { Toast } from "./Toast";
 import { ToastContextType, ToastPositionType, ToastProps } from "./type";
 import { positionClasses } from "./utils";
 
 const ToastContext = createContext<ToastContextType>({
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   add: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   remove: () => {},
   position: "topRight",
 });
@@ -26,7 +28,7 @@ export const ToastProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setToasts((toasts) => [...toasts, { ...toast, id: Math.random() * 10000 }]);
   };
 
-  const remove = (toastId: number, ref: RefObject<HTMLDivElement>) => {
+  const remove = (toastId: number) => {
     // ref?.current?.classList.add("animate-toastOut");
 
     // //remove element after animation is done

@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useState } from "react";
 import DropDownItem from "../../components/admin/DropDownItem";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
-import CardProfile from "../../components/admin/UploadImage";
 // import { test } from "../utils/test";
 const NewProduct: NextPage = () => {
   const [productDetailList, setProductDetailList] = useState<
@@ -18,37 +17,37 @@ const NewProduct: NextPage = () => {
     setProductDetailList(tempArr);
   };
 
-  const onColorCodeChange = (index: number) => (e: any) => {
+  const onColorCodeChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
     if (tempArr[index] !== null) {
       tempArr[index]!.colorCode = e.target.value;
     }
     setProductDetailList(tempArr);
   };
-  const onImageChange = (index: number) => (e: any) => {
+  const onImageChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
-    tempArr[index]!.image = e.target.value;
+    tempArr[index]!.image = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
-  const onNumSChange = (index: number) => (e: any) => {
+  const onNumSChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
-    tempArr[index]!.numS = e.target.value;
+    tempArr[index]!.numS = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
-  const onNumMChange = (index: number) => (e: any) => {
+  const onNumMChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
-    tempArr[index]!.numM = e.target.value;
+    tempArr[index]!.numM = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
-  const onNumLChange = (index: number) => (e: any) => {
+  const onNumLChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
-    tempArr[index]!.numL = e.target.value;
+    tempArr[index]!.numL = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
 
-  const onNumXLChange = (index: number) => (e: any) => {
+  const onNumXLChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
-    tempArr[index]!.numXL = e.target.value;
+    tempArr[index]!.numXL = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
   // console.log(test);
@@ -191,7 +190,7 @@ const NewProduct: NextPage = () => {
                     multiple
                     name="pictures"
                   /> */}
-                              <CardProfile />
+                              {/* <CardProfile /> */}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
                               <input
@@ -237,12 +236,12 @@ const NewProduct: NextPage = () => {
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 24 24"
-                                  stroke-width="1.5"
+                                  strokeWidth="1.5"
                                   stroke="white"
                                   className="h-5 w-5">
                                   <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     d="M6 18L18 6M6 6l12 12"
                                   />
                                 </svg>
@@ -262,12 +261,12 @@ const NewProduct: NextPage = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
                         className="h-6 w-6">
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>

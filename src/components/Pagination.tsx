@@ -29,7 +29,7 @@ const Pagination = ({
             key={index}
             onClick={() => setCurrentPage(page)}
             className={`${
-              page == currentPage && "border-indigo-500 bg-indigo-50 text-indigo-600"
+              page === currentPage && "border-indigo-500 bg-indigo-50 text-indigo-600"
             } inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 focus:z-20 hover:bg-gray-200`}>
             {page}
           </button>

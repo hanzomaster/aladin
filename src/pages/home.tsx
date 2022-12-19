@@ -31,6 +31,14 @@ const Products = () => {
   //   setSearchResult(results);
   // }, [search, data]);
 
+  const setPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: 500,
+      behavior: "smooth",
+    });
+  };
+
   // const [name, setName] = useState("");
   if (!gender && name) {
     // const [name, setName] = useState("");
@@ -55,7 +63,7 @@ const Products = () => {
         </section>
         <Pagination
           totalPosts={data?.length ?? 0}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={setPage}
           currentPage={currentPage}
         />
       </>
@@ -90,7 +98,7 @@ const Products = () => {
         </section>
         <Pagination
           totalPosts={data?.length ?? 0}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={setPage}
           currentPage={currentPage}
         />
       </>
@@ -136,7 +144,7 @@ const Products = () => {
         </section>
         <Pagination
           totalPosts={data?.length ?? 0}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={setPage}
           currentPage={currentPage}
         />
       </>
