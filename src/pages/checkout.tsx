@@ -5,12 +5,13 @@ import { useState } from "react";
 import Select from "react-select";
 import { useToast } from "../components/Toast";
 import useLocationForm from "../constants/useLocationForm";
+import { checkout } from "../utils/checkout";
 import { trpc } from "../utils/trpc";
 
 const CheckOut = () => {
   const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
   const { data: sessionData } = useSession();
-  const [disable, setDiable] = useState(true);
+  const [disable, setDisable] = useState(true);
   const { add: toast } = useToast();
   const { data: cartData } = trpc.cart.get.useQuery();
   const mutation = trpc.order.create.useMutation({
@@ -40,10 +41,10 @@ const CheckOut = () => {
     setName(event.target.value);
   };
 
-  const [detailAdress, setDetailAdress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
 
-  const handleDetailAdressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailAdress(event.target.value);
+  const handleDetailAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailAddress(event.target.value);
   };
 
   const [comment, setComment] = useState("");
@@ -51,6 +52,7 @@ const CheckOut = () => {
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
   };
+
   const handleCheckOutBtnClicked = () => {
     mutation.mutate({
       comment: "",
@@ -60,10 +62,11 @@ const CheckOut = () => {
         city: selectedCity?.label as string,
         district: selectedDistrict?.label as string,
         ward: selectedWard?.label as string,
-        detail: detailAdress,
+        detail: detailAddress,
       },
     });
   };
+
   const {
     cityOptions,
     districtOptions,
@@ -72,6 +75,7 @@ const CheckOut = () => {
     selectedDistrict,
     selectedWard,
   } = state;
+
   return (
     <>
       <div className="mt-0">
@@ -172,7 +176,7 @@ const CheckOut = () => {
                       className="z-5"
                       onChange={(option) => {
                         if (option) {
-                          setDiable(false);
+                          setDisable(false);
                           onWardSelect({
                             value: option.value,
                             label: option.label,
@@ -192,9 +196,9 @@ const CheckOut = () => {
                       <input
                         name="Last Name"
                         type="text"
-                        value={detailAdress}
+                        value={detailAddress}
                         placeholder=""
-                        onChange={handleDetailAdressChange}
+                        onChange={handleDetailAddressChange}
                         className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                       />
                     </div>
@@ -227,7 +231,14 @@ const CheckOut = () => {
                       disabled={disable || phone === "" || name === ""}
                       onClick={(e) => {
                         e.preventDefault();
-                        handleCheckOutBtnClicked();
+                        checkout({
+                          lineItems: [
+                            {
+                              price: "price_1MGikvFGv0kJxmcOES5iimdl",
+                              quantity: 1,
+                            },
+                          ],
+                        });
                       }}>
                       Xác nhận thanh toán
                     </button>

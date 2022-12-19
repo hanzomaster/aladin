@@ -39,16 +39,6 @@ const Home: NextPage = () => {
       <pre>{imageUrl}</pre>
       {imageUrl && <Image src={imageUrl} alt="" width={300} height={300} />}
 
-      <button
-        onClick={() =>
-          mutate({
-            addressId: "clbtp5ld20000xnd8gb1gbcik",
-            comment: "testing",
-          })
-        }>
-        Create order
-      </button>
-
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           Create <span className="text-purple-300">T3</span> App
