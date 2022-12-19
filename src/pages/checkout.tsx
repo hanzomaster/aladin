@@ -78,21 +78,22 @@ const CheckOut = () => {
   };
 
   const handleCheckOutBtnClicked = () => {
-    mutation.mutate({
-      comment: comment ?? "",
-      address: {
-        phone: phone ?? "",
-        receiver: name as string,
-        city: selectedCity?.label as string,
-        district: selectedDistrict?.label as string,
-        ward: selectedWard?.label as string,
-        detail: detailAddress ?? "",
-      },
-    });
     if (isDefault) {
       mutation.mutate({
         comment: comment ?? "",
         addressId: idAddress,
+      });
+    } else {
+      mutation.mutate({
+        comment: comment ?? "",
+        address: {
+          phone: phone ?? "",
+          receiver: name as string,
+          city: selectedCity?.label as string,
+          district: selectedDistrict?.label as string,
+          ward: selectedWard?.label as string,
+          detail: detailAddress ?? "",
+        },
       });
     }
   };
