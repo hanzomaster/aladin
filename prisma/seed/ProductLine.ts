@@ -14,15 +14,15 @@ const entries: Prisma.ProductLineCreateInput[] = [
     gender: Gender.M,
   },
   {
-    type: "Jean",
+    type: "Jeans",
     gender: Gender.M,
   },
   {
-    type: "Pant",
+    type: "Pants",
     gender: Gender.M,
   },
   {
-    type: "Short",
+    type: "Shorts",
     gender: Gender.M,
   },
   {
@@ -51,7 +51,7 @@ const entries: Prisma.ProductLineCreateInput[] = [
     gender: Gender.F,
   },
   {
-    type: "Short",
+    type: "Shorts",
     gender: Gender.F,
   },
   {
@@ -67,11 +67,11 @@ const entries: Prisma.ProductLineCreateInput[] = [
     gender: Gender.F,
   },
   {
-    type: "Jean",
+    type: "Jeans",
     gender: Gender.F,
   },
   {
-    type: "Pant",
+    type: "Pants",
     gender: Gender.F,
   },
   {
@@ -100,5 +100,5 @@ export default async function createProductLines(prisma: PrismaClient) {
     });
     succeed++;
   }
-  console.log(`\tCreated ${succeed} product lines of ${entries.length}`);
+  console.log(`\tCreated ${succeed} product lines out of ${entries.length}`);
 }

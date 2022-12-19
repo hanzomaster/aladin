@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema
+  updateProductSchema,
 } from "./dto";
 
 export const productRouter = router({
@@ -134,10 +134,7 @@ export const productRouter = router({
       },
     })
   ),
-  /**
-   * Create a new product
-   */
-  create: adminProcedure.input(createProductSchema).mutation(({ ctx, input }) =>
+  create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
         name: input.name,

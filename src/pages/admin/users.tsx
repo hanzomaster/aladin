@@ -1,9 +1,9 @@
 import { NextPage } from "next";
-import Pagination, { postsPerPage } from "../../components/admin/Pagination";
 import { useState } from "react";
-import UsersList from "../../components/admin/UsersList";
-import { trpc } from "../../utils/trpc";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
+import UsersList from "../../components/admin/UsersList";
+import Pagination, { postsPerPage } from "../../components/Pagination";
+import { trpc } from "../../utils/trpc";
 
 const Users: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,15 +27,16 @@ const Users: NextPage = () => {
   return (
     <div className="h-full w-full text-sm md:text-base">
       <NavbarAdmin />
-      <main className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
+      <main className=" p- px-5 py-10 md:px-10 lg:px-20">
         <h1 className="text-3xl font-medium text-gray-900 ">Users</h1>
         <UsersList usersData={currentPosts} handleActive={handleActive} />
-
-        <Pagination
-          totalPosts={data?.length}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-        />
+        <div className="mx-auto w-full items-center">
+          <Pagination
+            totalPosts={data?.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </div>
       </main>
     </div>
   );

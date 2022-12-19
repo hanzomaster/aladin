@@ -1,14 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import createProducts from "./Product";
 import createProductLines from "./ProductLine";
+import createUsers from "./User";
 const prisma = new PrismaClient();
-
-const seeds = [createProductLines, createProducts];
 
 async function main() {
   console.log("Start seeding ...");
-  seeds.forEach((seed) => seed(prisma));
-  // createProductLines(prisma);
+  createProductLines(prisma).then(() => {
+    console.log("Product lines created");
+    createProducts(prisma).then(() => {
+      console.log("Products created");
+      createUsers(prisma).then(() => {
+        console.log("Users created");
+      });
+    });
+  });
 }
 main()
   .then(async () => {

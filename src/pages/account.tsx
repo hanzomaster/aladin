@@ -2,6 +2,7 @@ import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "ne
 import { getSession, signOut, useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
 import Navbar from "../components/navbar";
+
 import { useToast } from "../components/Toast";
 import SidebarAccount from "../components/user/SidebarAccount";
 import { trpc } from "../utils/trpc";
@@ -54,7 +55,10 @@ const Account: NextPage = () => {
   };
 
   const saveButtonClicked = () => {
-    mutation.mutate({ dto: { name: name as string, phone: phone } });
+    mutation.mutate({
+      id: sessionData?.user?.id as string,
+      dto: { name: name as string, phone: phone },
+    });
   };
 
   const handleEnableName = () => {

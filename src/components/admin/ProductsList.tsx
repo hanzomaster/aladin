@@ -1,8 +1,5 @@
-import { Product } from "@prisma/client";
-import React, { useState } from "react";
 import { inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
-import { trpc } from "../../utils/trpc";
 import QuantityProduct from "./QuantityProduct";
 const ProductsList = ({
   productsData,
@@ -10,7 +7,7 @@ const ProductsList = ({
   productsData: inferRouterOutputs<AppRouter>["product"]["getAll"] | undefined;
 }) => {
   return (
-    <div className=" mb-10 w-full">
+    <div className=" p- mb-10 h-full w-full">
       <table className="w-full">
         <thead className="border-b bg-white">
           <tr>
@@ -43,7 +40,7 @@ const ProductsList = ({
             <th
               scope="col"
               className="px-2 py-3 text-left text-base font-medium text-gray-900 md:px-6">
-              Giá
+              Giá &#40;K &#8363;&#41;
             </th>
             <th
               scope="col"

@@ -1,20 +1,21 @@
-import { NextPage } from "next";
-import Pagination from "../../components/admin/Pagination";
-import { useEffect, useState } from "react";
-import { trpc } from "../../utils/trpc";
 import { inferRouterOutputs } from "@trpc/server";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
+import Pagination from "../../components/Pagination";
 import { AppRouter } from "../../server/trpc/router/_app";
+import { trpc } from "../../utils/trpc";
 
+import NavbarAdmin from "../../components/admin/NavbarAdmin";
 import ProductsList from "../../components/admin/ProductsList";
 import Searchbar from "../../components/admin/Searchbar";
-import NavbarAdmin from "../../components/admin/NavbarAdmin";
-export const postsPerPage = 3;
+export const postsPerPage = 20;
 
 const Orders: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [search, setSearch] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(1);
     e.persist();
     setSearch(e.target.value);
   };
@@ -39,7 +40,7 @@ const Orders: NextPage = () => {
   return (
     <div className="h-full w-full text-sm md:text-base">
       <NavbarAdmin />
-      <main className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
+      <main className=" p- px-5 py-10 md:px-10 lg:px-20">
         <h1 className="text-3xl font-medium text-gray-900 ">Products</h1>
         <Searchbar handleChange={handleChange} placeholder={"Tìm kiếm theo tên sản phẩm"} />
         {searchResult?.length !== data?.length && (
@@ -50,11 +51,13 @@ const Orders: NextPage = () => {
         <div className="mt-5">
           <ProductsList productsData={currentPosts} />
         </div>
-        <Pagination
-          totalPosts={searchResult?.length}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-        />
+        <div className="mx-auto">
+          <Pagination
+            totalPosts={searchResult?.length}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </div>
       </main>
     </div>
   );

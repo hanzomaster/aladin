@@ -1,6 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
-import DragImage from "./admin/DragImage";
+import CardProfile from "./admin/UploadImage";
 
 class Tabel extends React.Component {
   state = {
@@ -81,11 +80,12 @@ class Tabel extends React.Component {
                   />
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
-                  <DragImage
+                  {/* <DragImage
                     accept="image/png, image/jpg, image/jpeg, image/pdf"
                     multiple
                     name="pictures"
-                  />
+                  /> */}
+                  <CardProfile />
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
                   <input

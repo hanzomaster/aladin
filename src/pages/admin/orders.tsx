@@ -1,18 +1,19 @@
-import { NextPage } from "next";
-import Pagination, { postsPerPage } from "../../components/admin/Pagination";
-import { useEffect, useState } from "react";
-import OrdersList from "../../components/admin/OrdersList";
-import { trpc } from "../../utils/trpc";
 import { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "../../server/trpc/router/_app";
-import Searchbar from "../../components/admin/Searchbar";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
+import OrdersList from "../../components/admin/OrdersList";
+import Searchbar from "../../components/admin/Searchbar";
+import Pagination, { postsPerPage } from "../../components/Pagination";
+import { AppRouter } from "../../server/trpc/router/_app";
+import { trpc } from "../../utils/trpc";
 
 const Orders: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [search, setSearch] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(1);
     e.persist();
     setSearch(e.target.value);
   };
@@ -37,7 +38,7 @@ const Orders: NextPage = () => {
     <div className="h-full w-full text-sm md:text-base">
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <NavbarAdmin />
-      <main className="relative h-screen px-5 py-10 md:px-10 lg:px-20">
+      <main className="p- px-5 py-10 md:px-10 lg:px-20">
         <h1 className="text-3xl font-medium text-gray-900 ">Orders</h1>
         <Searchbar placeholder="Search by order id" handleChange={handleChange} />
         {searchResult?.length !== data?.length && (
