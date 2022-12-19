@@ -1,10 +1,12 @@
+import { inferRouterOutputs } from "@trpc/server";
 import { NextPage } from "next";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
 import { getAmountOrder } from "../../components/admin/OrdersList";
+import { AppRouter } from "../../server/trpc/router/_app";
 
 import { trpc } from "../../utils/trpc";
 
-function getSumAmountOrders(orders) {
+function getSumAmountOrders(orders: inferRouterOutputs<AppRouter>["order"]["getAll"]) {
   let sumAmount = 0;
   orders?.map((order) => {
     sumAmount += getAmountOrder(order?.orderdetail);
@@ -93,7 +95,7 @@ const Admin: NextPage = () => {
           <div className="rounded-xl bg-[#70d1e5] p-4 shadow-sm ">
             <div className="p-4">
               <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
-                {getSumAmountOrders(orders)}
+                {getSumAmountOrders(orders ?? [])}
               </div>
               <div className="flex text-sm text-gray-600 md:text-base">
                 <svg

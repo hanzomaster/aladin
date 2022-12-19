@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { useState } from "react";
-import AddressItem from "../components/AddressItem";
 import Navbar from "../components/navbar";
-import SidebarAccount from "../components/SidebarAccount";
+import AddressItem from "../components/user/AddressItem";
+import SidebarAccount from "../components/user/SidebarAccount";
 import { Address } from "../types";
 
 const expAddress: Address = {

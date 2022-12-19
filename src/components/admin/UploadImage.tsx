@@ -5,7 +5,7 @@ const CardProfile = (props) => {
   const [image, setImage] = useState(null);
   const profileTrigger = (event) => {
     event.preventDefault();
-    fileUploader.current.click();
+    fileUploader.current?.click();
   };
 
   const handleImage = (e) => {

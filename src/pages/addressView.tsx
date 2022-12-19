@@ -3,7 +3,6 @@ import { useState } from "react";
 import AddressItem from "../components/user/AddressItem";
 import SidebarAccount from "../components/user/SidebarAccount";
 import { Address } from "../types";
-import Navbar from "./component/navbar";
 
 const AddressView: NextPage = () => {
   const expAddress: Address = {

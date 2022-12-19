@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 
@@ -10,8 +10,8 @@ const DragImage = (props: any) => {
   const files = watch(name);
 
   const onDrop = useCallback(
-    (droppedFiles) => {
-      let newFiles = mode === "update" ? droppedFiles : [...(files || []), ...droppedFiles];
+    (droppedFiles: any) => {
+      const newFiles = mode === "update" ? droppedFiles : [...(files || []), ...droppedFiles];
       setValue(name, newFiles, { shouldValidate: true });
     },
     [setValue, name, mode, files]
@@ -49,7 +49,7 @@ const DragImage = (props: any) => {
 
           {!!files?.length && (
             <div className="mt-2">
-              {files.map((file) => {
+              {files.map((file: File) => {
                 return (
                   <div key={file.name}>
                     <img

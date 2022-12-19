@@ -46,9 +46,9 @@ const Orders: NextPage = () => {
             {`Kết quả tìm kiếm: ${searchResult?.length}`}
           </h2>
         )}
-        <OrdersList ordersData={currentPosts} />
+        <OrdersList ordersData={currentPosts ?? []} />
         <Pagination
-          totalPosts={data?.length}
+          totalPosts={data?.length ?? 0}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />

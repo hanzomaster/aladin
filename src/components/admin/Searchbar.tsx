@@ -1,4 +1,10 @@
-function Searchbar({ handleChange, placeholder }) {
+function Searchbar({
+  handleChange,
+  placeholder,
+}: {
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+}) {
   return (
     <div className="mt-5 flex w-3/4 rounded border border-gray-300 bg-white shadow-sm">
       <input

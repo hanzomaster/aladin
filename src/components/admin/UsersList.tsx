@@ -1,4 +1,12 @@
-const UsersList = ({ usersData, handleActive }: any) => {
+import { User } from "@prisma/client";
+
+const UsersList = ({
+  usersData,
+  handleActive,
+}: {
+  usersData: User[];
+  handleActive: (id: string, status: boolean) => void;
+}) => {
   return (
     <div className=" mb-10 w-full">
       {/* <pre>{JSON.stringify(data, null, 2)}</pre>; */}

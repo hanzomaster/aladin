@@ -53,7 +53,7 @@ const Orders: NextPage = () => {
         </div>
         <div className="mx-auto">
           <Pagination
-            totalPosts={searchResult?.length}
+            totalPosts={searchResult?.length ?? 0}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
           />

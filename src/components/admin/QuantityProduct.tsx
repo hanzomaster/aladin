@@ -1,8 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { ProductDetail } from "@prisma/client";
+import { ClothSize, ProductDetail } from "@prisma/client";
 import { Fragment, useState } from "react";
 
-function QuantityProduct({ productDetail }) {
+function QuantityProduct({
+  productDetail,
+}: {
+  productDetail: (ProductDetail & {
+    productInStock: {
+      quantity: number;
+      size: ClothSize;
+    }[];
+  })[];
+}) {
   // console.log(productDetail[0].productCode);
   // console.log(productCode);
 

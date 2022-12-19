@@ -67,7 +67,9 @@ const Purchase: NextPage = () => {
                             <div className="relative right-0 top-0 pr-4 ">
                               <div className="r-0 mt-0.5 inline-block">
                                 <del className="ml-2 text-lg text-red-700">
-                                  {(item.orderdetail[0]?.priceEach * 1000).toLocaleString("vi-VN", {
+                                  {(
+                                    (item.orderdetail[0]?.priceEach as unknown as number) * 1000
+                                  ).toLocaleString("vi-VN", {
                                     style: "currency",
                                     currency: "VND",
                                   })}
@@ -76,7 +78,7 @@ const Purchase: NextPage = () => {
 
                               <p className="r-0 mt-2 ml-1 inline-block pr-4  text-xl">
                                 {(
-                                  parseFloat(item.orderdetail[0]?.priceEach.toString()) * 600
+                                  (item.orderdetail[0]?.priceEach as unknown as number) * 600
                                 ).toLocaleString("vi-VN", {
                                   style: "currency",
                                   currency: "VND",

@@ -1,5 +1,4 @@
-import { Order, OrderDetail } from "@prisma/client";
-import React from "react";
+import { OrderDetail } from "@prisma/client";
 import { inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
 
@@ -11,8 +10,8 @@ export function getAmountOrder(orderdetail: OrderDetail[]) {
   return sum;
 }
 
-function convertDate(inputFormat) {
-  function pad(s) {
+function convertDate(inputFormat: Date) {
+  function pad(s: number) {
     return s < 10 ? "0" + s : s;
   }
   const d = new Date(inputFormat);

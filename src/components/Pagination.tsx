@@ -1,6 +1,14 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 export const postsPerPage = 20;
-const Pagination = ({ totalPosts, setCurrentPage, currentPage }) => {
+const Pagination = ({
+  totalPosts,
+  setCurrentPage,
+  currentPage,
+}: {
+  totalPosts: number;
+  setCurrentPage: (page: number) => void;
+  currentPage: number;
+}) => {
   const pages = [];
 
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {

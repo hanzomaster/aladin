@@ -54,7 +54,7 @@ const Products = () => {
           })}
         </section>
         <Pagination
-          totalPosts={data?.length}
+          totalPosts={data?.length ?? 0}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />
@@ -89,7 +89,7 @@ const Products = () => {
           })}
         </section>
         <Pagination
-          totalPosts={data?.length}
+          totalPosts={data?.length ?? 0}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />
@@ -135,7 +135,7 @@ const Products = () => {
           })}
         </section>
         <Pagination
-          totalPosts={data?.length}
+          totalPosts={data?.length ?? 0}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
         />
