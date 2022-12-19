@@ -11,9 +11,7 @@ export const cartRouter = router({
       },
       include: {
         cartItem: {
-          select: {
-            numberOfItems: true,
-            size: true,
+          include: {
             productDetail: {
               select: {
                 id: true,
@@ -21,6 +19,7 @@ export const cartRouter = router({
                 image: true,
                 product: {
                   select: {
+                    code: true,
                     buyPrice: true,
                     name: true,
                     description: true,
@@ -36,13 +35,21 @@ export const cartRouter = router({
   /**
    * Clear the cart of the current logged in user
    */
-  clear: protectedProcedure.mutation(({ ctx }) =>
-    ctx.prisma.cartItem.deleteMany({
+  clear: protectedProcedure.mutation(async ({ ctx }) => {
+    const cartId = await ctx.prisma.cart.findUnique({
       where: {
-        cartId: ctx.session.user.id,
+        userId: ctx.session.user.id,
       },
-    })
-  ),
+      select: {
+        id: true,
+      },
+    });
+    return ctx.prisma.cartItem.deleteMany({
+      where: {
+        cartId: cartId?.id,
+      },
+    });
+  }),
   getAll: adminProcedure.query(({ ctx }) =>
     ctx.prisma.cart.findMany({
       include: {

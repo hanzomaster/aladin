@@ -4,7 +4,7 @@ import {
   createProductLineSchema,
   getAllSchema,
   getManyProductLineSchema,
-  getOneProductLineSchema,
+  getOneProductLineSchema
 } from "./dto";
 
 export const productLineRouter = router({

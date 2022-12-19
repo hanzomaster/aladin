@@ -19,7 +19,7 @@ export const orderRouter = router({
       },
     });
   }),
-  get: protectedProcedure.query(({ ctx }) => {
+  getAllOfUser: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.order.findMany({
       where: {
         customerNumber: ctx.session.user.id,
@@ -38,10 +38,10 @@ export const orderRouter = router({
       },
     });
   }),
-  getById: protectedProcedure
+  getOneWhere: protectedProcedure
     .input(
       z.object({
-        orderNumber: z.string().cuid(),
+        orderNumber: z.string().length(25),
       })
     )
     .query(({ ctx, input }) => {

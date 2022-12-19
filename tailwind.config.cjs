@@ -4,5 +4,13 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/forms')],
+  safelist: [
+    {
+      pattern: /bg-/,
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    }
+],
+  plugins: [
+    require('tailwind-scrollbar'),
+   ],
 };

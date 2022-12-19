@@ -1,12 +1,19 @@
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, router } from "../../trpc";
-import { addressRouter } from "./address";
-import { commentRouter } from "./comment";
 
 export const userRouter = router({
-  address: addressRouter,
-  comment: commentRouter,
-  getAll: adminProcedure.query(({ ctx }) => {
+  me: protectedProcedure.query(async ({ ctx }) => {
+    const userResponse = await ctx.prisma.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        isAdmin: true,
+      },
+    });
+    return userResponse?.isAdmin;
+  }),
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
   getOneWhere: adminProcedure
@@ -27,6 +34,7 @@ export const userRouter = router({
   update: protectedProcedure
     .input(
       z.object({
+        id: z.string().length(25),
         dto: z
           .object({
             name: z.string(),
@@ -79,6 +87,7 @@ export const userRouter = router({
           .cuid({
             message: "The id of the user must be a valid cuid",
           }),
+        status: z.boolean(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -87,7 +96,7 @@ export const userRouter = router({
           id: input.id,
         },
         data: {
-          status: false,
+          status: !input.status,
         },
       });
     }),

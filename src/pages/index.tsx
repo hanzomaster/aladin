@@ -5,9 +5,15 @@ import { useS3Upload } from "next-s3-upload";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const { cart, setCart } = useCart();
+  const { data: cartData } = trpc.cart.get.useQuery();
+  if (cartData) {
+    setCart(cartData);
+  }
   const hello = trpc.example.hello.useQuery({ text: "Aladin" });
   const { mutate } = trpc.order.create.useMutation();
 
