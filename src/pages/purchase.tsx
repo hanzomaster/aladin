@@ -32,7 +32,7 @@ const Purchase: NextPage = () => {
                     <div className=" m d:px-4 relative my-4 h-full w-full cursor-pointer bg-gray-50 px-2 pb-2 hover:bg-gray-100">
                       <header className="flex justify-between border-b-2 py-4">
                         <h1 className="  text-base font-semibold text-gray-800 sm:text-lg md:text-xl">
-                          {item.orderNumber}
+                          Xem chi tiết và đánh giá
                         </h1>
                         <div className="flex flex-col items-center text-xs sm:flex-row sm:text-base md:text-lg">
                           <p className="mr-2 sm:mr-4">{item.orderDate.toDateString()}</p>

@@ -8,6 +8,7 @@ const OrderDetail = () => {
   const router = useRouter();
   const { id } = router.query;
   let total = 0;
+  const { data } = trpc.user.comment.get.useQuery();
 
   const { data: order } = trpc.order.getOneWhere.useQuery({ orderNumber: id as string });
   return (
@@ -32,9 +33,10 @@ const OrderDetail = () => {
 
               {order?.orderdetail.map((item) => {
                 total = total + parseFloat(item.priceEach.toString()) * item.quantityInOrdered;
+
                 return (
                   <>
-                    <OrderedItem item={item} />
+                    <OrderedItem item={item} disable={!(order.status === "SHIPPED")} />
                   </>
                 );
               })}

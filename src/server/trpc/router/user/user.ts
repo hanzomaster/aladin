@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { adminProcedure, protectedProcedure, router } from "../../trpc";
+import { addressRouter } from "./address";
+import { commentRouter } from "./comment";
 
 export const userRouter = router({
+  address: addressRouter,
+  comment: commentRouter,
   me: protectedProcedure.query(async ({ ctx }) => {
     const userResponse = await ctx.prisma.user.findFirst({
       where: {

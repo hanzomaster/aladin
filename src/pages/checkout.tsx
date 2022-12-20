@@ -231,6 +231,15 @@ const CheckOut = () => {
                       disabled={disable || phone === "" || name === ""}
                       onClick={(e) => {
                         e.preventDefault();
+                        handleCheckOutBtnClicked();
+                      }}>
+                      Thanh toán khi nhận hàng
+                    </button>
+                    <button
+                      className="text-black-200 w-full rounded-lg bg-gray-300 px-6 py-2 font-bold enabled:hover:bg-gray-900 enabled:hover:text-white "
+                      disabled={disable || phone === "" || name === ""}
+                      onClick={(e) => {
+                        e.preventDefault();
                         checkout({
                           lineItems: [
                             {
@@ -240,7 +249,7 @@ const CheckOut = () => {
                           ],
                         });
                       }}>
-                      Xác nhận thanh toán
+                      Thanh toán trực tuyến
                     </button>
                   </div>
                 </div>
