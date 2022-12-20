@@ -43,7 +43,7 @@ export const femaleData = [
   "T-shirt",
 ];
 const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
-const menuData = ["Sign in", "Sign up"];
+const menuData = ["Sign in"];
 
 const NavBar = () => {
   const { cart, setCart } = useCart();
@@ -72,10 +72,6 @@ const NavBar = () => {
               className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
               onClick={sessionData ? () => signOut() : () => signIn()}>
               Sign in
-            </button>
-
-            <button className=" text-md ml-2 mt-4  block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0">
-              Sign up
             </button>
           </div>
         )}
@@ -233,7 +229,11 @@ const NavBar = () => {
               </div>
             </Link>
             <div className="block lg:hidden ">
-              <DropdownComponent title="menu" type="menu" data={menuData} />
+              {sessionData ? (
+                <DropdownComponent title="user" type="user" data={userFunc} />
+              ) : (
+                <DropdownComponent title="menu" type="menu" data={menuData} />
+              )}
             </div>
           </div>
 

@@ -90,7 +90,7 @@ export default function ItemCard({ item }: { item: any }) {
             </button>
           </div>
         </div>
-        <h2 className="mt-3 ml-2 text-2xl capitalize hover:text-red-500">
+        <h2 className="mr-18 mt-3 ml-2 truncate text-xl text-2xl capitalize hover:text-red-500">
           <a href={"/productDetail/" + item.code}>
             {item.name} &#40;{item.line.gender}&#41;
           </a>

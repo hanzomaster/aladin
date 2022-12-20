@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Comment from "../commentDialog";
 
-function OrderedItem({ item }: { item: any }) {
+function OrderedItem({ item, disable }: { item: any; disable: boolean }) {
   return (
     <div className="mt-4 flex w-full flex-col items-start justify-start md:mt-6 md:flex-row md:items-center md:space-x-6 xl:space-x-8 ">
       <div className=" relative h-32 w-28 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -39,16 +40,35 @@ function OrderedItem({ item }: { item: any }) {
         </div>
         <div className="flex w-full items-start justify-between space-x-8">
           <p className="text-base leading-6 xl:text-lg">
-            {item.priceEach * 0.6},000 &#8363;{" "}
+            {(item.priceEach * 600).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
             <span className="text-red-300 line-through">
               {" "}
-              {item.priceEach.toString()},000 &#8363;
+              {(item.priceEach * 1000).toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
             </span>
           </p>
           <p className="text-base leading-6 text-gray-800 xl:text-lg">{item.quantityInOrdered}</p>
           <p className="text-base font-semibold leading-6 text-gray-800 xl:text-lg">
-            {item.priceEach * item.quantityInOrdered}000&#8363;
+            {(item.priceEach * item.quantityInOrdered * 600).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
           </p>
+
+          <div className="relative mb-0 flex h-full w-full items-center justify-center">
+            <div className="">
+              <Comment
+                productDetailId={item.productDetailId}
+                productName={item.productDetail.product.name}
+                isDisable={disable}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -51,7 +51,7 @@ const Orders: NextPage = () => {
         <div className="mt-5">
           <ProductsList productsData={currentPosts} />
         </div>
-        <div className="mx-auto">
+        <div className="flex w-full items-center justify-center">
           <Pagination
             totalPosts={searchResult?.length ?? 0}
             setCurrentPage={setCurrentPage}

@@ -1,19 +1,19 @@
 import { Menu, Transition } from "@headlessui/react";
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Fragment } from "react";
 
 // TODO - Remove this
 // const maleData = [
-//   "Coat",
-//   "Hoodie",
-//   "Jeans",
-//   "Pants",
-//   "Pj",
-//   "Polo",
-//   "Shirt",
-//   "Shorts",
-//   "Sweater",
-//   "T-shirt",
+// "Coat",
+// "Hoodie",
+// "Jeans",
+// "Pants",
+// "Pj",
+// "Polo",
+// "Shirt",
+// "Shorts",
+// "Sweater",
+// "T-shirt",
 // ];
 // const femaleData = [
 //   "Coat",
@@ -129,7 +129,7 @@ export default function DropdownComponent({
             {type === "user" && (
               <h1 className="bg-slate-100 py-4 pl-3 font-bold">{sessionData?.user?.name}</h1>
             )}
-            {type !== "user" &&
+            {(type === "male" || type === "female") &&
               data?.map((content) => {
                 return (
                   <>
@@ -148,6 +148,30 @@ export default function DropdownComponent({
                   </>
                 );
               })}
+            {type === "menu" &&
+              data?.map((content) => {
+                return (
+                  <>
+                    <Menu.Item>
+                      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                      {/* @ts-ignore */}
+                      {({ active }) => {
+                        if (content === "Sign in")
+                          return (
+                            <div
+                              onClick={() => signIn()}
+                              className={classNames(
+                                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                                "block cursor-pointer px-4 py-2 text-sm"
+                              )}>
+                              {content}
+                            </div>
+                          );
+                      }}
+                    </Menu.Item>
+                  </>
+                );
+              })}
             {type === "user" &&
               data?.map((content) => {
                 return (
@@ -160,7 +184,10 @@ export default function DropdownComponent({
                           return (
                             <div
                               key={content}
-                              onClick={() => signOut()}
+                              onClick={() => {
+                                signOut();
+                                window.location.href = "/home";
+                              }}
                               className={classNames(
                                 active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                                 "block cursor-pointer px-4 py-2 text-sm"

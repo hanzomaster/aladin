@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
+import CommentItem from "../../components/commentItem";
 import NavBar from "../../components/navbar";
 import { useToast } from "../../components/Toast";
 import { trpc } from "../../utils/trpc";
@@ -31,7 +32,9 @@ const ProductDetail: NextPage = () => {
   const [selectedSize, setSelectedSize] = useState<ClothSizeLiteral>(ClothSize.L);
   const [selectedImage, setSelectedImage] = useState(product?.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(product?.productDetail[0]?.id as string);
-
+  const { data: comments } = trpc.user.comment.getOfProduct.useQuery({
+    id: (selectedId ? selectedId : product?.productDetail[0]?.id) as string,
+  });
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
       utils.cart.get.invalidate();
@@ -357,6 +360,17 @@ const ProductDetail: NextPage = () => {
                   </section>
                 </div>
               </div>
+            </div>
+            <div className="mt-4">
+              {comments?.map((comment) => {
+                return (
+                  <>
+                    <div className="mt-5">
+                      <CommentItem comment={comment} />
+                    </div>
+                  </>
+                );
+              })}
             </div>
           </div>
 

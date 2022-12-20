@@ -61,11 +61,13 @@ const Products = () => {
             return <ItemCard key={item.code} item={item} />;
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }
@@ -96,11 +98,13 @@ const Products = () => {
             // }
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }
@@ -142,11 +146,13 @@ const Products = () => {
             return <ItemCard key={item.code} item={item} />;
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }

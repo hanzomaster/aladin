@@ -1,34 +1,79 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useS3Upload } from "next-s3-upload";
+import React, { useState } from "react";
+import ColorChooser from "../../components/admin/chooseColorDialog";
 import DropDownItem from "../../components/admin/DropDownItem";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
+import { useToast } from "../../components/Toast";
+import { trpc } from "../../utils/trpc";
 // import { test } from "../utils/test";
 const NewProduct: NextPage = () => {
   const [productDetailList, setProductDetailList] = useState<
-    { colorCode: string; image: any; numS: number; numM: number; numL: number; numXL: number }[]
+    { colorCode: string; image: string; numS: number; numM: number; numL: number; numXL: number }[]
   >([]);
 
+  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [selectedGender, setSelectedGender] = useState("Nam");
+  const [selectedProductLine, setSelectedProductLine] = useState("Polo");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const { add: toast } = useToast();
+
+  const mutation = trpc.product.create.useMutation({
+    onSuccess(data, variables, context) {
+      toast({
+        type: "success",
+        duration: 1500,
+        message: "Tạo sản phẩm thành công",
+        position: "topCenter",
+      });
+      document.getElementsByTagName("form")[0]?.reset();
+      setProductDetailList([]);
+    },
+  });
+  const handleFileChange = async (file: File, index: number) => {
+    const { url } = await uploadToS3(file);
+    //   setImageUrl(url);
+    // };
+    const tempArr = [...productDetailList];
+    tempArr[index]!.image = url;
+    setProductDetailList(tempArr);
+  };
+
+  const handleNameChange = (e: any) => {
+    setName(e.target.value);
+  };
+  const handleDescriptionChange = (e: any) => {
+    setDescription(e.target.value);
+  };
+  const handlePriceChange = (e: any) => {
+    setPrice(parseFloat(e.target.value));
+  };
   const onDeleteItem = (idx: number) => {
     setProductDetailList(productDetailList.filter((a, index) => index !== idx));
   };
   const onCreateNewClick = () => {
     const tempArr = [...productDetailList];
-    tempArr.push({ colorCode: "", image: null, numS: 0, numM: 0, numL: 0, numXL: 0 });
+    tempArr.push({ colorCode: "", image: "", numS: 0, numM: 0, numL: 0, numXL: 0 });
     setProductDetailList(tempArr);
   };
 
-  const onColorCodeChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onColorCodeChange = (color: string, index: number) => {
+    console.log(color + "sadjaksbndsahdsahdhouioioioioio");
     const tempArr = [...productDetailList];
     if (tempArr[index] !== null) {
-      tempArr[index]!.colorCode = e.target.value;
+      tempArr[index]!.colorCode = color;
     }
     setProductDetailList(tempArr);
   };
-  const onImageChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tempArr = [...productDetailList];
-    tempArr[index]!.image = parseInt(e.target.value);
-    setProductDetailList(tempArr);
-  };
+
+  // const onImageChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const tempArr = [...productDetailList];
+  //   tempArr[index]!.image = parseInt(e.target.value);
+  //   setProductDetailList(tempArr);
+  // };
   const onNumSChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
     tempArr[index]!.numS = parseInt(e.target.value);
@@ -50,24 +95,39 @@ const NewProduct: NextPage = () => {
     tempArr[index]!.numXL = parseInt(e.target.value);
     setProductDetailList(tempArr);
   };
-  // console.log(test);
+
+  const createProduct = (e) => {
+    e.preventDefault();
+    mutation.mutate({
+      gender: selectedGender === "Nam" ? "M" : "F",
+      type: selectedProductLine,
+      name: name,
+      description: description,
+      buyPrice: price,
+      productDetail: productDetailList,
+    });
+  };
+
   return (
-    <div className="h-full w-full text-sm md:text-base">
+    <div className="  p- h-full w-full text-sm md:text-base">
       <NavbarAdmin />
       {productDetailList.map((item) => {
         return (
           <>
             <p>{item.colorCode}</p>
-            <p>{item.image}</p>
+            <p>Image {item.image}</p>
+            <p>{item.colorCode}</p>
             <p>{item.numS}</p>
             <p>{item.numM}</p>
             <p>{item.numL}</p>
             <p>{item.numXL}</p>
+            <p>{selectedGender}</p>
+            <p>{selectedProductLine}</p>
             <p>---------------------</p>
           </>
         );
       })}
-      <form className="w-full px-10 pt-10 md:px-28">
+      <form className="w-full px-10 pt-10 pb-3 md:px-28" onSubmit={createProduct}>
         <div className="my-5 flex flex-col lg:w-[60%] lg:flex-row lg:justify-between">
           <div className="flex items-center md:flex-row">
             <label
@@ -75,7 +135,12 @@ const NewProduct: NextPage = () => {
               htmlFor="email">
               Giới tính
             </label>
-            <DropDownItem title="Giới tính" list={["Nam", "Nữ"]} />
+            <DropDownItem
+              title="Gender"
+              list={["Nam", "Nữ"]}
+              setSelectedGender={setSelectedGender}
+              setSelectedLine={setSelectedProductLine}
+            />
           </div>
 
           <div className="flex items-center">
@@ -84,7 +149,23 @@ const NewProduct: NextPage = () => {
               htmlFor="email">
               Loai sản phẩm
             </label>
-            <DropDownItem title="Loại sản phẩm" list={["Áo", "Quần", "Giày"]} />
+            <DropDownItem
+              title="ProductLine"
+              list={[
+                "Coat",
+                "Hoodie",
+                "Jeans",
+                "Pants",
+                "Pj",
+                "Polo",
+                "Shirt",
+                "Shorts",
+                "Sweater",
+                "T-shirt",
+              ]}
+              setSelectedGender={setSelectedGender}
+              setSelectedLine={setSelectedProductLine}
+            />
           </div>
         </div>
         <div className="my-5 lg:w-[60%]">
@@ -94,6 +175,7 @@ const NewProduct: NextPage = () => {
           <input
             className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
             type="text"
+            onChange={handleNameChange}
             autoFocus
           />
         </div>
@@ -104,14 +186,18 @@ const NewProduct: NextPage = () => {
             htmlFor="description">
             Mô tả
           </label>
-          <textarea className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base" />
+          <textarea
+            className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
+            onChange={handleDescriptionChange}
+          />
         </div>
         <div className="my-5 lg:w-[60%]">
           <label className="my-5 text-sm font-semibold text-gray-500 md:text-base" htmlFor="email">
-            Giá
+            Giá (K)
           </label>
           <input
             className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
+            onChange={handlePriceChange}
             type="text"
           />
         </div>
@@ -176,21 +262,43 @@ const NewProduct: NextPage = () => {
                               {index + 1}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
-                              <input
+                              <ColorChooser index={index} onColorCodeChange={onColorCodeChange} />
+                              <span
+                                style={{
+                                  background: `#${item.colorCode}`,
+                                }}>
+                                {item.colorCode}
+                              </span>
+                              {/* <input
                                 className="h-8 w-16 rounded-sm bg-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-600 hover:bg-white "
                                 type="text"
                                 name="name"
                                 value={item.colorCode}
-                                onChange={onColorCodeChange(index)}
-                              />
+                                onChange={onColorCodeChange()}
+                              /> */}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
-                              {/* <DragImage
-                    accept="image/png, image/jpg, image/jpeg, image/pdf"
-                    multiple
-                    name="pictures"
-                  /> */}
-                              {/* <CardProfile /> */}
+                              <FileInput
+                                onChange={(file: File) => {
+                                  handleFileChange(file, index);
+                                }}
+                              />
+                              <div>
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    openFileDialog();
+                                  }}>
+                                  Chọn ảnh
+                                </button>
+                                <div className=" relative h-36 w-20 overflow-hidden">
+                                  <img
+                                    src={item.image}
+                                    alt={item.image}
+                                    className="overflow-hidden"
+                                  />
+                                </div>
+                              </div>
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
                               <input
@@ -278,6 +386,12 @@ const NewProduct: NextPage = () => {
             </div>
           </div>
         </div>
+        <button
+          type="submit"
+          className="relative mr-0 h-full w-36 rounded-lg bg-gray-100 hover:bg-gray-700 hover:text-white">
+          {" "}
+          Tạo sản phẩm
+        </button>
       </form>
     </div>
   );

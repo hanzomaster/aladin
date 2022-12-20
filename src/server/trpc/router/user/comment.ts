@@ -21,6 +21,9 @@ export const commentRouter = router({
         where: {
           productId: input.id,
         },
+        include: {
+          user: true,
+        }
       })
     ),
   create: protectedProcedure

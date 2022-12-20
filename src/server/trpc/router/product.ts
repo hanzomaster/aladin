@@ -4,7 +4,7 @@ import {
   createProductSchema,
   getAllSchema,
   getManyProductSchema,
-  updateProductSchema,
+  updateProductSchema
 } from "./dto";
 
 export const productRouter = router({
@@ -170,6 +170,24 @@ export const productRouter = router({
           create: input.productDetail.map((detail) => ({
             colorCode: detail.colorCode,
             image: detail.image,
+            productInStock: {
+              create: [{
+                size: "S",
+                quantity: detail.numS
+              },
+              {
+                size: "M",
+                quantity: detail.numM
+              },
+              {
+                size: "L",
+                quantity: detail.numL
+              },
+              {
+                size: "XL",
+                quantity: detail.numXL
+              },]
+            }
           })),
         },
       },

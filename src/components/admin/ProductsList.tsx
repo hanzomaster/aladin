@@ -54,7 +54,10 @@ const ProductsList = ({
             return (
               <tr
                 key={index}
-                className="border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base">
+                className="cursor-pointer border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base"
+                onClick={() => {
+                  window.location.href = "/productDetail/" + product.code;
+                }}>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{index + 1}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{product.code}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
@@ -70,19 +73,6 @@ const ProductsList = ({
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   <QuantityProduct productDetail={product.productDetail} />
                 </td>
-
-                {/* <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {product.productDetail?.[0]?.productInStock[0]?.quantity}
-                </td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {product.productDetail?.[0]?.productInStock[1]?.quantity}
-                </td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {product.productDetail?.[0]?.productInStock[2]?.quantity}
-                </td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">
-                  {product.productDetail?.[0]?.productInStock[3]?.quantity}
-                </td> */}
               </tr>
             );
           })}

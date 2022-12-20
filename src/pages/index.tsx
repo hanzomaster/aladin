@@ -4,6 +4,7 @@ import { useS3Upload } from "next-s3-upload";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import Comment from "../components/commentDialog";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -29,12 +30,15 @@ const Home: NextPage = () => {
       <button onClick={openFileDialog}>Upload file</button>
       <pre>{imageUrl}</pre>
       {imageUrl && <img src={imageUrl} alt="" />}
+      <Comment />
 
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           Create <span className="text-purple-300">T3</span> App
         </h1>
         <p className="text-2xl text-gray-700">This stack uses:</p>
+        <Comment />
+
         <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-3 lg:w-2/3">
           <TechnologyCard
             name="NextJS"
