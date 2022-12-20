@@ -3,6 +3,7 @@ import { useState } from "react";
 import AddressItem from "../components/user/AddressItem";
 import SidebarAccount from "../components/user/SidebarAccount";
 import { Address } from "../types";
+import { trpc } from "../utils/trpc";
 
 const AddressView: NextPage = () => {
   const expAddress: Address = {
@@ -32,12 +33,13 @@ const AddressView: NextPage = () => {
     },
   ];
 
+  const { data: addresses } = trpc.user.address.get.useQuery();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [addressList, setAddressList] = useState(expAddressList);
+  const [addressList, setAddressList] = useState(addresses);
 
   const handleDeleteAddress = (index: number) => {
-    const newAddressList = [...addressList];
-    newAddressList.splice(index, 1);
+    const newAddressList = addresses;
+    newAddressList?.splice(index, 1);
     setAddressList(newAddressList);
   };
 
@@ -69,13 +71,10 @@ const AddressView: NextPage = () => {
 
           <main className=" pl-10 pr-[5rem]  md:pl-10 lg:pl-32 ">
             <div className="flex flex-col">
-              {addressList.map((address, index) => (
+              {addressList?.map((address, index) => (
                 <AddressItem
                   key={index}
-                  name={address.name}
-                  phone={address.phone}
-                  address={address.address}
-                  default={selectedIndex === index && true}
+                  address={address}
                   setDefault={() => setSelectedIndex(index)}
                   deleteAddress={() => handleDeleteAddress(index)}
                 />

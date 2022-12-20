@@ -1,6 +1,7 @@
 // import { BsHeart } from 'react-icons/bs'
 import { Dialog, Transition } from "@headlessui/react";
 import { Address } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 import Select from "react-select";
@@ -12,7 +13,7 @@ import { trpc } from "../utils/trpc";
 
 const CheckOut = () => {
   const { state, onCitySelect, onDistrictSelect, onWardSelect } = useLocationForm(false);
-  // const { data: sessionData } = useSession();
+  const { data: sessionData } = useSession();
   const [disable, setDisable] = useState(true);
   const { add: toast } = useToast();
   const { data: cartData } = trpc.cart.get.useQuery();
@@ -34,30 +35,25 @@ const CheckOut = () => {
     },
   });
   let total = 0;
-  const [phone, setPhone] = useState<string>("");
+  const [phone, setPhone] = useState("");
 
   const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(event.target.value);
   };
 
-  const [name, setName] = useState("");
-  console.log(name);
+  const [name, setName] = useState(sessionData?.user?.name);
+
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
   const [detailAddress, setDetailAddress] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
 
-  const handleDetailAdddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailAdddress(event.target.value);
+  const handleDetailAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailAddress(event.target.value);
   };
 
   const [comment, setComment] = useState("");
-
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(event.target.value);
-  };
 
   // handle onlick dialog button
   const [isDefault, setIsDefault] = useState(false);
@@ -78,7 +74,6 @@ const CheckOut = () => {
     setIdAddress(address.id);
     closeModal();
   };
-
   const handleCheckOutBtnClicked = () => {
     if (isDefault) {
       mutation.mutate({
@@ -94,7 +89,7 @@ const CheckOut = () => {
           city: selectedCity?.label as string,
           district: selectedDistrict?.label as string,
           ward: selectedWard?.label as string,
-          detail: detailAdddress ?? "",
+          detail: detailAddress ?? "",
         },
       });
     }
@@ -129,7 +124,6 @@ const CheckOut = () => {
           <div className="mx-auto mt-10 flex w-full flex-col px-0 md:flex-row">
             <div className="flex flex-col md:w-full">
               <h2 className="text-heading mb-4 font-bold md:text-xl ">Địa chỉ giao hàng:</h2>
-
               <form className="mx-auto w-full justify-center" method="post">
                 <div className="">
                   <div className="space-x-0 lg:flex lg:space-x-4">
@@ -141,7 +135,7 @@ const CheckOut = () => {
                       </label>
                       <input
                         name="firstName"
-                        value={name}
+                        value={name as string}
                         placeholder={"Họ và tên"}
                         onChange={handleNameChange}
                         disabled={isDefault}
@@ -346,10 +340,10 @@ const CheckOut = () => {
                       <input
                         name="Last Name"
                         type="text"
-                        value={detailAdddress}
+                        value={detailAddress}
                         placeholder=""
                         disabled={isDefault}
-                        onChange={handleDetailAdddressChange}
+                        onChange={handleDetailAddressChange}
                         className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                       />
                     </div>
@@ -372,7 +366,7 @@ const CheckOut = () => {
                       Ghi chú (Nếu có)
                     </label>
                     <textarea
-                      onChange={handleCommentChange}
+                      onChange={(e) => setComment(e.target.value)}
                       name="note"
                       className="focus:ring-black-600 flex w-full items-center rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1"
                       placeholder="Notes for delivery"></textarea>
@@ -511,15 +505,3 @@ const CheckOut = () => {
   );
 };
 export default CheckOut;
-
-// export const getServerSideProps: GetServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   const { data: addressList } = trpc.user.address.get.useQuery();
-
-//   const defaultAddress = addressList?.find((item) => item.isDefault === true);
-
-//   return {
-//     props: {},
-//   };
-// };

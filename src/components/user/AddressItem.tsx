@@ -1,6 +1,14 @@
-import { useState } from "react";
+import { Address } from "@prisma/client";
 
-function AddressItem({ address, setDefault, deleteAddress }) {
+function AddressItem({
+  address,
+  setDefault,
+  deleteAddress,
+}: {
+  address: Address;
+  setDefault: (id: string) => void;
+  deleteAddress: (id: string) => void;
+}) {
   return (
     <div className="my-5 flex justify-between border-b-2 pb-4">
       <div className="flex-[3] lg:flex-[4]">

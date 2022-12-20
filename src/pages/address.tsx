@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Navbar from "../components/navbar";
 import { default as AddressItem } from "../components/user/AddressItem";
-import SidebarAccount from "../components/user/user/SidebarAccount";
+import SidebarAccount from "../components/user/SidebarAccount";
 import { trpc } from "../utils/trpc";
 
 const AddressView: NextPage = () => {
@@ -23,7 +23,7 @@ const AddressView: NextPage = () => {
       utils.user.address.get.invalidate();
     },
   });
-  const deleteAddress = (id) => {
+  const deleteAddress = (id: string) => {
     deleteMutation.mutate({ id });
   };
 

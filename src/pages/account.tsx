@@ -56,7 +56,6 @@ const Account: NextPage = () => {
 
   const saveButtonClicked = () => {
     mutation.mutate({
-      id: sessionData?.user?.id as string,
       dto: { name: name as string, phone: phone },
     });
   };

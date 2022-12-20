@@ -1,4 +1,4 @@
-import { OrderDetail } from "@prisma/client";
+import { OrderDetail, OrderStatus } from "@prisma/client";
 import { inferRouterOutputs } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
 
@@ -82,21 +82,21 @@ const OrdersList = ({
                 </td>
 
                 {/* order status */}
-                {order.status == "InProcess" && (
+                {order.status === OrderStatus.INPROCESS && (
                   <td className="whitespace-nowrap px-2 py-3 md:px-6">
                     <span className="rounded-full bg-yellow-100 px-3 pt-1 pb-2 text-base font-medium text-yellow-700 ">
                       Đang giao
                     </span>
                   </td>
                 )}
-                {order.status == "Cancelled" && (
+                {order.status === OrderStatus.CANCELLED && (
                   <td className="whitespace-nowrap px-2 py-3 md:px-6">
                     <span className="rounded-full bg-red-100 px-3 pt-1 pb-2 text-base font-medium text-red-700 ">
                       Đã hủy
                     </span>
                   </td>
                 )}
-                {order.status == "Shipped" && (
+                {order.status === OrderStatus.SHIPPED && (
                   <td className="whitespace-nowrap px-2 py-3 md:px-6 ">
                     <span className="rounded-full bg-green-100 px-3 pt-1 pb-2 text-base font-medium text-green-700 ">
                       Đã giao

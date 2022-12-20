@@ -79,6 +79,10 @@ export const userRouter = router({
           .cuid({
             message: "The id of the user must be a valid cuid",
           }),
+        status: z.boolean({
+          required_error: "The status of the user is required",
+          invalid_type_error: "The status of the user must be a boolean",
+        }),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -87,7 +91,7 @@ export const userRouter = router({
           id: input.id,
         },
         data: {
-          status: false,
+          status: !input.status,
         },
       });
     }),
