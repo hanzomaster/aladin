@@ -82,7 +82,7 @@ export default function ItemCard({ item }: { item: any }) {
                 /> */}
           <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
             <button
-              className="rounded-lg bg-gray-100 py-2 px-5 text-black hover:bg-slate-500 hover:text-white"
+              className="rounded-lg bg-gray-100 py-2 px-5 text-gray-900 hover:bg-slate-500 hover:text-white"
               onClick={() =>
                 handleAddItemToCart(selectedId ? selectedId : item.productDetail[0]?.id)
               }>
@@ -90,7 +90,7 @@ export default function ItemCard({ item }: { item: any }) {
             </button>
           </div>
         </div>
-        <h2 className="mt-3 ml-2 text-xl text-2xl capitalize hover:text-red-500">
+        <h2 className="mt-3 ml-2 text-2xl capitalize hover:text-red-500">
           <a href={"/productDetail/" + item.code}>
             {item.name} &#40;{item.line.gender}&#41;
           </a>

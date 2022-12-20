@@ -159,6 +159,7 @@ export default function DropdownComponent({
                         if (content === "Đăng xuất")
                           return (
                             <div
+                              key={content}
                               onClick={() => signOut()}
                               className={classNames(
                                 active ? "bg-gray-100 text-gray-900" : "text-gray-700",
@@ -170,6 +171,7 @@ export default function DropdownComponent({
                         if (content === "Quản lý tài khoản")
                           return (
                             <div
+                              key={content}
                               onClick={() => (window.location.href = "/account")}
                               className={classNames(
                                 active ? "bg-gray-100 text-gray-900" : "text-gray-700",
@@ -182,6 +184,7 @@ export default function DropdownComponent({
                         if (content === "Quản lý đơn hàng")
                           return (
                             <div
+                              key={content}
                               onClick={() => (window.location.href = "/purchase")}
                               className={classNames(
                                 active ? "bg-gray-100 text-gray-900" : "text-gray-700",
