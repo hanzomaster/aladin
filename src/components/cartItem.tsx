@@ -10,7 +10,7 @@ const CartItem = ({ product }: any) => {
   const [count, setCount] = useState(product?.numberOfItems);
   const utils = trpc.useContext();
 
-  const creatMutation = trpc.cartItem.updateOrCreate.useMutation({
+  const createMutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess() {
       utils.cart.get.invalidate();
     },
@@ -23,7 +23,7 @@ const CartItem = ({ product }: any) => {
 
   const debouncedUpdate = debounce(async (criteria) => {
     setCount(criteria);
-    creatMutation.mutate({
+    createMutation.mutate({
       productDetailId: product?.productDetail.id,
       dto: { size: product?.size as ClothSizeLiteral, numberOfItems: parseFloat(criteria) },
     });

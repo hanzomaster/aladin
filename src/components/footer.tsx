@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 const Footer = () => {
+  const products = [{ name: "Polo" }, { name: "Shirt" }, { name: "Jeans" }, { name: "Shorts" }];
   return (
     <>
       <footer className="bg-gray-100 text-center text-gray-600 lg:text-left">
@@ -133,7 +136,20 @@ const Footer = () => {
               <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                 Sản phẩm
               </h6>
-              <p className="mb-4">
+              {products.map((product) => {
+                return (
+                  <>
+                    <Link href={"/home?name=" + product.name}>
+                      <p className="mb-4">
+                        <a href={"/home?name=" + product.name} className="text-gray-600">
+                          {product.name}
+                        </a>
+                      </p>
+                    </Link>
+                  </>
+                );
+              })}
+              {/* <p className="mb-4">
                 <a href="#!" className="text-gray-600">
                   Polo
                 </a>
@@ -152,16 +168,18 @@ const Footer = () => {
                 <a href="#!" className="text-gray-600">
                   Shorts
                 </a>
-              </p>
+              </p> */}
             </div>
             <div className="">
               <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                 Đường dẫn
               </h6>
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">
-                  Trang chủ
-                </a>
+                <Link href="/home">
+                  <a href="#!" className="text-gray-600">
+                    Trang chủ
+                  </a>
+                </Link>
               </p>
               <p className="mb-4">
                 <a href="#!" className="text-gray-600">
@@ -169,9 +187,11 @@ const Footer = () => {
                 </a>
               </p>
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">
-                  Đơn hàng
-                </a>
+                <Link href="/purchase">
+                  <a href="#!" className="text-gray-600">
+                    Đơn hàng
+                  </a>
+                </Link>
               </p>
               <p>
                 <a href="#!" className="text-gray-600">
@@ -229,7 +249,7 @@ const Footer = () => {
                     fill="currentColor"
                     d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path>
                 </svg>
-                + 01 1010 1010
+                0987 456 789
               </p>
               <p className="flex items-center justify-center md:justify-start">
                 <svg
@@ -252,9 +272,11 @@ const Footer = () => {
         </div>
         <div className="bg-gray-200 p-6 text-center">
           <span>Aladin:</span>
-          <a className="font-semibold text-gray-600" href="https://tailwind-elements.com/">
-            Ecommerce fashion website
-          </a>
+          <Link href="/home">
+            <a className="font-semibold text-gray-600" href="https://tailwind-elements.com/">
+              Ecommerce fashion website
+            </a>
+          </Link>
         </div>
       </footer>
     </>
