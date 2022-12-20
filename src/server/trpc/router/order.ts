@@ -1,6 +1,6 @@
 import { OrderStatus, Prisma } from "@prisma/client";
 import { z } from "zod";
-import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, router } from "../trpc";
 
 export const orderRouter = router({
   getAll: adminProcedure.query(({ ctx }) => {
@@ -39,7 +39,7 @@ export const orderRouter = router({
   getOneWhere: protectedProcedure
     .input(
       z.object({
-        orderNumber: z.string().length(25),
+        orderNumber: z.string().cuid(),
       })
     )
     .query(({ ctx, input }) => {
@@ -167,31 +167,13 @@ export const orderRouter = router({
             comments: input.comment,
           },
         });
-      ctx.prisma.cart.delete({
+      await ctx.prisma.cart.update({
         where: {
           userId: ctx.session.user.id,
         },
+        data: {},
       });
       return result;
-    }),
-  updateStatus: publicProcedure
-    .input(
-      z.object({
-        orderNumber: z.string().cuid(),
-        dto: z.object({
-          status: z.nativeEnum(OrderStatus),
-        }),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.order.update({
-        where: {
-          orderNumber: input.orderNumber,
-        },
-        data: {
-          status: input.dto.status,
-        },
-      });
     }),
   delete: protectedProcedure
     .input(
@@ -212,7 +194,7 @@ export const orderRouter = router({
         orderNumber: z.string().cuid(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       // check if order number include in user's order
       const order = await ctx.prisma.order.findUnique({
         where: {

@@ -64,10 +64,10 @@ const CheckOut = () => {
   const [idAddress, setIdAddress] = useState("");
 
   const handleDialogBtnClicked = (address: Address) => {
+    setIsDefault(true);
     setName(address.receiver);
     setPhone(address.phone);
     setDetailAddress(address.detail);
-    setIsDefault(true);
     setCity(address.city);
     setDistrict(address.district);
     setWard(address.ward);
@@ -107,6 +107,7 @@ const CheckOut = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
+    setIsDefault(false);
     setIsOpen(false);
   }
 
@@ -263,23 +264,23 @@ const CheckOut = () => {
                           </Transition>
                         </>
 
-                        {isDefault && (
-                          <div className="pt-2">
-                            <div className="text-lg font-semibold text-gray-900">
-                              <span className=" mr-4 border-r-2 pr-4">{name}</span>
-                              <span className="">{phone}</span>
-                            </div>
-                            <div>
-                              <p className="text-base font-normal text-gray-900">{`${detailAddress}, ${ward}, ${district}, ${city}`}</p>
-                            </div>
+                        {/* {isDefault && ( */}
+                        <div className="pt-2">
+                          <div className="text-lg font-semibold text-gray-900">
+                            <span className=" mr-4 border-r-2 pr-4">{name}</span>
+                            <span className="">{phone}</span>
                           </div>
-                        )}
+                          <div>
+                            <p className="text-base font-normal text-gray-900">{`${detailAddress}, ${ward}, ${district}, ${city}`}</p>
+                          </div>
+                        </div>
+                        {/* )} */}
                       </div>
                     </label>
                     <Select
                       name="cityId"
                       key={`cityId_${selectedCity?.value}`}
-                      isDisabled={cityOptions.length === 0}
+                      isDisabled={cityOptions.length === 0 || isDefault}
                       options={cityOptions}
                       onChange={(option) => {
                         if (option) {
@@ -290,7 +291,6 @@ const CheckOut = () => {
                         }
                       }}
                       placeholder="Tỉnh/Thành"
-                      className=""
                       defaultValue={selectedCity}
                     />
 
@@ -349,15 +349,6 @@ const CheckOut = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 flex items-center">
-                    <label className="text-heading group flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        className="h-5 w-5 rounded border border-gray-300 focus:outline-none focus:ring-1"
-                      />
-                      <span className="ml-2">Lưu địa chỉ</span>
-                    </label>
-                  </div>
                   <div className="relative pt-3 xl:pt-6">
                     <label
                       htmlFor="note"
@@ -368,12 +359,12 @@ const CheckOut = () => {
                     <textarea
                       onChange={(e) => setComment(e.target.value)}
                       name="note"
-                      className="focus:ring-black-600 flex w-full items-center rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1"
+                      className="focus:ring-black-600 flex w-full resize-none items-center rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1"
                       placeholder="Notes for delivery"></textarea>
                   </div>
-                  <div className="mt-4">
+                  <div className="mt-4 flex justify-between">
                     <button
-                      className="w-full rounded-lg bg-blue-100 px-6 py-2 font-bold text-blue-900 enabled:hover:bg-blue-300 "
+                      className="mr-4 w-full rounded-lg bg-blue-100 px-6 py-2 font-bold text-blue-900 enabled:hover:bg-blue-300"
                       disabled={disable || phone === "" || name === ""}
                       onClick={(e) => {
                         e.preventDefault();

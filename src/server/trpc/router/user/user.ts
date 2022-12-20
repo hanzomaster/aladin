@@ -4,6 +4,13 @@ import { addressRouter } from "./address";
 import { commentRouter } from "./comment";
 
 export const userRouter = router({
+  me: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+  }),
   address: addressRouter,
   comment: commentRouter,
   getAll: adminProcedure.query(({ ctx }) => {

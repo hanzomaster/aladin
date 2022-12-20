@@ -146,7 +146,7 @@ const Products = () => {
             return <ItemCard key={item.code} item={item} />;
           })}
         </section>
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center pb-4">
           <Pagination
             totalPosts={data?.length ?? 0}
             setCurrentPage={setPage}

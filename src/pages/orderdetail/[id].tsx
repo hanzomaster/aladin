@@ -8,7 +8,14 @@ const OrderDetail = () => {
   const router = useRouter();
   const { id } = router.query;
   let total = 0;
-  const { data } = trpc.user.comment.get.useQuery();
+
+  const mutation = trpc.order.cancelOrder.useMutation();
+
+  const handleCancelOrder = () => {
+    mutation.mutate({
+      orderNumber: id as string,
+    });
+  };
 
   const { data: order } = trpc.order.getOneWhere.useQuery({ orderNumber: id as string });
   return (
@@ -102,6 +109,7 @@ const OrderDetail = () => {
                   <p className="text-lg font-semibold leading-6 text-gray-800">0 &#8363;</p>
                 </div>
                 <div className="flex w-full items-center justify-center">
+                  {/* TODO: Sửa lại màu cho đơn hàng bị cancel */}
                   <button className="w-96 bg-gray-800 py-5 text-base font-medium leading-4 text-white focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-black md:w-full">
                     {order?.status}
                   </button>
@@ -146,7 +154,9 @@ const OrderDetail = () => {
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-center md:items-start md:justify-start">
-                  <button className="mt-6 w-96 border border-gray-800 py-5 text-base font-medium leading-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-gray-200 md:mt-0 2xl:w-full">
+                  <button
+                    className="mt-6 w-96 border border-gray-800 py-5 text-base font-medium leading-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-gray-200 md:mt-0 2xl:w-full"
+                    onClick={handleCancelOrder}>
                     Hủy/ Đổi trả đơn hàng
                   </button>
                 </div>
@@ -158,5 +168,4 @@ const OrderDetail = () => {
     </>
   );
 };
-
 export default OrderDetail;

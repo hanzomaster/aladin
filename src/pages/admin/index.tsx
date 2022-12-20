@@ -1,7 +1,9 @@
 import { inferRouterOutputs } from "@trpc/server";
-import { NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { getSession } from "next-auth/react";
 import NavbarAdmin from "../../components/admin/NavbarAdmin";
 import { getAmountOrder } from "../../components/admin/OrdersList";
+import { env } from "../../env/server.mjs";
 import { AppRouter } from "../../server/trpc/router/_app";
 
 import { trpc } from "../../utils/trpc";
@@ -121,3 +123,23 @@ const Admin: NextPage = () => {
   );
 };
 export default Admin;
+
+// getserversideprops to redirect if not admin
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  // check session with next-auth
+  const session = await getSession(context);
+  if (!session || (session.user?.email && env.ADMIN_EMAILS.indexOf(session.user?.email) === -1)) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};

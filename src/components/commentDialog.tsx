@@ -23,10 +23,6 @@ const Comment = ({
   const [starRate, setStarRate] = useState(0);
 
   const [comment, setComment] = useState("");
-  const handleCommentChange = (e) => {
-    setComment(e.target.value);
-  };
-
   const mutation = trpc.user.comment.create.useMutation({
     onSuccess: () => {
       toast({
@@ -110,7 +106,7 @@ const Comment = ({
                   <h1>Comment:</h1>
                   <textarea
                     className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
-                    onChange={handleCommentChange}
+                    onChange={(e) => setComment(e.target.value)}
                   />
 
                   <div className="mt-4 flex w-full items-center justify-between">

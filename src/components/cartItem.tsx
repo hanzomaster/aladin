@@ -33,17 +33,6 @@ const CartItem = ({ product }: any) => {
     debouncedUpdate(e.target.value);
   }
 
-  // const handleChange = (e) => {
-  //   debounce(async () => {
-  //     // 😕 debounced function never called
-  //     creatMutation.mutate({
-  //       productDetailId: product?.productDetail.id,
-  //       dto: { size: product?.size as ClothSizeLiteral, numberOfItems: parseFloat(count) },
-  //     });
-  //   }, 100);
-  //   setCount(parseFloat(e.target.value));
-  // };
-
   const [open, setOpen] = useState(false);
 
   const removeItem = (productDetailId: string, size: ClothSizeLiteral) => {
@@ -78,7 +67,7 @@ const CartItem = ({ product }: any) => {
               })}
             </p>
           </a>
-          <div className="block inline-block">
+          <div className="inline-block">
             <p
               style={{
                 background: `#${product?.productDetail?.colorCode}`,
@@ -86,11 +75,11 @@ const CartItem = ({ product }: any) => {
               className="mt-1 text-sm text-gray-500">
               {product.productDetail.colorCode}
             </p>
-            <p className="mt-1 ml-1 text-sm text-gray-500">Size: {product?.size}</p>
           </div>
+          <p className="mt-1 text-sm text-gray-500">Size: {product?.size}</p>
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <div className="block inline-block text-gray-500">
+          <div className="inline-block text-gray-500">
             SL:
             <div className="inline-block">
               <input

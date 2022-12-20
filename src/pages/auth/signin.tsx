@@ -22,9 +22,13 @@ export default function Login({
                   </div>
                   <div className="btn-wrapper text-center">
                     <button
-                      className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-[#F8FAFC]"
+                      className="mr-1 mb-1 inline-flex items-center rounded bg-white px-4 py-2 text-xs font-normal uppercase text-[#334155] shadow outline-none transition-all duration-150 ease-linear focus:outline-none hover:shadow-md active:bg-[#F8FAFC]"
                       type="button"
-                      onClick={() => signIn(providers.google.id)}>
+                      onClick={() =>
+                        signIn(providers.google.id, {
+                          callbackUrl: "/home",
+                        })
+                      }>
                       <Image
                         alt="..."
                         className="mr-1 w-6"
@@ -93,7 +97,7 @@ export default function Login({
 
                     <div className="mt-6 text-center">
                       <button
-                        className="mr-1 mb-1 w-full rounded bg-[#1E293B] px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-[#475569]"
+                        className="mr-1 mb-1 w-full rounded bg-[#1E293B] px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear focus:outline-none hover:shadow-lg active:bg-[#475569]"
                         type="submit">
                         Sign In
                       </button>

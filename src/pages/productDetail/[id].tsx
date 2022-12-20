@@ -107,7 +107,7 @@ const ProductDetail: NextPage = () => {
           <div className="mx-auto my-0 max-h-full w-3/4 bg-white">
             <div className="mt-10 flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8  sm:px-6 sm:pt-8 md:p-6 lg:p-8">
               <div className="gap-y grid w-full grid-cols-2 items-start gap-x-6 sm:grid-cols-4 lg:gap-x-8">
-                <div className=" h-4/5 w-4/5 overflow-hidden rounded-lg bg-gray-100 sm:col-span-2 lg:col-span-2">
+                <div className=" h-full w-4/5 overflow-hidden rounded-lg bg-gray-100 sm:col-span-2 lg:col-span-2">
                   <div className="relative h-full w-full">
                     <Image
                       src={
@@ -240,7 +240,7 @@ const ProductDetail: NextPage = () => {
                                     leaveFrom="opacity-100 translate-y-0 md:scale-100"
                                     leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95">
                                     <Dialog.Panel className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
-                                      <div className=" relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                                      <div className=" relative mt-[20%] flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                                         <img
                                           src={sizeGuideSrc}
                                           alt="size guide"

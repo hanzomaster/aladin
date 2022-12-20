@@ -22,7 +22,7 @@ const NewProduct: NextPage = () => {
   const { add: toast } = useToast();
 
   const mutation = trpc.product.create.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess() {
       toast({
         type: "success",
         duration: 1500,
@@ -42,13 +42,13 @@ const NewProduct: NextPage = () => {
     setProductDetailList(tempArr);
   };
 
-  const handleNameChange = (e: any) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
-  const handleDescriptionChange = (e: any) => {
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
-  const handlePriceChange = (e: any) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(parseFloat(e.target.value));
   };
   const onDeleteItem = (idx: number) => {
@@ -61,7 +61,6 @@ const NewProduct: NextPage = () => {
   };
 
   const onColorCodeChange = (color: string, index: number) => {
-    console.log(color + "sadjaksbndsahdsahdhouioioioioio");
     const tempArr = [...productDetailList];
     if (tempArr[index] !== null) {
       tempArr[index]!.colorCode = color;
@@ -96,7 +95,7 @@ const NewProduct: NextPage = () => {
     setProductDetailList(tempArr);
   };
 
-  const createProduct = (e) => {
+  const createProduct = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate({
       gender: selectedGender === "Nam" ? "M" : "F",
@@ -111,22 +110,6 @@ const NewProduct: NextPage = () => {
   return (
     <div className="  p- h-full w-full text-sm md:text-base">
       <NavbarAdmin />
-      {productDetailList.map((item) => {
-        return (
-          <>
-            <p>{item.colorCode}</p>
-            <p>Image {item.image}</p>
-            <p>{item.colorCode}</p>
-            <p>{item.numS}</p>
-            <p>{item.numM}</p>
-            <p>{item.numL}</p>
-            <p>{item.numXL}</p>
-            <p>{selectedGender}</p>
-            <p>{selectedProductLine}</p>
-            <p>---------------------</p>
-          </>
-        );
-      })}
       <form className="w-full px-10 pt-10 pb-3 md:px-28" onSubmit={createProduct}>
         <div className="my-5 flex flex-col lg:w-[60%] lg:flex-row lg:justify-between">
           <div className="flex items-center md:flex-row">
@@ -188,7 +171,7 @@ const NewProduct: NextPage = () => {
           </label>
           <textarea
             className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
-            onChange={handleDescriptionChange}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div className="my-5 lg:w-[60%]">
@@ -267,7 +250,7 @@ const NewProduct: NextPage = () => {
                                 style={{
                                   background: `#${item.colorCode}`,
                                 }}>
-                                {item.colorCode}
+                                #{item.colorCode}
                               </span>
                               {/* <input
                                 className="h-8 w-16 rounded-sm bg-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-600 hover:bg-white "

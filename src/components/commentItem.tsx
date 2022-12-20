@@ -8,7 +8,7 @@ const CommentItem = ({ comment }: any) => {
       <article>
         <div className="mb-4 flex items-center space-x-4">
           <img className="h-10 w-10 rounded-full" src={comment.user.image} alt="" />
-          <div className="space-y-1 font-medium dark:text-white">
+          <div className="space-y-1 font-medium ">
             <p>{comment.user.name}</p>
           </div>
         </div>
@@ -30,12 +30,9 @@ const CommentItem = ({ comment }: any) => {
               </>
             );
           })}
-          <h3 className="ml-2 text-sm font-semibold text-gray-900 dark:text-white">
-            Thinking to buy another one!
-          </h3>
         </div>
         <footer className="mb-5 text-sm text-gray-500 dark:text-gray-400">
-          <p>{comment.createdAt.toUTCString()}</p>
+          <p>{comment.createdAt.toDateString()}</p>
         </footer>
         <p className="mb-2 font-light text-gray-500 dark:text-gray-400">{comment.content}</p>
 
