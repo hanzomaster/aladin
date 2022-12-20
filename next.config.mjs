@@ -20,6 +20,7 @@ export default defineNextConfig({
     defaultLocale: "vi",
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

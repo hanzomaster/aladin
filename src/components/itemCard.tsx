@@ -73,8 +73,7 @@ export default function ItemCard({ item }: { item: any }) {
               layout="fill"
               className="object-cover"
               alt="Image"
-              priority={true}
-              unoptimized={true}></Image>
+              priority={true}></Image>
           </div>
           {/* <img
                   className="h-96 w-full object-cover"
