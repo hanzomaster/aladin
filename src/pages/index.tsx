@@ -1,22 +1,13 @@
 import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { log } from "next-axiom";
 import { useS3Upload } from "next-s3-upload";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const { cart, setCart } = useCart();
-  const { data: cartData } = trpc.cart.get.useQuery();
-  if (cartData) {
-    setCart(cartData);
-  }
-  const hello = trpc.example.hello.useQuery({ text: "Aladin" });
-  const { mutate } = trpc.order.create.useMutation();
-
+  const hello = trpc.example.hello.useQuery();
   const [imageUrl, setImageUrl] = useState<string>();
   const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
 
@@ -26,7 +17,7 @@ const Home: NextPage = () => {
   };
 
   // NOTE - test logging with Axiom
-  log.info("what the fuck is this");
+  // log.info("what the fuck is this");
   return (
     <>
       <Head>
@@ -37,7 +28,7 @@ const Home: NextPage = () => {
       <FileInput onChange={handleFileChange} />
       <button onClick={openFileDialog}>Upload file</button>
       <pre>{imageUrl}</pre>
-      {imageUrl && <Image src={imageUrl} alt="" width={300} height={300} />}
+      {imageUrl && <img src={imageUrl} alt="" />}
 
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">

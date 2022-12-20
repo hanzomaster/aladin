@@ -208,4 +208,35 @@ export const orderRouter = router({
         },
       });
     }),
+  cancelOrder: protectedProcedure
+    .input(
+      z.object({
+        orderNumber: z.string().cuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // check if order number include in user's order
+      const order = await ctx.prisma.order.findUnique({
+        where: {
+          orderNumber: input.orderNumber,
+        },
+        select: {
+          customerNumber: true,
+        },
+      });
+      if (!order) {
+        throw new Error("Order not found");
+      }
+      if (order.customerNumber !== ctx.session.user.id) {
+        throw new Error("Order not found");
+      }
+      return ctx.prisma.order.update({
+        where: {
+          orderNumber: input.orderNumber,
+        },
+        data: {
+          status: OrderStatus.CANCELLED,
+        },
+      });
+    }),
 });
