@@ -4,16 +4,16 @@ import { Fragment } from "react";
 
 // TODO - Remove this
 // const maleData = [
-//   "Coat",
-//   "Hoodie",
-//   "Jeans",
-//   "Pants",
-//   "Pj",
-//   "Polo",
-//   "Shirt",
-//   "Shorts",
-//   "Sweater",
-//   "T-shirt",
+// "Coat",
+// "Hoodie",
+// "Jeans",
+// "Pants",
+// "Pj",
+// "Polo",
+// "Shirt",
+// "Shorts",
+// "Sweater",
+// "T-shirt",
 // ];
 // const femaleData = [
 //   "Coat",

@@ -26,6 +26,11 @@ export default defineNextConfig({
         hostname: "drive.google.com",
         pathname: "/uc",
       },
+      {
+        protocol: "https",
+        hostname: "aladin-w22g4.s3.ap-southeast-1.amazonaws.com",
+        pathname: "/next-s3-uploads",
+      },
     ],
   },
 });

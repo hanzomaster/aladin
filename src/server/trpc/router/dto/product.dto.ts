@@ -71,6 +71,10 @@ export const createProductSchema = z.object({
           invalid_type_error: "Image must be a valid URL",
         })
         .url(),
+      numS : z.number(),
+      numM : z.number(),
+      numL : z.number(),
+      numXL : z.number(),
     })
     .array(),
 });
