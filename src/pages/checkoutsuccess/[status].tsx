@@ -22,7 +22,14 @@ const CheckOutSuccess = () => {
               </h3>
               <p className="my-2 text-gray-600">Đơn hàng của bạn đã được ghi nhận.</p>
               <p className="my-2 text-gray-600">
-                Vui lòng kiểm tra thông tin đơn hàng ở mục quản lý đơn hàng.
+                Vui lòng kiểm tra thông tin đơn hàng ở mục{" "}
+                <Link href="/purchase">
+                  <span className="text-underline cursor-pointer font-semibold text-indigo-900">
+                    {" "}
+                    quản lý đơn hàng{" "}
+                  </span>
+                </Link>
+                .
               </p>
               <p> Chúc bạn một ngày tốt lành! </p>
               <div className="py-10 text-center">

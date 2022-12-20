@@ -30,7 +30,7 @@ const Users: NextPage = () => {
       <main className=" p- px-5 py-10 md:px-10 lg:px-20">
         <h1 className="text-3xl font-medium text-gray-900 ">Users</h1>
         <UsersList usersData={currentPosts ?? []} handleActive={handleActive} />
-        <div className="mx-auto w-full items-center">
+        <div className="flex w-full items-center justify-center">
           <Pagination
             totalPosts={data?.length ?? 0}
             setCurrentPage={setCurrentPage}
