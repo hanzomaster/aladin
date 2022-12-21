@@ -1,92 +1,42 @@
 import { Dialog, Transition } from "@headlessui/react";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
+import { Gender } from "@prisma/client";
+import { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { ChangeEvent, Fragment, KeyboardEvent, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { trpc } from "../utils/trpc";
 import CartItem from "./cartItem";
 import DropdownComponent from "./dropdownmenu";
 
-// export const getServerSideProps: GetServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   const { data: cartData } = trpc.cart.get.useQuery();
-//   return {
-//     props: { cartData },
-//   };
-// };
-export const maleData = [
-  "Coat",
-  "Hoodie",
-  "Jeans",
-  "Pants",
-  "Pj",
-  "Polo",
-  "Shirt",
-  "Shorts",
-  "Sweater",
-  "T-shirt",
-];
-
-export const femaleData = [
-  "Coat",
-  "Hoodie",
-  "Jeans",
-  "Pants",
-  "Pj",
-  "Polo",
-  "Shirt",
-  "Shorts",
-  "Sweater",
-  "T-shirt",
-];
 const userFunc = ["Quản lý tài khoản", "Quản lý đơn hàng", "Đăng xuất"];
 const menuData = ["Sign in"];
 
 const NavBar = () => {
-  const { cart, setCart } = useCart();
-
-  const utils = trpc.useContext();
+  const { cart } = useCart();
   const { data: cartData } = trpc.cart.get.useQuery();
   const { data: sessionData } = useSession();
-  const mutation = trpc.cartItem.delete.useMutation({
-    onSuccess() {
-      utils.cart.get.invalidate();
-    },
-  });
 
+  const { data: productLineData } = trpc.productLine.getAll.useQuery();
+  const maleData = productLineData
+    ?.filter((item) => item.gender === Gender.M)
+    .map((item) => item.type);
+  const femaleData = productLineData
+    ?.filter((item) => item.gender === Gender.F)
+    .map((item) => item.type);
   const [open, setOpen] = useState(false);
 
   let total = 0;
 
-  const AuthShowcase: React.FC = () => {
-    const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery();
-
-    return (
-      <>
-        {!sessionData && (
-          <div className="flex ">
-            <button
-              className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
-              onClick={sessionData ? () => signOut() : () => signIn()}>
-              Sign in
-            </button>
-          </div>
-        )}
-        {sessionData && <DropdownComponent title="user" type="user" data={userFunc} />}
-      </>
-    );
-  };
-
   const [message, setMessage] = useState("");
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
-  const getKeyDown = (event: any) => {
+  const getKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       window.location.href = "/home?name=" + message;
     }
@@ -239,9 +189,9 @@ const NavBar = () => {
 
           <div className="menu hidden w-full flex-grow px-8 lg:block lg:flex lg:w-auto lg:items-center lg:px-3">
             <div className="text-md font-bold text-gray-700 lg:flex-grow">
-              <DropdownComponent title="Nam" type="male" data={maleData} />
+              <DropdownComponent title="Nam" type="male" data={maleData ?? []} />
 
-              <DropdownComponent title="Nữ" type="female" data={femaleData} />
+              <DropdownComponent title="Nữ" type="female" data={femaleData ?? []} />
             </div>
 
             <div className="relative mx-auto hidden text-gray-600 lg:block">
@@ -272,7 +222,7 @@ const NavBar = () => {
                 </Link>
               </button>
             </div>
-            <AuthShowcase />
+            <AuthShowcase sessionData={sessionData} />
             <div className="flex justify-center px-4 md:block">
               <button
                 className="
@@ -296,3 +246,20 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+const AuthShowcase: React.FC<{ sessionData: Session | null }> = ({ sessionData }) => {
+  return (
+    <>
+      {!sessionData && (
+        <div className="flex ">
+          <button
+            className="text-md ml-2 mt-4 block rounded px-4 py-2 font-bold text-gray-700 hover:bg-gray-700 hover:text-white lg:mt-0"
+            onClick={sessionData ? () => signOut() : () => signIn()}>
+            Sign in
+          </button>
+        </div>
+      )}
+      {sessionData && <DropdownComponent title="user" type="user" data={userFunc} />}
+    </>
+  );
+};
