@@ -16,7 +16,6 @@ export async function checkout({ lineItems }: { lineItems: any }) {
   await stripe.redirectToCheckout({
     mode: "payment",
     lineItems,
-    successUrl: `${window.location.origin}/checkoutsuccess/success`,
     cancelUrl: `${window.location.origin}/checkoutsuccess/cancel`,
   });
 }

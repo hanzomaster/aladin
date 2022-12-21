@@ -384,7 +384,6 @@ const CheckOut = () => {
                       disabled={(disable || phone === "" || name === "") && !isDefault}
                       onClick={(e) => {
                         e.preventDefault();
-                        handleCheckOutBtnClicked();
                         checkout({
                           lineItems: [
                             {
@@ -393,6 +392,7 @@ const CheckOut = () => {
                             },
                           ],
                         });
+                        handleCheckOutBtnClicked();
                       }}>
                       Thanh toán trực tuyến
                     </button>
