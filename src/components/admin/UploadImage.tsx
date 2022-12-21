@@ -1,12 +1,8 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const CardProfile = () => {
   const fileUploader = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<any>(null);
-  const profileTrigger = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    fileUploader.current?.click();
-  };
 
   const handleImage = (e: any) => {
     const file = e.target.files[0];
@@ -16,25 +12,6 @@ const CardProfile = () => {
       setImage(e.target?.result);
     };
   };
-  // const sendProfile = async (event) => {
-  //   console.log(fileUploader.current.files[0]);
-  //   const formData = new FormData();
-  //   formData.append("image", fileUploader.current.files[0]);
-  //   fetch("/api/changeUserProfile", {
-  //     method: "POST",
-  //     body: formData,
-  //   }).then(async (response) => {
-  //     await response.json().then((data) => {
-  //       setDataBaseResponse({
-  //         message: data.message,
-  //         data,
-  //       });
-  //       console.log(dataBaseResponse);
-  //     });
-  //   });
-  //   console.log(dataBaseResponse);
-  // };
-
   return (
     <div>
       <input

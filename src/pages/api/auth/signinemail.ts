@@ -10,7 +10,7 @@ export async function CustomsendVerificationRequest(params: any) {
     to: identifier,
     from: provider.from,
     subject: `Sign in to ${host}`,
-    text: text({ url, host }),
+    text: text(),
     html: html({ url, host, theme }),
   });
   const failed = result.rejected.concat(result.pending).filter(Boolean);
@@ -256,7 +256,7 @@ body {font-family: 'Muli', sans-serif;}
 }
 
 /** Email Text body (fallback for email clients that don't render HTML, e.g. feature phones) */
-function text({ url, host }: { url: string; host: string }) {
+function text() {
   return `Verify!!!
 
 Please verify your email address to go to

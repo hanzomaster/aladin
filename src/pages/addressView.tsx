@@ -2,37 +2,9 @@ import { NextPage } from "next";
 import { useState } from "react";
 import AddressItem from "../components/user/AddressItem";
 import SidebarAccount from "../components/user/SidebarAccount";
-import { Address } from "../types";
 import { trpc } from "../utils/trpc";
 
 const AddressView: NextPage = () => {
-  const expAddress: Address = {
-    detail: "62 Trần Thái Tông",
-    neighborhood: "Dịch Vọng Hậu",
-    district: "Cầu Giấy",
-    province: "Hà Nội",
-  };
-  const expAddressList = [
-    {
-      name: "Huyền",
-      phone: "12345678",
-      address: expAddress,
-      default: true,
-    },
-    {
-      name: "Nguyễn Thanh Huyền",
-      phone: "12345678",
-      address: expAddress,
-      default: false,
-    },
-    {
-      name: "Nguyễn Thanh Huyền",
-      phone: "12345678",
-      address: expAddress,
-      default: false,
-    },
-  ];
-
   const { data: addresses } = trpc.user.address.get.useQuery();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [addressList, setAddressList] = useState(addresses);
@@ -45,10 +17,6 @@ const AddressView: NextPage = () => {
 
   return (
     <div className="h-full w-full text-sm md:text-base ">
-      {/* Navbar */}
-      {/* <Navbar /> */}
-      {/* Content */}
-
       <div className="mt-[] flex h-full w-full border-b-4 px-2 sm:px-4 lg:px-10">
         <SidebarAccount />
         {/* main */}
@@ -83,8 +51,6 @@ const AddressView: NextPage = () => {
           </main>
         </div>
       </div>
-
-      {/* Footer */}
     </div>
   );
 };

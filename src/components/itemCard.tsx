@@ -5,7 +5,6 @@ import { ProductDetail } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { useCart } from "../context/CartContext";
 
 import { trpc } from "../utils/trpc";
 import { useToast } from "./Toast";
@@ -13,14 +12,12 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 export default function ItemCard({ item }: { item: any }) {
-  const { cart, setCart } = useCart();
   const utils = trpc.useContext();
   const [selectedColor, setSelectedColor] = useState(item.productDetail[0]?.colorCode);
   const [selectedImage, setSelectedImage] = useState(item.productDetail[0]?.image);
   const [selectedId, setSelectedId] = useState(item.productDetail[0]?.id as string);
-  const [open, setOpen] = useState(false);
   const { data: sessionData } = useSession();
-  const { add: toast, remove } = useToast();
+  const { add: toast } = useToast();
 
   const mutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess: () => {
@@ -66,7 +63,6 @@ export default function ItemCard({ item }: { item: any }) {
         key={item.code}
         className=" border-black-50 text-md group col-span-1 row-span-1 h-fit items-center rounded-lg bg-pink-50 font-bold drop-shadow-md">
         <div className=" relative overflow-hidden">
-          {/* {getImage(item.productDetail[0]?.image)} */}
           <div className="h-96 w-full">
             <Image
               src={selectedImage ? selectedImage : item.productDetail[0]?.image}
@@ -75,11 +71,6 @@ export default function ItemCard({ item }: { item: any }) {
               alt="Image"
               priority={true}></Image>
           </div>
-          {/* <img
-                  className="h-96 w-full object-cover"
-                  src={item.productDetail[0]?.image}
-                  alt=""
-                /> */}
           <div className="absolute -bottom-10 flex h-full w-full items-center justify-center bg-black/20 opacity-0 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100">
             <button
               className="rounded-lg bg-gray-100 py-2 px-5 text-gray-900 hover:bg-slate-500 hover:text-white"
@@ -103,7 +94,6 @@ export default function ItemCard({ item }: { item: any }) {
             <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
             <span className="flex items-center space-x-3">
               {item.productDetail?.map((item1: ProductDetail, index: number) => {
-                // const color = colorNames("bg-[", "#c29]");
                 return (
                   <RadioGroup.Option
                     key={item1.id}

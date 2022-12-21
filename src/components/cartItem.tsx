@@ -33,8 +33,6 @@ const CartItem = ({ product }: any) => {
     debouncedUpdate(e.target.value);
   }
 
-  const [open, setOpen] = useState(false);
-
   const removeItem = (productDetailId: string, size: ClothSizeLiteral) => {
     mutation.mutate({ productDetailId: productDetailId, size: size });
   };

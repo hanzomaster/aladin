@@ -1,3 +1,4 @@
+import { OrderStatus } from "@prisma/client";
 import { inferRouterOutputs } from "@trpc/server";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { getSession } from "next-auth/react";
@@ -11,7 +12,7 @@ import { trpc } from "../../utils/trpc";
 function getSumAmountOrders(orders: inferRouterOutputs<AppRouter>["order"]["getAll"]) {
   let sumAmount = 0;
   orders?.map((order) => {
-    sumAmount += getAmountOrder(order?.orderdetail);
+    if (order.status !== OrderStatus.CANCELLED) sumAmount += getAmountOrder(order?.orderdetail);
   });
   return sumAmount;
 }
@@ -97,7 +98,10 @@ const Admin: NextPage = () => {
           <div className="rounded-xl bg-[#70d1e5] p-4 shadow-sm ">
             <div className="p-4">
               <div className="mb-2 text-lg font-semibold text-gray-800 md:text-2xl">
-                {getSumAmountOrders(orders ?? [])}
+                {(getSumAmountOrders(orders ?? []) * 600).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
               </div>
               <div className="flex text-sm text-gray-600 md:text-base">
                 <svg
