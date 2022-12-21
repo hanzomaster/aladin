@@ -377,6 +377,7 @@ const CheckOut = () => {
                       disabled={disable || phone === "" || name === ""}
                       onClick={(e) => {
                         e.preventDefault();
+                        handleCheckOutBtnClicked();
                         checkout({
                           lineItems: [
                             {

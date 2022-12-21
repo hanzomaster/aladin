@@ -171,7 +171,11 @@ export const orderRouter = router({
         where: {
           userId: ctx.session.user.id,
         },
-        data: {},
+        data: {
+          cartItem: {
+            deleteMany: {},
+          },
+        },
       });
       return result;
     }),

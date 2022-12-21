@@ -42,9 +42,6 @@ const NavBar = () => {
     }
   };
 
-  const checkOutBtnClicked = () => {
-    sessionData ? (window.location.href = "/checkout") : null;
-  };
   return (
     <>
       {/* Cart here  */}
@@ -135,9 +132,9 @@ const NavBar = () => {
                         </p>
                         <button
                           className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-6 py-3 text-base font-medium text-black shadow-sm hover:bg-gray-900 hover:text-white"
-                          onClick={() => {
-                            checkOutBtnClicked();
-                          }}>
+                          onClick={() =>
+                            sessionData ? (window.location.href = "/checkout") : null
+                          }>
                           Thanh toán
                         </button>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

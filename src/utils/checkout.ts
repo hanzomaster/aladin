@@ -1,8 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js";
 
 export async function checkout({ lineItems }: { lineItems: any }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let stripePromise: any = null;
-
   const getStripe = () => {
     if (!stripePromise) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
