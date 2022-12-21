@@ -7,16 +7,12 @@ import NavBar from "../components/navbar";
 import Pagination from "../components/Pagination";
 import { AppRouter } from "../server/trpc/router/_app";
 import { trpc } from "../utils/trpc";
-// import data from "./product";
 export const postsPerPage = 20;
 
 const Products = () => {
-  // eslint-disable-next-line
-  // const [items, setItems] = React.useState(data);
   const router = useRouter();
   const { name } = router.query;
   const { gender } = router.query;
-  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;

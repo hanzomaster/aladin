@@ -55,7 +55,7 @@ export const Toast = (props: ToastProps) => {
     return () => {
       clearInterval(progressBarRef.current);
     };
-  }, []);
+  }, [duration, progress]);
   return (
     <div
       style={{ ["--elm-translate" as any]: animationVariables[position] }}

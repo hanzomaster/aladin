@@ -4,7 +4,7 @@ const Footer = () => {
   const products = [{ name: "Polo" }, { name: "Shirt" }, { name: "Jeans" }, { name: "Shorts" }];
   return (
     <>
-      <footer className="bg-gray-100 text-center text-gray-600 lg:text-left">
+      <footer className="bg-[#eff6ff] text-center text-gray-600 lg:text-left">
         <div className="flex items-center justify-center border-b border-gray-300 p-6 lg:justify-between">
           <div className="mr-12 hidden lg:block">
             <span>Get connected with us on social networks:</span>
@@ -270,7 +270,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="bg-gray-200 p-6 text-center">
+        <div className="bg-[#dbeafd] p-6 text-center">
           <span>Aladin:</span>
           <Link href="/home">
             <a className="font-semibold text-gray-600" href="https://tailwind-elements.com/">

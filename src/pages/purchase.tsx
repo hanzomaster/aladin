@@ -84,24 +84,24 @@ const Purchase: NextPage = () => {
                             </div>
                             <div className="relative right-0 top-0 pr-4 ">
                               <div className="r-0 mt-0.5 inline-block">
-                                <del className="ml-2 text-lg text-red-700">
+                                {/* <del className="ml-2 text-lg text-red-700">
                                   {(
                                     (item.orderdetail[0]?.priceEach as unknown as number) * 1000
                                   ).toLocaleString("vi-VN", {
                                     style: "currency",
                                     currency: "VND",
                                   })}
-                                </del>
+                                </del> */}
                               </div>
 
-                              <p className="r-0 mt-2 ml-1 inline-block pr-4  text-xl">
+                              {/* <p className="r-0 mt-2 ml-1 inline-block pr-4  text-xl">
                                 {(
                                   (item.orderdetail[0]?.priceEach as unknown as number) * 600
                                 ).toLocaleString("vi-VN", {
                                   style: "currency",
                                   currency: "VND",
                                 })}
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         </div>

@@ -13,7 +13,6 @@ const NewProduct: NextPage = () => {
   >([]);
 
   const { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
-  const [imageUrl, setImageUrl] = useState<string>();
   const [selectedGender, setSelectedGender] = useState("Nam");
   const [selectedProductLine, setSelectedProductLine] = useState("Polo");
   const [name, setName] = useState("");
@@ -31,12 +30,22 @@ const NewProduct: NextPage = () => {
       });
       document.getElementsByTagName("form")[0]?.reset();
       setProductDetailList([]);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    onError() {
+      toast({
+        type: "error",
+        duration: 1500,
+        message: "Tạo sản phẩm thất bại",
+        position: "topCenter",
+      });
     },
   });
   const handleFileChange = async (file: File, index: number) => {
     const { url } = await uploadToS3(file);
-    //   setImageUrl(url);
-    // };
     const tempArr = [...productDetailList];
     tempArr[index]!.image = url;
     setProductDetailList(tempArr);
@@ -44,9 +53,6 @@ const NewProduct: NextPage = () => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  };
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
   };
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(parseFloat(e.target.value));
@@ -68,11 +74,6 @@ const NewProduct: NextPage = () => {
     setProductDetailList(tempArr);
   };
 
-  // const onImageChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const tempArr = [...productDetailList];
-  //   tempArr[index]!.image = parseInt(e.target.value);
-  //   setProductDetailList(tempArr);
-  // };
   const onNumSChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const tempArr = [...productDetailList];
     tempArr[index]!.numS = parseInt(e.target.value);
@@ -160,6 +161,7 @@ const NewProduct: NextPage = () => {
             type="text"
             onChange={handleNameChange}
             autoFocus
+            required
           />
         </div>
 
@@ -182,6 +184,7 @@ const NewProduct: NextPage = () => {
             className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
             onChange={handlePriceChange}
             type="text"
+            required
           />
         </div>
 
@@ -252,13 +255,6 @@ const NewProduct: NextPage = () => {
                                 }}>
                                 #{item.colorCode}
                               </span>
-                              {/* <input
-                                className="h-8 w-16 rounded-sm bg-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-600 hover:bg-white "
-                                type="text"
-                                name="name"
-                                value={item.colorCode}
-                                onChange={onColorCodeChange()}
-                              /> */}
                             </td>
                             <td className="whitespace-nowrap px-6 py-4 text-base font-light text-gray-900">
                               <FileInput
@@ -371,6 +367,7 @@ const NewProduct: NextPage = () => {
         </div>
         <button
           type="submit"
+          disabled={productDetailList.length === 0}
           className="relative mr-0 h-full w-36 rounded-lg bg-gray-100 hover:bg-gray-700 hover:text-white">
           {" "}
           Tạo sản phẩm

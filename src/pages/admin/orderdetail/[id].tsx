@@ -1,30 +1,15 @@
-import { Dialog, Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
-import Navbar from "../../components/navbar";
-import { useToast } from "../../components/Toast";
-import OrderedItem from "../../components/user/OrderedItem";
+import NavbarAdmin from "../../../components/admin/NavbarAdmin";
+import OrderedItem from "../../../components/user/OrderedItem";
+import { trpc } from "../../../utils/trpc";
 
-import { trpc } from "../../utils/trpc";
-
-const OrderDetail = () => {
+const OrderDetailAdmin = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { add: toast } = useToast();
   let total = 0;
   const { data: session } = useSession();
-  const mutation = trpc.order.cancelOrder.useMutation({
-    onSuccess: () => {
-      toast({
-        type: "success",
-        duration: 1500,
-        message: "Hủy đơn hàng thành công!",
-        position: "topCenter",
-      });
-      window.location.reload();
-    },
-  });
+  const mutation = trpc.order.cancelOrder.useMutation();
 
   const handleCancelOrder = () => {
     mutation.mutate({
@@ -33,22 +18,9 @@ const OrderDetail = () => {
   };
 
   const { data: order } = trpc.order.getOneWhere.useQuery({ orderNumber: id as string });
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [starRate, setStarRate] = useState(0);
-
-  const [comment, setComment] = useState("");
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
   return (
     <>
-      <Navbar />
+      <NavbarAdmin />
 
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
       <div className="p- p- mx-1 py-20 px-4 md:px-6 2xl:container 2xl:mx-auto 2xl:px-20">
@@ -72,7 +44,7 @@ const OrderDetail = () => {
 
                 return (
                   <>
-                    <OrderedItem item={item} disable={order.status !== "SHIPPED"} />
+                    <OrderedItem item={item} disable={!(order.status === "SHIPPED")} />
                   </>
                 );
               })}
@@ -180,6 +152,7 @@ const OrderDetail = () => {
                         ", " +
                         order?.address.city}
                     </p>
+
                     <p className="text-center text-base font-semibold leading-4 text-gray-800 md:text-left">
                       Ghi chú:
                     </p>
@@ -189,79 +162,18 @@ const OrderDetail = () => {
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-center md:items-start md:justify-start">
-                  <button
-                    className="mt-2 w-96 border border-gray-800 py-3 text-base font-medium leading-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-gray-200 md:mt-0 2xl:w-full"
-                    disabled={order?.status === "CANCELLED"}
-                    onClick={openModal}>
-                    {order?.status === "CANCELLED" ? "Đã hủy" : "Hủy/ Đổi trả đơn hàng"}
-                  </button>
+                  {/* <button
+                    className="mt-6 w-96 border border-gray-800 py-5 text-base font-medium leading-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 hover:bg-gray-200 md:mt-0 2xl:w-full"
+                    onClick={handleCancelOrder}>
+                    Hủy/ Đổi trả đơn hàng
+                  </button> */}
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <Transition appear show={isOpen} as={Fragment}>
-              <Dialog as="div" className="relative z-10" onClose={closeModal}>
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0">
-                  <div className="fixed inset-0 bg-black bg-opacity-25" />
-                </Transition.Child>
-
-                <div className="fixed inset-0 overflow-y-auto">
-                  <div className="flex min-h-full items-center justify-center p-4 text-center">
-                    <Transition.Child
-                      as={Fragment}
-                      enter="ease-out duration-300"
-                      enterFrom="opacity-0 scale-95"
-                      enterTo="opacity-100 scale-100"
-                      leave="ease-in duration-200"
-                      leaveFrom="opacity-100 scale-100"
-                      leaveTo="opacity-0 scale-95">
-                      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900">
-                          Bạn có chắc chắn muốn hủy đơn hàng
-                        </Dialog.Title>
-
-                        <h1 className="mt-3">Lý do hủy đơn:</h1>
-                        <textarea
-                          className="mt-3 w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 md:text-base"
-                          onChange={(e) => setComment(e.target.value)}
-                        />
-
-                        <div className="mt-4 flex w-full items-center justify-between">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 hover:bg-red-200"
-                            onClick={handleCancelOrder}>
-                            Xác nhận hủy
-                          </button>
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:bg-blue-200"
-                            onClick={() => {
-                              setIsOpen(false);
-                            }}>
-                            Quay lại
-                          </button>
-                        </div>
-                      </Dialog.Panel>
-                    </Transition.Child>
-                  </div>
-                </div>
-              </Dialog>
-            </Transition>
           </div>
         </div>
       </div>
     </>
   );
 };
-export default OrderDetail;
+export default OrderDetailAdmin;
