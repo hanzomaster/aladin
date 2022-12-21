@@ -39,12 +39,12 @@ const CommentItem = ({ comment }: any) => {
         <aside>
           <div className="mt-3 flex items-center space-x-3 divide-x divide-gray-200 dark:divide-gray-600">
             <a
-              href="#"
+              href="mailto:aladin.w22g4@gmail.com?subject=Help me"
               className="rounded-lg border border-gray-300 bg-white px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:ring-gray-700 dark:hover:border-gray-600 dark:hover:bg-gray-700">
-              Helpful
+              Help
             </a>
             <a
-              href="#"
+              href="mailto:aladin.w22g4@gmail.com?subject=Reports"
               className="pl-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
               Report abuse
             </a>

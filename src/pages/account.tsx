@@ -12,7 +12,7 @@ const Account: NextPage = () => {
   const { data } = trpc.user.me.useQuery();
   const [name, setName] = useState(data?.name);
   const { add: toast } = useToast();
-  const [phone, setPhone] = useState<string>(data?.phone ?? "0");
+  const [phone, setPhone] = useState("");
   const mutation = trpc.user.update.useMutation({
     onSuccess: () => {
       setEnableName(false);
@@ -107,9 +107,9 @@ const Account: NextPage = () => {
                 </label>
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
-                  type="text"
+                  type="tel"
                   onChange={handlePhoneChange}
-                  value={phone ?? (data?.phone as string)}
+                  value={phone ? phone : (data?.phone as string)}
                   disabled={!enablePhone}
                 />
               </div>
