@@ -20,11 +20,17 @@ export default defineNextConfig({
     defaultLocale: "vi",
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "drive.google.com",
         pathname: "/uc",
+      },
+      {
+        protocol: "https",
+        hostname: "aladin-w22g4.s3.ap-southeast-1.amazonaws.com",
+        pathname: "/next-s3-uploads",
       },
     ],
   },

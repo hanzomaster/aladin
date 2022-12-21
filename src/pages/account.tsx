@@ -1,5 +1,5 @@
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
 import Navbar from "../components/navbar";
 
@@ -7,41 +7,22 @@ import { useToast } from "../components/Toast";
 import SidebarAccount from "../components/user/SidebarAccount";
 import { trpc } from "../utils/trpc";
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  // check session with next-auth
-  const session = await getSession(context);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/home",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: { session },
-  };
-};
-
 const Account: NextPage = () => {
   // dynamic handle focus on input
-  const { data: sessionData } = useSession();
-  const [name, setName] = useState(sessionData?.user?.name);
+  const { data } = trpc.user.me.useQuery();
+  const [name, setName] = useState(data?.name);
   const { add: toast } = useToast();
-  const [phone, setPhone] = useState("0");
+  const [phone, setPhone] = useState<string>(data?.phone ?? "0");
   const mutation = trpc.user.update.useMutation({
     onSuccess: () => {
       setEnableName(false);
       setEnablePhone(false);
       toast({
         type: "success",
-        duration: 6000,
+        duration: 1500,
         message: "Sửa đổi thông tin thành công!\n Vui lòng đăng nhập lại để cập nhật thông tin! ",
         position: "topCenter",
       });
-      signOut();
     },
   });
   const [enableName, setEnableName] = useState(false);
@@ -56,9 +37,9 @@ const Account: NextPage = () => {
 
   const saveButtonClicked = () => {
     mutation.mutate({
-      id: sessionData?.user?.id as string,
       dto: { name: name as string, phone: phone },
     });
+    console.log(`name: ${name} phone: ${phone}`);
   };
 
   const handleEnableName = () => {
@@ -76,7 +57,7 @@ const Account: NextPage = () => {
 
       {/* Content */}
       <div className=" p- mx-1 gap-5 py-10">
-        <div className="mt-10 flex h-full border-4 px-4 pb-20 lg:px-10">
+        <div className="mt-10 flex h-full px-4 pb-20 lg:px-10">
           <SidebarAccount />
           {/* main */}
           <div className="w-full sm:w-[80%] xl:w-[60%]">
@@ -95,7 +76,7 @@ const Account: NextPage = () => {
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="email"
-                  value={sessionData?.user?.email ?? "Loading..."}
+                  value={data?.email ?? "Loading..."}
                   disabled
                 />
               </div>
@@ -109,7 +90,7 @@ const Account: NextPage = () => {
                 <input
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
-                  value={name ?? "Loading..."}
+                  value={name ?? (data?.name as string)}
                   onChange={handleNameChange}
                   disabled={!enableName}
                 />
@@ -128,50 +109,10 @@ const Account: NextPage = () => {
                   className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:bg-slate-300 lg:text-sm"
                   type="text"
                   onChange={handlePhoneChange}
-                  value={phone}
+                  value={phone ?? (data?.phone as string)}
                   disabled={!enablePhone}
                 />
               </div>
-              <div className="my-5 ">
-                <label className="my-5 mr-5 font-semibold text-gray-500 md:mr-10" htmlFor="gender">
-                  Giới tính
-                </label>
-
-                <div className="flex flex-col md:flex-row">
-                  <div>
-                    <input className="mr-2" type="radio" id="male" name="gender" value="male" />
-                    <label className="mr-5 md:mr-10" htmlFor="male">
-                      Nam
-                    </label>
-                  </div>
-
-                  <div>
-                    <input className="mr-2" type="radio" id="female" name="gender" value="female" />
-                    <label className="mr-5 md:mr-10" htmlFor="css">
-                      Nữ
-                    </label>
-                  </div>
-
-                  <div>
-                    <input className="mr-2" type="radio" id="other" name="gender" value="other" />
-                    <label className="mr-5 md:mr-10" htmlFor="other">
-                      Khác
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="my-5 font-semibold text-gray-500" htmlFor="birthday">
-                  Ngày sinh
-                </label>
-                <input
-                  className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
-                  type="date"
-                  value={"2002-04-20"}
-                />
-              </div>
-
               <button
                 className=" mt-5 h-12 w-full rounded-lg border-2 bg-[#da291c] text-lg font-medium uppercase  text-white hover:bg-[#cd5a52] active:border-2 active:border-stone-900 active:shadow-lg md:mt-10 md:text-xl"
                 onClick={() => saveButtonClicked()}
@@ -190,3 +131,21 @@ const Account: NextPage = () => {
 };
 
 export default Account;
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  // check session with next-auth
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};

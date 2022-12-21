@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { adminProcedure, protectedProcedure, publicProcedure, router } from "../trpc";
 import {
   createProductSchema,
   getAllSchema,
@@ -146,7 +146,7 @@ export const productRouter = router({
       },
     })
   ),
-  create: protectedProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
+  create: adminProcedure.input(createProductSchema).mutation(async ({ ctx, input }) =>
     ctx.prisma.product.create({
       data: {
         name: input.name,
@@ -170,6 +170,26 @@ export const productRouter = router({
           create: input.productDetail.map((detail) => ({
             colorCode: detail.colorCode,
             image: detail.image,
+            productInStock: {
+              create: [
+                {
+                  size: "S",
+                  quantity: detail.numS,
+                },
+                {
+                  size: "M",
+                  quantity: detail.numM,
+                },
+                {
+                  size: "L",
+                  quantity: detail.numL,
+                },
+                {
+                  size: "XL",
+                  quantity: detail.numXL,
+                },
+              ],
+            },
           })),
         },
       },

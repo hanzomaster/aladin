@@ -30,9 +30,9 @@ enum ClothSize {
 }
 
 enum OrderStatus {
-    InProcess
-    Shipped
-    Cancelled
+    INPROCESS
+    SHIPPED
+    CANCELLED
 }
 
 model Comment {
@@ -114,7 +114,7 @@ model Order {
     orderDate      DateTime      @default(now())
     shippedDate    DateTime      @default(now())
     addressId      String
-    status         OrderStatus   @default(InProcess)
+    status         OrderStatus   @default(INPROCESS)
     comments       String?       @db.Text
     customerNumber String
     orderdetail    OrderDetail[]

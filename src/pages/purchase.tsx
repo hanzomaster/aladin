@@ -1,10 +1,28 @@
-import { NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import NavBar from "../components/navbar";
 import SidebarAccount from "../components/user/SidebarAccount";
 
 import { trpc } from "../utils/trpc";
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  // check session with next-auth
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/home",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};
 
 const Purchase: NextPage = () => {
   const { data: orders } = trpc.order.getAllOfUser.useQuery();
@@ -22,7 +40,7 @@ const Purchase: NextPage = () => {
               <h1 className="text-2xl font-semibold text-gray-800 md:text-3xl ">Tất cả đơn hàng</h1>
             </header>
             <main className="pl-5 md:pl-10 lg:pl-32">
-              {orders?.map((item) => {
+              {orders?.reverse().map((item) => {
                 let total = 0;
                 for (const item1 of item.orderdetail) {
                   total = total + parseFloat(item1.priceEach.toString()) * item1.quantityInOrdered;
@@ -32,7 +50,7 @@ const Purchase: NextPage = () => {
                     <div className=" m d:px-4 relative my-4 h-full w-full cursor-pointer bg-gray-50 px-2 pb-2 hover:bg-gray-100">
                       <header className="flex justify-between border-b-2 py-4">
                         <h1 className="  text-base font-semibold text-gray-800 sm:text-lg md:text-xl">
-                          {item.orderNumber}
+                          Xem chi tiết và đánh giá
                         </h1>
                         <div className="flex flex-col items-center text-xs sm:flex-row sm:text-base md:text-lg">
                           <p className="mr-2 sm:mr-4">{item.orderDate.toDateString()}</p>

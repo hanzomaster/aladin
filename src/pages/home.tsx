@@ -18,19 +18,8 @@ const Products = () => {
   const { gender } = router.query;
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  // const [searchResult, setSearchResult] = useState<
-  //   inferRouterOutputs<AppRouter>["product"]["getAll"] | undefined
-  // >(data);
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
-
-  // useEffect(() => {
-  //   const results = data?.filter((product) =>
-  //     product.name.toLowerCase().startsWith(search.toLowerCase())
-  //   );
-  //   setSearchResult(results);
-  // }, [search, data]);
-
   const setPage = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({
@@ -43,7 +32,7 @@ const Products = () => {
   if (!gender && name) {
     // const [name, setName] = useState("");
     const { data } = trpc.product.search.useQuery({ name: name as string });
-    const currentPosts: inferRouterOutputs<AppRouter>["product"]["getAll"] | undefined =
+    const currentPosts: inferRouterOutputs<AppRouter>["product"]["search"] | undefined =
       data?.slice(firstPostIndex, lastPostIndex);
     return (
       <>
@@ -61,11 +50,13 @@ const Products = () => {
             return <ItemCard key={item.code} item={item} />;
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }
@@ -96,23 +87,16 @@ const Products = () => {
             // }
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }
-  // const { data: cartData } = trpc.cart.get.useQuery();
-
-  // check undefined
-  // function searchButtonClicked() {
-  //   // let search : string
-  //   if (document.getElementById("searchInput")?.textContent) {
-  //     setName(document.getElementById("searchInput")?.textContent);
-  //   }
-  // }
   if (!gender && !name) {
     const { data } = trpc.product.getAll.useQuery();
 
@@ -142,11 +126,13 @@ const Products = () => {
             return <ItemCard key={item.code} item={item} />;
           })}
         </section>
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center pb-4">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setPage}
+            currentPage={currentPage}
+          />
+        </div>
       </>
     );
   }

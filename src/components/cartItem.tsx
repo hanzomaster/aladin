@@ -10,7 +10,7 @@ const CartItem = ({ product }: any) => {
   const [count, setCount] = useState(product?.numberOfItems);
   const utils = trpc.useContext();
 
-  const creatMutation = trpc.cartItem.updateOrCreate.useMutation({
+  const createMutation = trpc.cartItem.updateOrCreate.useMutation({
     onSuccess() {
       utils.cart.get.invalidate();
     },
@@ -23,7 +23,7 @@ const CartItem = ({ product }: any) => {
 
   const debouncedUpdate = debounce(async (criteria) => {
     setCount(criteria);
-    creatMutation.mutate({
+    createMutation.mutate({
       productDetailId: product?.productDetail.id,
       dto: { size: product?.size as ClothSizeLiteral, numberOfItems: parseFloat(criteria) },
     });
@@ -32,17 +32,6 @@ const CartItem = ({ product }: any) => {
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     debouncedUpdate(e.target.value);
   }
-
-  // const handleChange = (e) => {
-  //   debounce(async () => {
-  //     // 😕 debounced function never called
-  //     creatMutation.mutate({
-  //       productDetailId: product?.productDetail.id,
-  //       dto: { size: product?.size as ClothSizeLiteral, numberOfItems: parseFloat(count) },
-  //     });
-  //   }, 100);
-  //   setCount(parseFloat(e.target.value));
-  // };
 
   const [open, setOpen] = useState(false);
 
@@ -78,7 +67,7 @@ const CartItem = ({ product }: any) => {
               })}
             </p>
           </a>
-          <div className="block inline-block">
+          <div className="inline-block">
             <p
               style={{
                 background: `#${product?.productDetail?.colorCode}`,
@@ -86,11 +75,11 @@ const CartItem = ({ product }: any) => {
               className="mt-1 text-sm text-gray-500">
               {product.productDetail.colorCode}
             </p>
-            <p className="mt-1 ml-1 text-sm text-gray-500">Size: {product?.size}</p>
           </div>
+          <p className="mt-1 text-sm text-gray-500">Size: {product?.size}</p>
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <div className="block inline-block text-gray-500">
+          <div className="inline-block text-gray-500">
             SL:
             <div className="inline-block">
               <input

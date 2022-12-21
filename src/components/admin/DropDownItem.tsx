@@ -1,14 +1,21 @@
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Fragment, useState } from "react";
+
 interface Props {
   title: string;
   list: string[];
+  setSelectedGender: any;
+  setSelectedLine: any;
 }
-import { Fragment, useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-
 export default function Example(props: Props) {
   const [selected, setSelected] = useState(props.list[0]);
-
+  if (props.title === "Gender") {
+    props.setSelectedGender(selected);
+  }
+  if (props.title === "ProductLine") {
+    props.setSelectedLine(selected);
+  }
   return (
     <div className="w-36">
       <Listbox value={selected} onChange={setSelected}>

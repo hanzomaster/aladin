@@ -1,6 +1,7 @@
-import Link from "next/link";
-import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
+import Link from "next/link";
+import { useState } from "react";
+import DropdownComponent from "../dropdownmenu";
 import { NavbarItems } from "./NavbarItems";
 
 function NavbarAdmin() {
@@ -12,7 +13,13 @@ function NavbarAdmin() {
           <div className="flex h-24 items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0 ">
-                <img className="h-10 w-28 object-fill" src="/logo2.jpg" alt="Workflow" />
+                <Link href="/admin">
+                  <img
+                    className="h-10 w-28 cursor-pointer object-fill"
+                    src="/logo2.jpg"
+                    alt="Workflow"
+                  />
+                </Link>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
@@ -67,6 +74,7 @@ function NavbarAdmin() {
                 )}
               </button>
             </div>
+            <DropdownComponent title={"user"} type={"user"} data={["Đăng xuất"]} />
           </div>
         </div>
 

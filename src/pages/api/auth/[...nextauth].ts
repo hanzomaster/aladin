@@ -15,6 +15,24 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    signIn: async (params) => {
+      if (params.user.email) {
+        const status = await prisma.user.findUnique({
+          where: {
+            email: params.user.email,
+          },
+          select: {
+            status: true,
+          },
+        });
+        if (status !== null && status.status === false) {
+          return false;
+        }
+        return true;
+      }
+    },
   },
   events: {
     createUser: async (message) => {
@@ -56,17 +74,6 @@ export const authOptions: NextAuthOptions = {
         });
       }
     },
-    // signIn({ user }) {
-    //   prisma.cart.upsert({
-    //     where: {
-    //       userId: user.id,
-    //     },
-    //     create: {
-    //       userId: user.id,
-    //     },
-    //     update: {},
-    //   });
-    // },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),

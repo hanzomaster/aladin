@@ -47,11 +47,13 @@ const Orders: NextPage = () => {
           </h2>
         )}
         <OrdersList ordersData={currentPosts ?? []} />
-        <Pagination
-          totalPosts={data?.length ?? 0}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-        />
+        <div className="flex w-full items-center justify-center">
+          <Pagination
+            totalPosts={data?.length ?? 0}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </div>
       </main>
     </div>
   );

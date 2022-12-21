@@ -34,6 +34,7 @@
     "next-s3-upload": "^0.2.8",
     "nodemailer": "^6.8.0",
     "react": "18.2.0",
+    "react-color-palette": "^6.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.40.0",
@@ -46,8 +47,7 @@
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^9.2.2",
-    "@types/get-image-colors": "^4.0.1",
-    "@types/get-pixels": "^3.3.2",
+    "@tailwindcss/forms": "^0.5.3",
     "@types/node": "18.11.10",
     "@types/nodemailer": "^6.4.7",
     "@types/react": "18.0.25",
