@@ -72,7 +72,7 @@ const CheckOut = () => {
     setDistrict(address.district);
     setWard(address.ward);
     setIdAddress(address.id);
-    closeModal();
+    setIsOpen(false);
   };
   const handleCheckOutBtnClicked = () => {
     if (isDefault) {
@@ -109,10 +109,14 @@ const CheckOut = () => {
   function closeModal() {
     setIsDefault(false);
     setIsOpen(false);
+    setName("");
+    setPhone("");
+    setDetailAddress("");
   }
 
   function openModal() {
     setIsOpen(true);
+    setIsDefault(true);
   }
 
   return (
@@ -140,6 +144,7 @@ const CheckOut = () => {
                         placeholder={"Họ và tên"}
                         onChange={handleNameChange}
                         disabled={isDefault}
+                        required
                         type="text"
                         className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                       />
@@ -159,6 +164,7 @@ const CheckOut = () => {
                         disabled={isDefault}
                         type="text"
                         placeholder="Số điện thoại"
+                        required
                         className="w-full rounded border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 lg:text-sm"
                       />
                     </div>
@@ -264,17 +270,18 @@ const CheckOut = () => {
                           </Transition>
                         </>
 
-                        {/* {isDefault && ( */}
-                        <div className="pt-2">
-                          <div className="text-lg font-semibold text-gray-900">
-                            <span className=" mr-4 border-r-2 pr-4">{name}</span>
-                            <span className="">{phone}</span>
+                        {isDefault && (
+                          <div className="pt-2">
+                            <div className="text-lg font-semibold text-gray-900">
+                              <span className=" mr-4 border-r-2 pr-4">Tên: {name}</span>
+                              <span className="">SĐT: {phone}</span>
+                            </div>
+                            <div>
+                              <p className="text-base font-normal text-gray-900">{`${detailAddress}`}</p>
+                              <p className="text-base font-normal text-gray-900">{`${ward}, ${district}, ${city}`}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-base font-normal text-gray-900">{`${detailAddress}, ${ward}, ${district}, ${city}`}</p>
-                          </div>
-                        </div>
-                        {/* )} */}
+                        )}
                       </div>
                     </label>
                     <Select
@@ -365,7 +372,7 @@ const CheckOut = () => {
                   <div className="mt-4 flex justify-between">
                     <button
                       className="mr-4 w-full rounded-lg bg-blue-100 px-6 py-2 font-bold text-blue-900 enabled:hover:bg-blue-300"
-                      disabled={disable || phone === "" || name === ""}
+                      disabled={(disable || phone === "" || name === "") && !isDefault}
                       onClick={(e) => {
                         e.preventDefault();
                         handleCheckOutBtnClicked();
@@ -373,8 +380,8 @@ const CheckOut = () => {
                       Thanh toán khi nhận hàng
                     </button>
                     <button
-                      className="text-black-200 w-full rounded-lg bg-gray-300 px-6 py-2 font-bold enabled:hover:bg-gray-900 enabled:hover:text-white "
-                      disabled={disable || phone === "" || name === ""}
+                      className="w-full rounded-lg bg-red-100 px-6 py-2 font-bold text-red-700 enabled:hover:hover:bg-red-200"
+                      disabled={(disable || phone === "" || name === "") && !isDefault}
                       onClick={(e) => {
                         e.preventDefault();
                         checkout({
@@ -449,7 +456,7 @@ const CheckOut = () => {
                                     className="mt-1 text-sm text-gray-500">
                                     {product.productDetail.colorCode}
                                   </p>
-                                  <p className="mt-1 ml-1 text-sm text-gray-500">
+                                  <p className="mt-1 text-sm text-gray-500">
                                     Size: {product?.size}
                                   </p>
                                 </div>

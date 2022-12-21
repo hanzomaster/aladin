@@ -54,12 +54,11 @@ const ProductsList = ({
             return (
               <tr
                 key={index}
-                className="cursor-pointer border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base"
-                onClick={() => {
-                  window.location.href = "/productDetail/" + product.code;
-                }}>
+                className="cursor-pointer border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base">
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{index + 1}</td>
-                <td className="whitespace-nowrap px-2 py-3 md:px-6">{product.code}</td>
+                <td className="whitespace-nowrap px-2 py-3 md:px-6">
+                  <a href={"/admin/productDetail/" + product.code}>{product.code}</a>
+                </td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">
                   {product.line?.gender == "M" ? "Nam" : "Nữ"}
                 </td>

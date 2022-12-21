@@ -69,7 +69,7 @@ const OrdersList = ({
                 key={index}
                 className="cursor-pointer border-b bg-white text-sm transition duration-300 ease-in-out hover:bg-gray-100 md:text-base"
                 onClick={() => {
-                  window.location.href = "/orderdetail/" + order.orderNumber;
+                  window.location.href = "/admin/orderdetail/" + order.orderNumber;
                 }}>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{index + 1}</td>
                 <td className="whitespace-nowrap px-2 py-3 md:px-6">{order.orderNumber}</td>

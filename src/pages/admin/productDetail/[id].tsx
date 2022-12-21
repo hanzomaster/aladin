@@ -6,10 +6,10 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
-import CommentItem from "../../components/commentItem";
-import NavBar from "../../components/navbar";
-import { useToast } from "../../components/Toast";
-import { trpc } from "../../utils/trpc";
+import NavbarAdmin from "../../../components/admin/NavbarAdmin";
+import CommentItem from "../../../components/commentItem";
+import { useToast } from "../../../components/Toast";
+import { trpc } from "../../../utils/trpc";
 
 const sizeGuideSrc = "https://canifa.com/assets/Women-measurement.png";
 // const description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
@@ -20,7 +20,7 @@ function classNames(...classes: string[]) {
 
 type ClothSizeLiteral = `${ClothSize}`;
 
-const ProductDetail: NextPage = () => {
+const ProductDetailAdmin: NextPage = () => {
   const [open, setOpen] = useState(false);
   const { add: toast } = useToast();
   const router = useRouter();
@@ -100,7 +100,7 @@ const ProductDetail: NextPage = () => {
   return (
     <>
       <section>
-        <NavBar />
+        <NavbarAdmin />
       </section>
       <section className=" p- mx-1 gap-5 py-10">
         <div className="inset-0">
@@ -352,7 +352,7 @@ const ProductDetail: NextPage = () => {
                           </li>
                         </ul>
                       </div>
-                      <button
+                      {/* <button
                         type="submit"
                         onClick={(e) => {
                           e.preventDefault();
@@ -361,7 +361,7 @@ const ProductDetail: NextPage = () => {
                         className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white focus:outline-none hover:bg-[#28343a]
               ">
                         Thêm vào giỏ hàng
-                      </button>
+                      </button> */}
                     </form>
                   </section>
                 </div>
@@ -389,4 +389,4 @@ const ProductDetail: NextPage = () => {
 
 // `getStaticPaths` requires using `getStaticProps`
 
-export default ProductDetail;
+export default ProductDetailAdmin;
